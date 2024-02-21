@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.2" />
+    <PackageReference Include="MudBlazor" Version="6.16.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +19,7 @@
 
   <ItemGroup>
     <Using Include="HockeyPool.Infrastructure.Data" />
-	<Using Include="HockeyPool.Infrastructure.Data.Models"/>
+	<Using Include="HockeyPool.Infrastructure.Data.Models" />
   </ItemGroup>
 
 </Project>
