@@ -1,6 +1,5 @@
 using HockeyPool.Components;
 using HockeyPool.Components.Account;
-using HockeyPool.Infrastructure.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
