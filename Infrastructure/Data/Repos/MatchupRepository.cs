@@ -10,6 +10,17 @@ namespace HockeyPool.Infrastructure.Data.Repos
         {
             _dbContext = dbContext;
         }
+        public async Task<Matchup?> Get(int matchupId)
+        {
+            var result = await _dbContext.Matchups.FindAsync(matchupId);
+            return result;
+        }
+
+        public async Task<List<Matchup>> GetAll()
+        {
+            var result = await _dbContext.Matchups.ToListAsync();
+            return result;
+        }
 
         public async void Create(Matchup matchup)
         {
