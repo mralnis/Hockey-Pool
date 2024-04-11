@@ -76,4 +76,9 @@ app.MapRazorComponents<App>()
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
 
+using var scope = app.Services.CreateScope();
+{
+    ApplicationDbContext dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 app.Run();
