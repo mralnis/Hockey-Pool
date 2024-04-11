@@ -1,0 +1,36 @@
+﻿@page "/rules"
+@using HockeyPool.Infrastructure.Data.Models;
+
+<section style="background-color:rgba(0,0,0,0.6)">
+    <MudText Typo="Typo.h1">Noteikumi </MudText>
+
+    <p></p>
+    <MudList>
+        <MudListItem Avatar="@Icons.Material.Filled.ArrowRight">Minējumus var mainīt līdz spēles sākumam, daudz neatliekam, sistēma ir automātiska, un nevienu nežēlo</MudListItem>
+        <MudListItem Avatar="@Icons.Material.Filled.ArrowRight">Citu dalībnieku minējumus varēs redzēt tikai tad, kad tos vairs jau mainīt  nevarēs. Špikošana šogad izslēgta</MudListItem>
+        <MudListItem Avatar="@Icons.Material.Filled.ArrowRight">Neižšķirtu rezultātu nav, kāda no komandām ar +1 uzvar jebkurā gadījumā</MudListItem>
+        <MudListItem Avatar="@Icons.Material.Filled.ArrowRight">Uzvaras laurus un naudas katlu savāc viens cilvēks, ja ir vienādi rezultāti, tad uzvarētāji vai nu turpina derības uz citām spēlēm, vai arī dala vienādās daļās.</MudListItem>
+        <MudListItem Avatar="@Icons.Material.Filled.ArrowRight">Organizatori patur tiesības ieviest izmaiņas noteikumos</MudListItem>
+        <MudListItem Avatar="@Icons.Material.Filled.ArrowRight">Dalības maksa <b>10 EUR</b>.</MudListItem>
+        <MudListItem Avatar="@Icons.Material.Filled.ArrowRight" Text="Punktu sadalījums" InitiallyExpanded="true">
+            <NestedList>
+                <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarRate"> Punkti par precīzu minējumu: <b>@Model.PointsForPerfect</b> </MudListItem>
+                <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarRate">Punkti par pareizu vārtu starpību+uzvarētāju: <b>@Model.PointForDifference</b></MudListItem>
+                <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarRate">Punkti tikai par pareizo uzvarētāju: <b>@Model.PointsForWinnerOnly</b></MudListItem>
+            </NestedList>
+        </MudListItem>
+    </MudList>
+    <MudDivider />
+    <MudText Typo="Typo.h6"> <a href="https://www.swedbank.lv/pay?id=lr3x752u0dzg"> Didzis Stivriņš LV21HABA0551039169500  (Swedbank) </a></MudText>
+
+</section>
+<MudDivider />
+
+@code {
+    public HockeyPool.Infrastructure.Data.Models.Tournament Model { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Model = new Tournament();
+    }
+}
