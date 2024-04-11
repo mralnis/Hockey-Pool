@@ -9,9 +9,9 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Log in</PageTitle>
+<PageTitle>Pieslēgties</PageTitle>
 
-<h1>Log in</h1>
+<h1 style="color:white">Pieslēgties</h1>
 <section>
     <StatusMessage Message="@errorMessage" />
     <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
@@ -20,29 +20,27 @@
         <ValidationSummary class="text-danger" role="alert" />
         <div class="form-floating mb-3">
             <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-            <label for="email" class="form-label">Email</label>
+            <label for="email" class="form-label">Lietotājvārds</label>
             <ValidationMessage For="() => Input.Email" class="text-danger" />
         </div>
         <div class="form-floating mb-3">
             <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-            <label for="password" class="form-label">Password</label>
+            <label for="password" class="form-label">Parole</label>
             <ValidationMessage For="() => Input.Password" class="text-danger" />
         </div>
-        <div class="checkbox mb-3">
+        <div class="checkbox mb-3" style="color:white">
             <label class="form-label">
                 <InputCheckbox @bind-Value="Input.RememberMe" class="darker-border-checkbox form-check-input" />
-                Remember me
+                Atcerēties mani
             </label>
         </div>
         <div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
         </div>
         <div>
-            @*                     <p>
-            <a href="Account/ForgotPassword">Forgot your password?</a>
-            </p> *@
-            <p>
-                <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Register as a new user</a>
+            <p style="color:white; padding-top:4px;">
+                <MudIcon Icon="@Icons.Material.Rounded.PersonAddAlt" ></MudIcon>
+                <a style="color:white;padding:70px 0;" href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Izveidot jaunu lietotāju</a>
             </p>
         </div>
     </EditForm>
@@ -106,6 +104,6 @@
         public string Password { get; set; } = "";
 
         [Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }
+        public bool RememberMe { get; set; } = true;
     }
 }
