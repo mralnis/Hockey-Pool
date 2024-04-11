@@ -19,6 +19,7 @@ namespace HockeyPool.Infrastructure.Data.Repos
 
                 if (activeTournament == null)
                 {
+                    // how will you later know if you found an actual tournament or got a blank one?
                     activeTournament = new Tournament();
                 }
 
@@ -26,7 +27,7 @@ namespace HockeyPool.Infrastructure.Data.Repos
             }
             catch (Exception ex)
             {
-
+                //why catch if you wont do anything with it?
                 throw;
             }
         }
