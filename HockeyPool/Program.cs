@@ -80,6 +80,14 @@ using var scope = app.Services.CreateScope();
 {
     ApplicationDbContext dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
     dbContext.Database.EnsureCreated();
-    dbContext.Database.Migrate();
+    try
+    {
+        dbContext.Database.Migrate();
+    }
+    catch (Exception ex)
+    { 
+      // Ignore for now
+    }
+    dbContext.Seed();
 }
 app.Run();
