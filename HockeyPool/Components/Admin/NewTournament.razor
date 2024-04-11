@@ -1,0 +1,118 @@
+@page "/Admin/NewTournament"
+@rendermode InteractiveServer
+
+@using System.ComponentModel.DataAnnotations
+@using HockeyPool.Infrastructure.Data.Repos
+
+@inject CountryRepository countryRepository
+
+<PageTitle>Jauna turnīra izveide</PageTitle>
+
+<EditForm Model="@TournamentInput" OnValidSubmit="CreateNewTournament">
+    <MudPaper>
+    <MudContainer MaxWidth="MaxWidth.Small">
+            <MudCardContent>
+                <MudSelect T="string" @bind-value="SelectedCountry" Label="Norises valsts" AnchorOrigin="Origin.BottomCenter" MultiSelection="false" >
+                    @foreach (var country in CountryList)
+                    {
+                        <MudSelectItem Value="@country.Name">@country.Name</MudSelectItem>
+                    }
+                </MudSelect>
+                <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="TournamentInput.StartDate" Label="Sākuma datums" DisableToolbar="true" />
+                <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="TournamentInput.EndDate" Label="Be datums" DisableToolbar="true" />
+                <MudNumericField @bind-value="TournamentInput.PointsForPerfect" Label="Punkti par perecīzu minējumu" Variant="Variant.Text" Min="0" Max="10" />
+                <MudNumericField @bind-value="TournamentInput.PointForDifference" Label="Punkti par uzminētu puntku starpību" Variant="Variant.Text" Min="0" Max="10" />
+                <MudNumericField @bind-value="TournamentInput.PointsForWinnerOnly" Label="Punkti par uzminētu uzvarētāju" Variant="Variant.Text" Min="0" Max="10" />
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Saglabāt</MudButton>
+            </MudCardActions>
+    </MudContainer>
+    </MudPaper>
+</EditForm>
+<MudSelect T="string" Label="US States" MultiSelection="true" @bind-Value="value" @bind-SelectedValues="options">
+    @foreach (var state in states)
+    {
+        <MudSelectItem T="string" Value="@state">@state</MudSelectItem>
+    }
+</MudSelect>
+
+<MudGrid Class="mt-6 px-4">
+    <MudItem xs="6">
+        <MudText Typo="Typo.subtitle2">Value:</MudText>
+        <MudText Typo="Typo.subtitle2">"</MudText>
+        <MudText Typo="Typo.body2" Class="pl-4">@value</MudText>
+        <MudText Typo="Typo.subtitle2">"</MudText>
+    </MudItem>
+    <MudItem xs="6">
+        <MudText Typo="Typo.subtitle2">SelectedValues: HashSet&lt;string&gt;</MudText>
+        <MudText Typo="Typo.subtitle2">{</MudText>
+        <MudText Typo="Typo.body2" Class="pl-4">@(string.Join(", ", options.Select(x=>$"\"{x}\"")))</MudText>
+        <MudText Typo="Typo.subtitle2">}</MudText>
+    </MudItem>
+</MudGrid>
+
+@code {
+    private IEnumerable<Country> CountryList { get; set; } = new List<Country>();
+    private string SelectedCountry { get; set; }
+
+    [SupplyParameterFromForm]
+    private TournamentInputModel TournamentInput { get; set; } = new TournamentInputModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        CountryList = await countryRepository.GetAllAsync();
+    }
+    private string ToCountryString(Country x)
+        => x is null ? string.Empty : $"{x.Name}";
+
+    public void CreateNewTournament(EditContext editContext)
+    {
+       
+    }
+    
+    private sealed class TournamentInputModel
+    {
+        [Required]
+        public int CountryId { get; set; }
+
+        [Required]
+        public DateTime? StartDate { get; set; } = DateTime.Today;
+
+        [Required]
+        public DateTime? EndDate { get; set; } = DateTime.Today;
+
+        [Required]
+        public int MatchupClosingTime { get; set; }
+
+        [Required]
+        public int PointsForPerfect { get; set; }
+
+        [Required]
+        public int PointForDifference { get; set; }
+
+        [Required]
+        public int PointsForWinnerOnly { get; set; }
+    }
+    
+    private string value { get; set; } = "Nothing selected";
+    private IEnumerable<string> options { get; set; } = new HashSet<string>() { "Alaska" };
+
+    private string[] states =
+    {
+        "Alabama", "Alaska", "American Samoa", "Arizona",
+        "Arkansas", "California", "Colorado", "Connecticut",
+        "Delaware", "District of Columbia", "Federated States of Micronesia",
+        "Florida", "Georgia", "Guam", "Hawaii", "Idaho",
+        "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky",
+        "Louisiana", "Maine", "Marshall Islands", "Maryland",
+        "Massachusetts", "Michigan", "Minnesota", "Mississippi",
+        "Missouri", "Montana", "Nebraska", "Nevada",
+        "New Hampshire", "New Jersey", "New Mexico", "New York",
+        "North Carolina", "North Dakota", "Northern Mariana Islands", "Ohio",
+        "Oklahoma", "Oregon", "Palau", "Pennsylvania", "Puerto Rico",
+        "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
+        "Texas", "Utah", "Vermont", "Virgin Island", "Virginia",
+        "Washington", "West Virginia", "Wisconsin", "Wyoming",
+    };
+}
