@@ -79,6 +79,7 @@ app.MapAdditionalIdentityEndpoints();
 using var scope = app.Services.CreateScope();
 {
     ApplicationDbContext dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+    dbContext.Database.EnsureCreated();
     dbContext.Database.Migrate();
 }
 app.Run();
