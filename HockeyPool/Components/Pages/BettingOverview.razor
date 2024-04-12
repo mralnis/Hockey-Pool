@@ -1,0 +1,62 @@
+﻿@page "/Overview"
+@using HockeyPool.Infrastructure.Data.Repos
+@inject MatchupRepository matchupRepo
+@inject UserRepository userRepository
+@inject PredictionsRepository predictionsRepository
+
+<h2>Rezultāti</h2>
+
+@if (_loading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+
+    <MudTable Items="@Elements" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
+        <HeaderContent>
+            <MudTh></MudTh>
+            @foreach (var matchup in matchups)
+            {
+                <MudTh>@matchup.HomeTeamId : @matchup.GuestTeamId</MudTh>
+            }
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.userName</MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+
+
+@code {
+    private bool _loading = true;
+    List<Matchup> matchups { get; set; }
+    private List<UserPredictions> Elements = new List<UserPredictions>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        matchups = await matchupRepo.GetAll();
+        var users = userRepository.GetAll();
+
+        foreach(var user in users)
+        {
+            Elements.Add(new UserPredictions
+                {
+                    userId = user.Id,
+                    userName = user.UserName,
+                    predictions = predictionsRepository.GetUserPredictions(new Guid(user.Id)),
+                });
+        }
+
+        await base.OnInitializedAsync();
+        _loading = false;
+    }
+
+    public class UserPredictions
+    {
+        public string userId { get; set; }
+        public string userName { get; set; }
+        public List<Prediction> predictions { get; set; }
+    }
+}
