@@ -1,8 +1,8 @@
 ﻿@using HockeyPool.Components.Account.Shared
 @inherits LayoutComponentBase
 <MudThemeProvider Theme="_currentTheme" />
-<MudDialogProvider />
-<MudSnackbarProvider />
+<MudDialogProvider @rendermode="RenderMode.InteractiveServer" />
+<MudSnackbarProvider @rendermode="RenderMode.InteractiveServer" />
 
 <MudLayout>
     <NavMenu />

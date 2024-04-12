@@ -1,9 +1,12 @@
 ﻿@page "/Overview"
+@using HockeyPool.Components.molicules
 @using HockeyPool.Infrastructure.Data.Repos
 @inject MatchupRepository matchupRepo
 @inject UserRepository userRepository
 @inject PredictionsRepository predictionsRepository
 @inject CountryRepository countryRepository
+@inject IDialogService DialogService
+@rendermode InteractiveServer
 
 <MudText Typo="Typo.h3" Style="color:white">Rezultāti!</MudText>
 
@@ -13,7 +16,6 @@
 }
 else
 {
-
     <MudTable Items="@Elements" Breakpoint="Breakpoint.None" Hover="true" Loading="@_loading" HorizontalScrollbar="true" FixedHeader="true" LoadingProgressColor="Color.Info">
         <HeaderContent>
             <MudTh></MudTh>
@@ -49,11 +51,21 @@ else
             {
                 if (context.predictions.Any(_ => _.MatchupId == matchup.Id))
                 {
-                    var a = context.predictions.FirstOrDefault(_ => _.MatchupId == matchup.Id);
+                    var prediction = context.predictions.FirstOrDefault(_ => _.MatchupId == matchup.Id);
                     <MudTd DataLabel="@GetMatchLabel(@matchup.HomeTeamId, @matchup.GuestTeamId)" HideSmall="false">
-                        <div style="display:flex;align-items:center;justify-content:center">
-                            @a.HomeTeamScore : @a.GuestTeamScore
-                        </div>
+                        @if (matchup.GameTime.Value.ToLocalTime() < DateTime.Now)
+                        {
+                            <div style="display:flex;align-items:center;justify-content:center">
+                                @prediction.HomeTeamScore : @prediction.GuestTeamScore
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="display:flex;align-items:center;justify-content:center">
+                                ? : ?
+                                <MudIconButton Icon="@Icons.Material.Filled.Edit" @onclick="OpenDialog" Size="Size.Small"> </MudIconButton>
+                            </div>
+                        })                       
                     </MudTd>
                 }
                 else
@@ -61,7 +73,11 @@ else
                     <MudTd DataLabel="@GetMatchLabel(@matchup.HomeTeamId, @matchup.GuestTeamId)" HideSmall="false">
                         <div style="display:flex;align-items:center;justify-content:center">
                             - : -
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" @onclick="OpenDialog" Size="Size.Small"> </MudIconButton>
                         </div>
+                        <div style="display:flex;align-items:center;justify-content:center">
+                        </div>
+                      
                     </MudTd>
                 }
             }
@@ -75,6 +91,11 @@ else
     List<Matchup> matchups { get; set; }
     private List<UserPredictions> Elements = new List<UserPredictions>();
 
+    private void OpenDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<ScoreDialog>("Last element focused", options);
+    }
 
     protected override async Task OnInitializedAsync()
     {
