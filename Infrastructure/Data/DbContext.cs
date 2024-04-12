@@ -1,7 +1,6 @@
 using HockeyPool.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace HockeyPool.Infrastructure.Data
 {

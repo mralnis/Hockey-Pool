@@ -1,6 +1,4 @@
-﻿using HockeyPool.Infrastructure.Data.Models;
-
-namespace HockeyPool.Infrastructure.Data.Repos
+﻿namespace HockeyPool.Infrastructure.Data.Repos
 {
     public class CountryRepository(ApplicationDbContext dbContext)
     {

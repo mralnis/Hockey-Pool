@@ -1,4 +1,3 @@
-using HockeyPool.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 
 namespace HockeyPool.Components.Account
