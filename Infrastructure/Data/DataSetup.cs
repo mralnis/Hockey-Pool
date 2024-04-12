@@ -15,6 +15,8 @@ namespace HockeyPool.Infrastructure.Data
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<TournamentRepository>();
+            services.AddScoped<MatchupRepository>();
+
             return services;
         }     
     }

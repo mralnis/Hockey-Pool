@@ -78,15 +78,15 @@ namespace HockeyPool.Infrastructure.Data.Repos
                 {
                     continue;
                 }
-                if (prediction.HomeTeamScore == matchup.HomeTeamScore && prediction.EnemyTeamScore == matchup.EnemyTeamScore)
+                if (prediction.HomeTeamScore == matchup.HomeTeamScore && prediction.GuestTeamScore == matchup.GuestTeamScore)
                 {
                     prediction.PointsEarned = tournament.PointsForPerfect;
                 }
                 else
                 {
-                    if (prediction.HomeTeamScore - prediction.EnemyTeamScore == matchup.HomeTeamScore - matchup.EnemyTeamScore)
+                    if (prediction.HomeTeamScore - prediction.GuestTeamScore == matchup.HomeTeamScore - matchup.GuestTeamScore)
                     {
-                        if (prediction.HomeTeamScore == prediction.EnemyTeamScore)
+                        if (prediction.HomeTeamScore == prediction.GuestTeamScore)
                         {
                             prediction.PointsEarned = 0;
                         }
@@ -94,7 +94,7 @@ namespace HockeyPool.Infrastructure.Data.Repos
                     }
                     else
                     {
-                        if (prediction.HomeTeamScore > prediction.EnemyTeamScore == matchup.HomeTeamScore > matchup.EnemyTeamScore)
+                        if (prediction.HomeTeamScore > prediction.GuestTeamScore == matchup.HomeTeamScore > matchup.GuestTeamScore)
                         {
                             prediction.PointsEarned = tournament.PointsForWinnerOnly;
                         }
