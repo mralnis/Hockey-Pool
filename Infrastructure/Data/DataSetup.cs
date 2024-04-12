@@ -18,6 +18,7 @@ namespace HockeyPool.Infrastructure.Data
             services.AddScoped<MatchupRepository>();
             services.AddScoped<PredictionsRepository>();
             services.AddScoped<UserRepository>();
+            services.AddScoped<CountryRepository>();
 
             return services;
         }     
