@@ -21,8 +21,25 @@ else
             {
                 <MudTh>
                     <div style="display:flex;align-items:center;justify-content:center">
+                        <MudIcon Icon="@Icons.Material.Filled.CalendarMonth" Size="Size.Small" />
+                        @matchup.GameTime.Value.ToLocalTime().ToString("MM.dd")
+                    </div>
+                     <div style="display:flex;align-items:center;justify-content:center">
+                        <MudIcon Icon="@Icons.Material.Filled.AccessTime" Size="Size.Small" />
+                        @matchup.GameTime.Value.ToLocalTime().ToString("HH.mm")
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:center">
                         <SVGFlag CountryCode="@GetCountryCode(@matchup.HomeTeamId)" FlagType="FlagType.Wide" Width="30" Height="30" /> &zwnj; : &zwnj;  <SVGFlag CountryCode="@GetCountryCode(@matchup.GuestTeamId)" FlagType="FlagType.Wide" Width="30" Height="30" />
                     </div>
+                    
+                    @if (matchup.HomeTeamScore == null)
+                    {
+                        <div style="display:flex;align-items:center;justify-content:center"> ? - ?</div>
+                    }
+                    else
+                    {
+                        <div style="display:flex;align-items:center;justify-content:center"> @matchup.HomeTeamScore : @matchup.GuestTeamScore</div>
+                    }
                 </MudTh>
             }
         </HeaderContent>
@@ -43,7 +60,7 @@ else
                 {
                     <MudTd DataLabel="@GetMatchLabel(@matchup.HomeTeamId, @matchup.GuestTeamId)" HideSmall="false">
                         <div style="display:flex;align-items:center;justify-content:center">
-                            - : - 
+                            - : -
                         </div>
                     </MudTd>
                 }

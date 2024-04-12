@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿
+
+using Microsoft.Extensions.DependencyInjection;
 using HockeyPool.Infrastructure.Data.Repos;
 
 namespace HockeyPool.Infrastructure.Data
