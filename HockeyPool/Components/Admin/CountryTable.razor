@@ -1,0 +1,143 @@
+﻿@page "/admin/countries"
+
+
+@using System.Net.Http.Json
+@using HockeyPool.Infrastructure.Data.Repos
+@using MudBlazor
+@inject ISnackbar Snackbar
+@inject CountryRepository CountryRepository;
+@rendermode InteractiveServer
+
+<MudTable Items="@Countries" Dense="@dense" Hover="@hover" ReadOnly="@ronly" CanCancelEdit="@canCancelEdit"
+          @bind-SelectedItem="selectedItem1" SortLabel="Sort By" CommitEditTooltip="Commit Edit"
+          OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" RowEditPreview="BackupItem" RowEditCancel="ResetItemToOriginalValues"
+          RowEditCommit="ItemHasBeenCommitted" ApplyButtonPosition="@applyButtonPosition" EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger">
+    <ToolBarContent>
+        <MudText Typo="Typo.h4">Countries</MudText>
+        <MudSpacer />
+        <MudButton OnClick="AddNewCountry" Variant="Variant.Filled" >
+                Add new
+            </MudButton>
+        <MudSpacer />
+    </ToolBarContent>
+    <ColGroup>
+        @if (applyButtonPosition.DisplayApplyButtonAtStart() || (editButtonPosition.DisplayEditButtonAtStart() && editTrigger == TableEditTrigger.EditButton))
+        {
+            <col style="width:auto;" />
+        }
+        <col style="width:auto;" />
+        <col style="width:auto;" />
+        <col style="width:auto;" />
+        <col />
+        <col />
+        @if (applyButtonPosition.DisplayApplyButtonAtEnd() || (editButtonPosition.DisplayEditButtonAtEnd() && editTrigger == TableEditTrigger.EditButton))
+        {
+            <col style="width:auto;" />
+        }
+    </ColGroup>
+    <HeaderContent>
+        <MudTh>🗑️</MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Country, object>(x=>x.Id)">Id</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Country, object>(x=>x.Name)">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Country, object>(x=>x.FlagCode)">Flag code</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Delete"></MudTd>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Flag Code">@context.FlagCode</MudTd>
+    </RowTemplate>
+    <RowEditingTemplate>
+        <MudTd><MudButton @onclick="@(() => DeleteRow(context))">🗑️</MudButton></MudTd>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Name">
+            <MudTextField @bind-Value="@context.Name" />
+        </MudTd>
+        <MudTd DataLabel="Flag code">
+            <MudTextField @bind-Value="@context.FlagCode" />
+        </MudTd>
+    </RowEditingTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 50 }" />
+    </PagerContent>
+    <EditButtonContent Context="button">
+        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
+    </EditButtonContent>
+</MudTable>
+@code {
+    private List<string> editEvents = new();
+    private bool dense = false;
+    private bool hover = true;
+    private bool ronly = false;
+    private bool canCancelEdit = true;
+    private int searchString = 0;
+    private Country? selectedItem1 = null;
+    private Country? CountryBeforeEdit;
+    private HashSet<Country> selectedItems1 = new HashSet<Country>();
+    private TableApplyButtonPosition applyButtonPosition = TableApplyButtonPosition.End;
+    private TableEditButtonPosition editButtonPosition = TableEditButtonPosition.End;
+    private TableEditTrigger editTrigger = TableEditTrigger.EditButton;
+    private List<Country> Countries = new List<Country>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+    private async Task<int> LoadData()
+    {
+        Countries = await CountryRepository.GetAllAsync();
+        return 0;
+    }
+
+    private void AddNewCountry()
+    {
+        var Country = new Country();
+        Countries.Insert(0, Country);
+    }
+
+    private void ClearEventLog()
+    {
+        editEvents.Clear();
+    }
+    private void DeleteRow(Country country)
+    {
+        Countries.Remove(country);
+        if (country.Id == 0)
+        {
+            return;
+        }
+        CountryRepository.Remove(country);
+        StateHasChanged();
+    }
+
+    private void AddEditionEvent(string message)
+    {
+        editEvents.Add(message);
+        StateHasChanged();
+    }
+
+    private void BackupItem(object CountryObject)
+    {
+        var Country = (Country)CountryObject;
+        CountryBeforeEdit = Country;
+    }
+
+    private async void ItemHasBeenCommitted(object CountryEntity)
+    {
+        var country = (Country)CountryEntity;
+        if (country.Id == 0)
+        {
+            CountryRepository.AddAsync(country);
+        }
+        else
+        {
+            CountryRepository.UpdateAsync(country);
+        }
+    }
+
+    private void ResetItemToOriginalValues(object CountryObject)
+    {
+        CountryObject = CountryBeforeEdit;
+    }
+}

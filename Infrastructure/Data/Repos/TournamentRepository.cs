@@ -3,13 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HockeyPool.Infrastructure.Data.Repos
 {
-    public class TournamentRepository
+    public class TournamentRepository : Repository<Tournament>
     {
-        readonly private ApplicationDbContext _dbContext;
-        public TournamentRepository(ApplicationDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
+        public TournamentRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
         public async Task<Tournament> GetActiveTournamentAsync()
         {
@@ -32,5 +28,10 @@ namespace HockeyPool.Infrastructure.Data.Repos
             }
         }
 
+        public async Task<List<Tournament>> GetListByMultipleIdsAsync(IEnumerable<int> ids)
+        {
+            var result = await _dbContext.Tournaments.Where(x => ids.Contains(x.Id)).ToListAsync();
+            return result;
+        }
     }
 }

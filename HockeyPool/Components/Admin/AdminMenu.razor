@@ -1,8 +1,68 @@
 ﻿@page "/admin"
 
+@using System.Net.Http.Json
+@using HockeyPool.Infrastructure.Data.Repos
+@using MudBlazor
+@inject ISnackbar Snackbar
+@inject MatchupRepository MatchupRepository;
+@inject CountryRepository CountryRepository;
 
-<MudText Typo="Typo.h1" >Administrātora panelis</MudText>
+@rendermode InteractiveServer
 
+<MudGrid Class="mud-table">
+    <MudText Typo="Typo.h1">Administrātora panelis</MudText>
+    <MudDivider></MudDivider>
+    <MudItem xs="6">
+        <MudNavMenu>
+            <MudNavLink Href="/admin/matchups">Matchups</MudNavLink>
+            <MudNavLink Href="/admin/countries">Countries</MudNavLink>
+            <MudNavLink Href="/admin/tournaments">Tournaments</MudNavLink>
+        </MudNavMenu>
+    </MudItem>
+    <MudItem xs="6">
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="Time till game" @bind-Value="@ClosestMatchup.TimeUntilGame" ReadOnly=true />
+                <MudTextField Label="Home team" @bind-Value="ClosestMatchup.HomeTeamName" ReadOnly=true />
+                <MudTextField Label="Score" @bind-Value="@ClosestMatchup.Matchup.HomeTeamScore" />
+                <MudTextField Label="Guest team" @bind-Value="ClosestMatchup.GuestTeamName" ReadOnly=true />
+                <MudTextField Label="Score" @bind-Value="@ClosestMatchup.Matchup.GuestTeamScore" />
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Save</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</MudGrid>
 @code {
+    private MatchupViewModel ClosestMatchup = new MatchupViewModel() { Matchup = new Matchup() };
 
+    protected override async Task OnInitializedAsync()
+    {
+        var matchup = await MatchupRepository.GetClosestMatchup();
+        if (matchup == null)
+        {
+            return;
+        }
+
+        var countries = await CountryRepository.GetAllAsync();
+        ClosestMatchup.Matchup = matchup;
+        ClosestMatchup.HomeTeamName = countries.FirstOrDefault(x => x.Id == matchup.HomeTeamId)?.Name;
+        ClosestMatchup.GuestTeamName = countries.FirstOrDefault(x => x.Id == matchup.GuestTeamId)?.Name;
+        ClosestMatchup.TimeUntilGame = matchup.GameTime - DateTime.Now;
+    }
+
+    private async Task Submit()
+    {
+        MatchupRepository.UpdateAsync(ClosestMatchup.Matchup);
+    }
+
+
+    private class MatchupViewModel
+    {
+        public Matchup Matchup { get; set; }
+        public string HomeTeamName { get; set; }
+        public string GuestTeamName { get; set; }
+        public TimeSpan? TimeUntilGame { get; set; }
+    }
 }
