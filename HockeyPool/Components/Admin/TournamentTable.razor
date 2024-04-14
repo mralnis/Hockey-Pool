@@ -1,0 +1,190 @@
+﻿@page "/admin/tournaments"
+
+
+@using System.Net.Http.Json
+@using HockeyPool.Infrastructure.Data.Repos
+@using MudBlazor
+@inject ISnackbar Snackbar
+@inject TournamentRepository TournamentRepository;
+@inject TournamentRepository TournamentRepository;
+@inject CountryRepository CountryRepository;
+@inject NavigationManager _navigationManager
+@rendermode InteractiveServer
+
+<MudTable Items="@Tournaments" Dense="@dense" Hover="@hover" ReadOnly="@ronly" CanCancelEdit="@canCancelEdit" Style="width:max-content"
+          @bind-SelectedItem="selectedItem1" SortLabel="Sort By" CommitEditTooltip="Commit Edit"
+          OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" RowEditPreview="BackupItem" RowEditCancel="ResetItemToOriginalValues"
+          RowEditCommit="ItemHasBeenCommitted" ApplyButtonPosition="@applyButtonPosition" EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger" >
+    <ToolBarContent>
+        <MudText Typo="Typo.h4">Tournaments</MudText>
+        <MudSpacer />
+        <MudButton OnClick="AddNewTournament" Variant="Variant.Filled" >
+                Add new
+            </MudButton>
+        <MudSpacer />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>🗑️</MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.Id)">Id</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.CountryName)">Country</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.StartDate ?? DateTime.MinValue)">Start date</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.EndDate ?? DateTime.MinValue)">Start date</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.Name)">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.IsActive)">Is Active</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.PointsForPerfect)">Points for perfect</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.PointForDifference)">Points for diff</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.PointsForWinnerOnly)">Points for winner only</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Delete"></MudTd>
+        <MudTd DataLabel="Id">@context.Tournament.Id</MudTd>
+        <MudTd DataLabel="CountryName">@context.CountryName</MudTd>
+        <MudTd DataLabel="StartDate">@context.Tournament.StartDate</MudTd>
+        <MudTd DataLabel="EndDate">@context.Tournament.EndDate</MudTd>
+        <MudTd DataLabel="Name">@context.Tournament.Name</MudTd>
+        <MudTd DataLabel="IsActive">@context.Tournament.IsActive</MudTd>
+        <MudTd DataLabel="PointsForPerfect">@context.Tournament.PointsForPerfect</MudTd>
+        <MudTd DataLabel="PointForDifference">@context.Tournament.PointForDifference</MudTd>
+        <MudTd DataLabel="PointsForWinnerOnly">@context.Tournament.PointsForWinnerOnly</MudTd>
+    </RowTemplate>
+    <RowEditingTemplate>
+        <MudTd><MudButton @onclick="@(() => DeleteRow(context))">🗑️</MudButton></MudTd>
+        <MudTd DataLabel="Id">@context.Tournament.Id</MudTd>
+        <MudTd DataLabel="Country">
+            <select @bind="@context.Tournament.CountryId">
+                @foreach (Country item in Countries)
+                {
+                    <option  Value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </MudTd>
+        <MudTd DataLabel="StartDate">
+            <InputDate Type="InputDateType.DateTimeLocal" @bind-Value="@context.Tournament.StartDate"></InputDate>
+        </MudTd>
+        <MudTd DataLabel="EndDate">
+            <InputDate Type="InputDateType.DateTimeLocal" @bind-Value="@context.Tournament.EndDate"></InputDate>
+        </MudTd>
+        <MudTd DataLabel="Name">
+            <MudTextField @bind-Value="@context.Tournament.Name" />
+        </MudTd>
+        <MudTd DataLabel="IsActive">
+            <MudTextField @bind-Value="@context.Tournament.IsActive" />
+        </MudTd>
+        <MudTd DataLabel="PointsForPerfect">
+            <MudTextField @bind-Value="@context.Tournament.PointsForPerfect" />
+        </MudTd>
+        <MudTd DataLabel="PointForDifference">
+            <MudTextField @bind-Value="@context.Tournament.PointForDifference" />
+        </MudTd>
+        <MudTd DataLabel="PointsForWinnerOnly">
+            <MudTextField @bind-Value="@context.Tournament.PointsForWinnerOnly" />
+        </MudTd>
+    </RowEditingTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 50 }" />
+    </PagerContent>
+    <EditButtonContent Context="button">
+        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
+    </EditButtonContent>
+</MudTable>
+@code {
+    private List<string> editEvents = new();
+    private bool dense = false;
+    private bool hover = true;
+    private bool ronly = false;
+    private bool canCancelEdit = true;
+    private int searchString = 0;
+    private TournamentViewModel? selectedItem1 = null;
+    private TournamentViewModel? TournamentBeforeEdit;
+    private HashSet<TournamentViewModel> selectedItems1 = new HashSet<TournamentViewModel>();
+    private TableApplyButtonPosition applyButtonPosition = TableApplyButtonPosition.End;
+    private TableEditButtonPosition editButtonPosition = TableEditButtonPosition.End;
+    private TableEditTrigger editTrigger = TableEditTrigger.EditButton;
+    private List<TournamentViewModel> Tournaments = new List<TournamentViewModel>();
+    private List<Country> Countries = new List<Country>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+    private async Task<int> LoadData()
+    {
+        Tournaments = new List<TournamentViewModel>();
+        Countries = await CountryRepository.GetAllAsync();
+        var baseTournaments = await TournamentRepository.GetAllAsync();
+
+
+        foreach (var tournament in baseTournaments)
+        {
+            var tournamentViewModel = new TournamentViewModel();
+            tournamentViewModel.Tournament =  tournament;
+            tournamentViewModel.CountryName = Countries.FirstOrDefault(x => x.Id == tournament.CountryId)?.Name;
+            Tournaments.Add(tournamentViewModel);
+        }
+        return 0;
+    }
+
+    private void AddNewTournament()
+    {
+        var Tournament = new TournamentViewModel()
+            {
+                IsNew = true,
+                Tournament = new Tournament()
+                {
+                    StartDate = DateTime.Now,
+                }
+            };
+        Tournaments.Insert(0, Tournament);
+    }
+
+    private void ClearEventLog()
+    {
+        editEvents.Clear();
+    }
+    private void DeleteRow(TournamentViewModel tournamentViewModel)
+    {
+        Tournaments.Remove(tournamentViewModel);
+        if (tournamentViewModel.IsNew)
+        {
+            return;
+        }
+        TournamentRepository.Remove(tournamentViewModel.Tournament);
+    }
+    private void AddEditionEvent(string message)
+    {
+        editEvents.Add(message);
+        StateHasChanged();
+    }
+
+    private void BackupItem(object TournamentObject)
+    {
+        var TournamentViewModel = (TournamentViewModel)TournamentObject;
+        TournamentBeforeEdit = TournamentViewModel;
+    }
+
+    private async void ItemHasBeenCommitted(object Tournament)
+    {
+        var TournamentViewModel = (TournamentViewModel)Tournament;
+        if (TournamentViewModel.IsNew)
+        {
+            TournamentRepository.AddAsync(TournamentViewModel.Tournament);
+        }
+        else
+        {
+            TournamentRepository.UpdateAsync(TournamentViewModel.Tournament);
+        }
+        _navigationManager.NavigateTo("/admin/Tournaments", true);
+    }
+
+    private void ResetItemToOriginalValues(object TournamentObject)
+    {
+        TournamentObject = TournamentBeforeEdit;
+    }
+    public class TournamentViewModel
+    {
+        public Tournament Tournament { get; set; }
+        public string? CountryName { get; set; }
+        public bool IsNew { get; set; }
+    }
+}

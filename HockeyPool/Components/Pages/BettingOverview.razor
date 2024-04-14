@@ -100,8 +100,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        matchups = await matchupRepo.GetAll();
-        var users = userRepository.GetAll();
+        matchups = await matchupRepo.GetAllAsync();
+        var users = await userRepository.GetAllAsync();
 
         foreach (var user in users)
         {

@@ -2,11 +2,8 @@
 
 namespace HockeyPool.Infrastructure.Data.Repos
 {
-    public class UserRepository(ApplicationDbContext dbContext)
+    public class UserRepository : Repository<ApplicationUser>
     {
-        public List<ApplicationUser> GetAll()
-        {
-           return dbContext.Users.ToList();
-        } 
+        public UserRepository(ApplicationDbContext dbContext) : base(dbContext) { }
     }
 }

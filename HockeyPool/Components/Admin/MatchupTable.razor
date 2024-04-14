@@ -1,0 +1,227 @@
+﻿@page "/admin/matchups"
+
+
+@using System.Net.Http.Json
+@using HockeyPool.Infrastructure.Data.Repos
+@using MudBlazor
+@inject ISnackbar Snackbar
+@inject MatchupRepository MatchupRepository;
+@inject TournamentRepository TournamentRepository;
+@inject CountryRepository CountryRepository;
+@inject NavigationManager _navigationManager
+@rendermode InteractiveServer
+
+<MudTable Items="@Matchups" Dense="@dense" Hover="@hover" ReadOnly="@ronly" CanCancelEdit="@canCancelEdit"
+          @bind-SelectedItem="selectedItem1" SortLabel="Sort By" CommitEditTooltip="Commit Edit"
+          OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" RowEditPreview="BackupItem" RowEditCancel="ResetItemToOriginalValues"
+          RowEditCommit="ItemHasBeenCommitted" ApplyButtonPosition="@applyButtonPosition" EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger">
+    <ToolBarContent>
+        <MudText Typo="Typo.h4">Matchups</MudText>
+        <MudSpacer />
+        <MudButton OnClick="AddNewMatchup" Variant="Variant.Filled" >
+                Add new
+            </MudButton>
+        <MudSpacer />
+        <MudSwitch T="bool" Value=@activeOnly ValueChanged=ActiveOnlyValueChanged Color="Color.Primary">Active only</MudSwitch>
+    </ToolBarContent>
+    <ColGroup>
+        @if (applyButtonPosition.DisplayApplyButtonAtStart() || (editButtonPosition.DisplayEditButtonAtStart() && editTrigger == TableEditTrigger.EditButton))
+        {
+            <col style="width:auto;" />
+        }
+        <col style="width:auto;" />
+        <col style="width:auto;" />
+        <col style="width:auto;" />
+        <col />
+        <col />
+        @if (applyButtonPosition.DisplayApplyButtonAtEnd() || (editButtonPosition.DisplayEditButtonAtEnd() && editTrigger == TableEditTrigger.EditButton))
+        {
+            <col style="width:auto;" />
+        }
+    </ColGroup>
+    <HeaderContent>
+        <MudTh>🗑️</MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.Id)">Nr</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.TournamentName)">Tournament</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.HomeCountryName)">Home team</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.GuestCountryName)">Guest team</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.GameTime ?? DateTime.MinValue)">GameTime</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.HomeTeamScore ?? 0)">Home</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.GuestTeamScore ?? 0)">Guest</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Delete"></MudTd>
+        <MudTd DataLabel="Id">@context.Matchup.Id</MudTd>
+        <MudTd DataLabel="Tournament">@context.TournamentName</MudTd>
+        <MudTd DataLabel="HomeTeamId">@context.HomeCountryName</MudTd>
+        <MudTd DataLabel="GuestTeamId">@context.GuestCountryName</MudTd>
+        <MudTd DataLabel="GameTime">@context.Matchup.GameTime</MudTd>
+        <MudTd DataLabel="GuestTeamScore">@context.Matchup.HomeTeamScore</MudTd>
+        <MudTd DataLabel="HomeTeamScore">@context.Matchup.GuestTeamScore</MudTd>
+    </RowTemplate>
+    <RowEditingTemplate>
+        <MudTd><MudButton @onclick="@(() => DeleteRow(context))">🗑️</MudButton></MudTd>
+        <MudTd DataLabel="Id">@context.Matchup.Id</MudTd>
+        <MudTd DataLabel="Tournament">
+            <select @bind="@context.Matchup.TournamentId">
+                @foreach (Tournament item in Tournaments)
+                {
+                    <option  Value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </MudTd>
+        <MudTd DataLabel="Home team">
+            <select @bind="@context.Matchup.HomeTeamId" HelperText="Home team">
+                @foreach (Country item in Countries)
+                {
+                    <option Value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </MudTd>
+        <MudTd DataLabel="Guest team">
+            <select @bind="@context.Matchup.GuestTeamId" Label="Select guest team" HelperText="Guest team">
+                @foreach (Country item in Countries)
+                {
+                    <option Value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </MudTd>
+        <MudTd DataLabel="Game time">
+            <InputDate Type="InputDateType.DateTimeLocal" @bind-Value="@context.Matchup.GameTime"></InputDate>
+        </MudTd>
+        <MudTd DataLabel="Home team score">
+            <MudTextField @bind-Value="@context.Matchup.HomeTeamScore" />
+        </MudTd>
+        <MudTd DataLabel="Guest team score">
+            <MudTextField @bind-Value="@context.Matchup.GuestTeamScore" />
+        </MudTd>
+    </RowEditingTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 50 }" />
+    </PagerContent>
+    <EditButtonContent Context="button">
+        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
+    </EditButtonContent>
+</MudTable>
+@code {
+    private List<string> editEvents = new();
+    private bool dense = false;
+    private bool hover = true;
+    private bool ronly = false;
+    private bool canCancelEdit = true;
+    private int searchString = 0;
+    private bool activeOnly;
+    private MatchupViewModel? selectedItem1 = null;
+    private MatchupViewModel? MatchupBeforeEdit;
+    private HashSet<MatchupViewModel> selectedItems1 = new HashSet<MatchupViewModel>();
+    private TableApplyButtonPosition applyButtonPosition = TableApplyButtonPosition.End;
+    private TableEditButtonPosition editButtonPosition = TableEditButtonPosition.End;
+    private TableEditTrigger editTrigger = TableEditTrigger.EditButton;
+    private List<MatchupViewModel> Matchups = new List<MatchupViewModel>();
+    private List<Tournament> Tournaments = new List<Tournament>();
+    private List<Country> Countries = new List<Country>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+    private async Task<int> LoadData()
+    {
+        Matchups = new List<MatchupViewModel>();
+        Tournaments = await TournamentRepository.GetAllAsync();
+        Countries = await CountryRepository.GetAllAsync();
+        var matchups = new List<Matchup>();
+        if (activeOnly)
+        {
+            matchups = await MatchupRepository.GetActiveMatchups();
+        }
+        else
+        {
+            matchups = await MatchupRepository.GetAllAsync();
+        }
+
+        foreach (var matchup in matchups)
+        {
+            var matchupViewModel = new MatchupViewModel();
+            matchupViewModel.Matchup = matchup;
+            matchupViewModel.TournamentName = Tournaments.FirstOrDefault(x => x.Id == matchup.TournamentId)?.Name;
+            matchupViewModel.HomeCountryName = Countries.FirstOrDefault(x => x.Id == matchup.HomeTeamId)?.Name;
+            matchupViewModel.GuestCountryName = Countries.FirstOrDefault(x => x.Id == matchup.GuestTeamId)?.Name;
+            Matchups.Add(matchupViewModel);
+        }
+        StateHasChanged();
+        return 0;
+    }
+    void ActiveOnlyValueChanged(bool value)
+    {
+        activeOnly = value;
+        LoadData();
+    }
+    private void AddNewMatchup()
+    {
+        var matchup = new MatchupViewModel()
+            {
+                IsNew = true,
+                Matchup = new Matchup()
+                {
+                    GameTime = DateTime.Now,
+                }
+            };
+        Matchups.Insert(0, matchup);
+    }
+
+    private void ClearEventLog()
+    {
+        editEvents.Clear();
+    }
+
+    private void DeleteRow(MatchupViewModel matchupViewModel)
+    {
+        Matchups.Remove(matchupViewModel);
+        if (matchupViewModel.IsNew)
+        {
+            return;
+        }
+        MatchupRepository.Remove(matchupViewModel.Matchup);
+    }
+
+    private void AddEditionEvent(string message)
+    {
+        editEvents.Add(message);
+        StateHasChanged();
+    }
+
+    private void BackupItem(object MatchupObject)
+    {
+        var matchupViewModel = (MatchupViewModel)MatchupObject;
+        MatchupBeforeEdit = matchupViewModel;
+    }
+
+    private async void ItemHasBeenCommitted(object Matchup)
+    {
+        var matchupViewModel = (MatchupViewModel)Matchup;
+        if (matchupViewModel.IsNew)
+        {
+            var newItem = MatchupRepository.Create(matchupViewModel.Matchup);
+        }
+        else
+        {
+            MatchupRepository.Edit(matchupViewModel.Matchup);
+        }
+        _navigationManager.NavigateTo("/admin/matchups", true);
+    }
+
+    private void ResetItemToOriginalValues(object MatchupObject)
+    {
+        MatchupObject = MatchupBeforeEdit;
+    }
+    public class MatchupViewModel
+    {
+        public Matchup Matchup { get; set; }
+        public string? TournamentName { get; set; }
+        public string? HomeCountryName { get; set; }
+        public string? GuestCountryName { get; set; }
+        public bool IsNew { get; set; }
+    }
+}
