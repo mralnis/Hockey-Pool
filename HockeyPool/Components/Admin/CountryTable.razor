@@ -6,7 +6,7 @@
 @using MudBlazor
 @inject ISnackbar Snackbar
 @inject CountryRepository CountryRepository;
-@rendermode InteractiveServer
+
 
 <MudTable Items="@Countries" Dense="@dense" Hover="@hover" ReadOnly="@ronly" CanCancelEdit="@canCancelEdit"
           @bind-SelectedItem="selectedItem1" SortLabel="Sort By" CommitEditTooltip="Commit Edit"

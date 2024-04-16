@@ -9,7 +9,6 @@
 @inject TournamentRepository TournamentRepository;
 @inject CountryRepository CountryRepository;
 @inject NavigationManager _navigationManager
-@rendermode InteractiveServer
 
 <MudTable Items="@Matchups" Dense="@dense" Hover="@hover" ReadOnly="@ronly" CanCancelEdit="@canCancelEdit"
           @bind-SelectedItem="selectedItem1" SortLabel="Sort By" CommitEditTooltip="Commit Edit"
