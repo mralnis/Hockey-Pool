@@ -1,6 +1,4 @@
 @page "/Admin/NewTournament"
-@rendermode InteractiveServer
-
 @using System.ComponentModel.DataAnnotations
 @using HockeyPool.Infrastructure.Data.Repos
 
@@ -12,7 +10,7 @@
     <MudPaper>
     <MudContainer MaxWidth="MaxWidth.Small">
             <MudCardContent>
-                <MudSelect T="string" @bind-value="SelectedCountry" Label="Norises valsts" AnchorOrigin="Origin.BottomCenter" MultiSelection="false" >
+                <MudSelect T="string" @bind-value="SelectedCountry" Label="Norises valsts" AnchorOrigin="Origin.BottomCenter" MultiSelection="false">
                     @foreach (var country in CountryList)
                     {
                         <MudSelectItem Value="@country.Name">@country.Name</MudSelectItem>
