@@ -1,6 +1,8 @@
 using HockeyPool.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HockeyPool.Infrastructure.Data
 {
@@ -17,6 +19,43 @@ namespace HockeyPool.Infrastructure.Data
             SeedCountrys();
             Seed2024Tournament();
             Seed2024Matchups();
+            SeedRoles();
+            SeedAdmin();
+        }
+
+        private void SeedAdmin()
+        {
+            if (!Users.Any(_ => _.UserName == "admin"))
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = "admin",
+                    Email = "admin",
+                    NormalizedUserName = "ADMIN"
+                };
+
+                PasswordHasher<ApplicationUser> ph = new PasswordHasher<ApplicationUser>();
+                user.PasswordHash = ph.HashPassword(user, "admin");
+
+                Users.Add(user);
+                SaveChanges();
+
+
+                UserRoles.Add(new IdentityUserRole<string> { UserId = user.Id, RoleId = Roles.FirstOrDefault(_ => _.Name == "admin").Id });
+                SaveChanges();
+
+
+            }
+        }
+
+        private void SeedRoles()
+        {
+            if (!Roles.Any())
+            {
+                Roles.Add(new IdentityRole { Name = "admin", NormalizedName = "admin".ToUpper() });
+
+                SaveChanges();
+            }
         }
 
         private void Seed2024Matchups()
@@ -83,7 +122,7 @@ namespace HockeyPool.Infrastructure.Data
                     GameTime = new DateTimeOffset(new DateTime(2024, 05, 21, 17, 20, 00), TimeSpan.FromHours(3)).UtcDateTime
                 });
 
-                SaveChanges();  
+                SaveChanges();
             }
         }
 

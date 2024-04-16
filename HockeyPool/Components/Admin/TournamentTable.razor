@@ -1,5 +1,5 @@
 ﻿@page "/admin/tournaments"
-
+@attribute [Authorize(Roles = "Admin")]
 
 @using System.Net.Http.Json
 @using HockeyPool.Infrastructure.Data.Repos
