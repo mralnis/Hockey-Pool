@@ -2,6 +2,8 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using HockeyPool.Infrastructure.Data.Repos;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 namespace HockeyPool.Infrastructure.Data
 {
@@ -16,6 +18,25 @@ namespace HockeyPool.Infrastructure.Data
             services.AddScoped<CountryRepository>();
 
             return services;
-        }     
+        }
+        public static IServiceScope SetupHockeyPoolDB(this IHost app)
+        {
+            var scope = app.Services.CreateScope();
+            {
+                ApplicationDbContext dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+                dbContext.Database.EnsureCreated();
+                try
+                {
+                    dbContext.Database.Migrate();
+                }
+                catch (Exception ex)
+                {
+                    // Ignore for now
+                }
+                dbContext.Seed();
+            }
+
+            return scope;
+        }
     }
 }
