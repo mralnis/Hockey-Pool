@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/HockeyPool/databse.dat
+/HockeyPool/databse.dat-shm
+/HockeyPool/databse.dat-wal
