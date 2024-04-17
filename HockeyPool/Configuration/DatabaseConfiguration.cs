@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace HockeyPool.Configuration
 {
@@ -10,8 +11,13 @@ namespace HockeyPool.Configuration
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(connectionString);
+                options.UseSqlite("Data Source=databse.dat");
+
+                //options.UseSqlServer(connectionString);
             });
+
+
+
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddRepositories();
 
