@@ -82,8 +82,10 @@ namespace HockeyPool.Infrastructure.Data.Repos
             {
                 if (prediction.HomeTeamScore == null)
                 {
+                    prediction.PointsEarned = 0;
                     continue;
                 }
+
                 if (prediction.HomeTeamScore == matchup.HomeTeamScore && prediction.GuestTeamScore == matchup.GuestTeamScore)
                 {
                     prediction.PointsEarned = tournament.PointsForPerfect;
