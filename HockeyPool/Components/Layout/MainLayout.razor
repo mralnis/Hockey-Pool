@@ -2,7 +2,7 @@
 @inherits LayoutComponentBase
 
 
-<MudThemeProvider Theme="_currentTheme" />
+<MudThemeProvider IsDarkMode="true"  Theme="_currentTheme" />
 <MudDialogProvider/>
 <MudSnackbarProvider/> 
 
@@ -16,9 +16,8 @@
 </MudLayout>
 
 @code {
-
     private MudTheme _currentTheme = new MudTheme()
-        {
+        {                       
             Palette = new Palette
             {
             //     TextPrimary = Colors.Indigo.Lighten5,

@@ -1,0 +1,39 @@
+﻿@inject CountryRepository countryRepository
+
+<MudTh>
+    <div class="content-align" style="padding-right:20px">
+        <MudIcon Icon="@Icons.Material.Filled.CalendarMonth" Size="Size.Small" />
+        @matchup.GameTime.Value.ToLocalTime().ToString("MM.dd")
+    </div>
+    <div class="content-align" style="padding-right:20px">
+        <MudIcon Icon="@Icons.Material.Filled.AccessTime" Size="Size.Small" />
+        @matchup.GameTime.Value.ToLocalTime().ToString("HH.mm")
+    </div>
+    <div class="content-align" style="padding-right:20px">
+        <SVGFlag CountryCode="@GetCountryCode(@matchup.HomeTeamId)" FlagType="FlagType.Wide" Width="30" Height="30" /> &zwnj; : &zwnj;  <SVGFlag CountryCode="@GetCountryCode(@matchup.GuestTeamId)" FlagType="FlagType.Wide" Width="30" Height="30" />
+    </div>
+
+    @if (matchup.HomeTeamScore == null)
+    {
+        <div class="content-align" style="padding-right:20px">
+            ? - ?
+        </div>
+
+    }
+    else
+    {
+        <div class="content-align" style="padding-right:20px">
+            @matchup.HomeTeamScore : @matchup.GuestTeamScore
+        </div>
+    }
+</MudTh>
+
+@code {
+    [Parameter]
+    public Matchup matchup { get; set; }
+
+    public string GetCountryCode(int id)
+    {
+        return countryRepository.GetCountryFlagCode(id);
+    }
+}

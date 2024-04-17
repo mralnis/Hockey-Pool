@@ -1,0 +1,109 @@
+﻿@using static HockeyPool.Components.BettingOverview.BettingOverview
+
+@inject CountryRepository countryRepository
+@inject PredictionsRepository predictionsRepository
+@inject IDialogService DialogService
+
+
+<MudTd DataLabel="@GetMatchLabel(@Matchup.HomeTeamId, @Matchup.GuestTeamId)" HideSmall="false">
+    @if (Matchup.GameTime.Value.ToLocalTime() < DateTime.Now.ToLocalTime())
+    {
+        @if (@Prediction.HomeTeamScore.HasValue)
+        {
+            <div class="content-align" style="padding-right:20px">
+                @Prediction.HomeTeamScore : @Prediction.GuestTeamScore
+            </div>
+        }
+        else
+        {
+            <div class="content-align" style="padding-right:20px">
+                - : -
+            </div>          
+        }
+    }
+    else
+    {
+        <div class="content-align">
+            @if (IsCurrentUserPrediction)
+            {
+                @if (@Prediction.HomeTeamScore.HasValue)
+                {
+                    <div>@Prediction.HomeTeamScore : @Prediction.GuestTeamScore </div>
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit" @onclick="((e) => OpenEditPredictionDialogAsync(Matchup, Prediction))" Size="Size.Small" />
+                }
+                else
+                {
+                    <div> - : - </div>
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit" @onclick="((e) => OpenNewPredictionDialogAsync(Matchup,UserPredictions))" Size="Size.Small" />
+                }
+            }
+            else
+            {
+                <div style="padding-right:20px"> ? : ? </div>
+            }
+        </div>
+    }
+</MudTd>
+
+@code {
+    [Parameter]
+    public Matchup Matchup { get; set; }
+    [Parameter]
+    public UserPredictions UserPredictions { get; set; }
+    [Parameter]
+    public Prediction Prediction { get; set; }
+    [Parameter]
+    public bool IsCurrentUserPrediction { get; set; }
+
+    public string GetMatchLabel(int homeCountryId, int guestCountryId)
+    {
+        return countryRepository.GetCountryFlagCode(homeCountryId) + " - " + countryRepository.GetCountryFlagCode(guestCountryId);
+    }
+
+    private async Task OpenNewPredictionDialogAsync(Matchup matchup, UserPredictions prediction)
+    {
+        var newPrediction = new Prediction
+            {
+                AspNetUserId = prediction.userId,
+                MatchupId = matchup.Id,
+            };
+
+        var dialogResult = await CallDialogAsync(matchup, newPrediction);
+        if (dialogResult.Canceled)
+        {
+            return;
+        }
+
+        prediction.predictions.Add(newPrediction);
+        await predictionsRepository.AddAsync(newPrediction);
+
+        this.StateHasChanged();
+    }
+
+    private async Task OpenEditPredictionDialogAsync(Matchup matchup, Prediction prediction)
+    {
+        var dialogResult = await CallDialogAsync(matchup, prediction);
+
+        if (dialogResult.Canceled)
+        {
+            return;
+        }
+
+        await predictionsRepository.UpdateAsync(prediction);
+
+        this.StateHasChanged();
+    }
+
+    public async Task<DialogResult> CallDialogAsync(Matchup matchup, Prediction prediction)
+    {
+        var parameters = new DialogParameters<ScoreDialog>();
+        parameters.Add(_ => _.Matchup, matchup);
+        parameters.Add(_ => _.Prediction, prediction);
+
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var dialog = DialogService.Show<ScoreDialog>("Ievadi savu prognozi", parameters, options);
+
+        return await dialog.Result;
+    }
+
+}

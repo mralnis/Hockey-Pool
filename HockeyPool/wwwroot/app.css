@@ -50,3 +50,9 @@ h1:focus {
     border-color: #929292;
 }
 
+.content-align {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+

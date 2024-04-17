@@ -1,22 +1,78 @@
-﻿<MudDialog>
+﻿@using HockeyPool.Infrastructure.Data.Repos
+@using static HockeyPool.Components.BettingOverview.BettingOverview
+@inject CountryRepository countryRepository
+
+<MudDialog>
     <DialogContent>
-        <MudTextField T="string" Label="Name"></MudTextField>
-        <MudSelect T="string" Label="Favorite Coffee" AnchorOrigin="Origin.BottomCenter">
-            <MudSelectItem Value="@("Cappuccino")" />
-            <MudSelectItem Value="@("Cafe Latte")" />
-            <MudSelectItem Value="@("Espresso")" />
-            <MudSelectItem Value="@("Irish Coffee")" />
-        </MudSelect>
+        <MudGrid>
+            <MudItem class="content-align" xs="6">
+                <SVGFlag CountryCode="@GetCountryCode(@Matchup.HomeTeamId)" FlagType="FlagType.Wide" Width="50" Height="50" />
+            </MudItem>
+            <MudItem class="content-align" xs="6">
+                <SVGFlag CountryCode="@GetCountryCode(@Matchup.GuestTeamId)" FlagType="FlagType.Wide" Width="50" Height="50" />
+            </MudItem>
+        </MudGrid>
+        <MudForm Class="d-flex flex-grow-1 gap-4" @ref="form" Style="min-height:105px">
+            <MudNumericField RequiredError="Nepieciešams rezultāts" Required="true" T="int?" @bind-Value="HomeScore" Min="0" Max="20" Label="@GetCountryCode(@Matchup.HomeTeamId)" Variant="Variant.Outlined" />
+            <div Class="align-content-center" style="padding-bottom:40px" >
+                <MudText>VS</MudText>
+            </div>
+            <MudNumericField RequiredError="Nepieciešams rezultāts" Required="true" MaxLength="10" T="int?" @bind-Value="GuestScore" Min="0" Max="20" Label="@GetCountryCode(@Matchup.GuestTeamId)" Variant="Variant.Outlined" />
+        </MudForm>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton OnClick="Cancel">Atcelt</MudButton>
         <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    int? HomeScore { get; set; }
+    int? GuestScore { get; set; }
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public Prediction Prediction { get; set; }
+    [Parameter] public Matchup Matchup { get; set; }
+
+    MudForm form;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        HomeScore = Prediction.HomeTeamScore;
+        GuestScore = Prediction.GuestTeamScore;
+    }   
+
+    public string GetCountryCode(int? id)
+    {
+        if (id == null)
+        {
+            return "EU";
+        }
+        return countryRepository.GetCountryFlagCode(id.Value);
+    }
+
+    void Submit()
+    {
+        if (HomeScore == null || GuestScore == null)
+        {
+            form.Validate();
+            return;
+        }
+        else
+        {
+            if (Prediction.HomeTeamScore == HomeScore && Prediction.GuestTeamScore == GuestScore)
+            {
+                MudDialog.Cancel();
+                return;
+            }
+
+            Prediction.HomeTeamScore = HomeScore;
+            Prediction.GuestTeamScore = GuestScore;
+
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+    }
+
     void Cancel() => MudDialog.Cancel();
 }

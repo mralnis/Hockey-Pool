@@ -12,17 +12,17 @@ namespace HockeyPool.Infrastructure.Data.Repos
             _dbContext = dbContext;
         }
 
-        public async void AddAsync(T entity)
+        public async Task AddAsync(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);
             await _dbContext.SaveChangesAsync();
         }
-        public async void UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
-        public async void AddRange(IEnumerable<T> entities)
+        public async Task AddRange(IEnumerable<T> entities)
         {
             await _dbContext.Set<T>().AddRangeAsync(entities);
             await _dbContext.SaveChangesAsync();
