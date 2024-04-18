@@ -1,6 +1,5 @@
 ﻿using HockeyPool.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
 
 namespace HockeyPool.Infrastructure.Data.Repos
 {

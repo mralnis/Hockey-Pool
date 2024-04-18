@@ -1,5 +1,4 @@
 ﻿using HockeyPool.Infrastructure.Data.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace HockeyPool.Infrastructure.Data.Repos
 {
