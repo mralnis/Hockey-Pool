@@ -15,14 +15,18 @@
 }
 else
 {
-    <MudTable Items="@UserPredictionsList.OrderByDescending(x => x.userId== CurrentUserID)" Breakpoint="Breakpoint.None" Hover="true" Loading="@_loading" HorizontalScrollbar="true" FixedHeader="true" LoadingProgressColor="Color.Info">
+    <MudTable Items="@UserPredictionsList.OrderByDescending(x => x.userId== CurrentUserID)" Breakpoint="Breakpoint.None" Hover="true" Loading="@_loading" HorizontalScrollbar="true" FixedHeader="true" LoadingProgressColor="Color.Info" Filter="new Func<UserPredictions,bool>(FilterFunc1)">
+        <ToolBarContent>
+            <MudSpacer />
+            <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
         <HeaderContent>
             <MudTh></MudTh>
             @foreach (var matchup in matchups)
             {
                 <MatchupItem matchup="@matchup" />
             }
-            <MudTh> Punkti</MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<UserPredictions, object>(x=>x.predictions.Sum(_=> _.PointsEarned ?? 0))">Punkti</MudTableSortLabel></MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Name">@context.userName</MudTd>
@@ -41,6 +45,7 @@ else
 {
     List<Matchup> matchups { get; set; }
     Guid CurrentUserID { get; set; }
+    private string searchString1 = "";
 
     private List<UserPredictions> UserPredictionsList { get; set; } = new List<UserPredictions>();
 
@@ -93,5 +98,25 @@ else
     public bool IsCurrentUser(Guid userId)
     {
         return userId == CurrentUserID;
+    }
+
+    private bool FilterFunc1(UserPredictions prediction) => FilterFunc(prediction, searchString1);
+
+    private bool FilterFunc(UserPredictions prediction, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+
+        if (prediction.userName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (prediction.userName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (prediction.predictions.Any(_ => _.PointsEarned.ToString() == searchString))
+            return true;
+
+        
+        return false;
     }
 }
