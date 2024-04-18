@@ -54,7 +54,7 @@ namespace HockeyPool.Configuration
                 .AddSignInManager()
                 .AddDefaultTokenProviders();
 
-            //builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+            services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
             return services;
         }
