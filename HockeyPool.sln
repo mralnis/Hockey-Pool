@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HockeyPool", "HockeyPool\Ho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HockeyPool.Infrastructure", "Infrastructure\HockeyPool.Infrastructure.csproj", "{F7E8935F-C650-4652-9B5B-0957A4EC8B83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MudBlazorWebApp5", "MudBlazorWebApp5\MudBlazorWebApp5.csproj", "{1351385D-B20F-4AB0-A673-4BEE359468A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F7E8935F-C650-4652-9B5B-0957A4EC8B83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7E8935F-C650-4652-9B5B-0957A4EC8B83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7E8935F-C650-4652-9B5B-0957A4EC8B83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1351385D-B20F-4AB0-A673-4BEE359468A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1351385D-B20F-4AB0-A673-4BEE359468A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1351385D-B20F-4AB0-A673-4BEE359468A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1351385D-B20F-4AB0-A673-4BEE359468A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
