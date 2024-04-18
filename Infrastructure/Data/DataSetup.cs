@@ -19,21 +19,21 @@ namespace HockeyPool.Infrastructure.Data
 
             return services;
         }
-        public static IServiceScope SetupHockeyPoolDB(this IHost app)
+        public static async Task<IServiceScope> SetupHockeyPoolDB(this IHost app)
         {
             var scope = app.Services.CreateScope();
             {
                 ApplicationDbContext dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
-                dbContext.Database.EnsureCreated();
+                await dbContext.Database.EnsureCreatedAsync();
                 try
                 {
-                    dbContext.Database.Migrate();
+                    await dbContext.Database.MigrateAsync();
                 }
                 catch (Exception ex)
                 {
                     // Ignore for now
                 }
-                dbContext.Seed();
+                await dbContext.SeedAsync(scope.ServiceProvider);
             }
 
             return scope;

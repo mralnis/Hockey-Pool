@@ -13,10 +13,8 @@ namespace HockeyPool.Configuration
             {
                 options.UseSqlite("Data Source=databse.dat");
 
-                //options.UseSqlServer(connectionString);
+               // options.UseSqlServer(connectionString);
             });
-
-
 
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddRepositories();

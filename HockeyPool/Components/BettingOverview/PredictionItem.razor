@@ -18,7 +18,23 @@
         {
             <div class="content-align" style="padding-right:20px">
                 - : -
-            </div>          
+            </div>
+
+        }
+
+        @if (@Prediction?.PointsEarned != null)
+        {
+            <div class="content-align" style="padding-right:20px">
+                @{
+                    @Prediction?.PointsEarned
+                }p
+            </div>
+        }
+        else
+        {
+            <div class="content-align" style="padding-right:20px">
+                0p
+            </div>
         }
     }
     else

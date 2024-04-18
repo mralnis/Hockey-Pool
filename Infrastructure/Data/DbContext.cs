@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace HockeyPool.Infrastructure.Data
 {
@@ -14,47 +15,45 @@ namespace HockeyPool.Infrastructure.Data
         public DbSet<Prediction> Predictions { get; set; }
         public DbSet<Tournament> Tournaments { get; set; }
 
-        public void Seed()
+        public async Task SeedAsync(IServiceProvider serviceProvider)
         {
             SeedCountrys();
             Seed2024Tournament();
             Seed2024Matchups();
-            SeedRoles();
-            SeedAdmin();
+            await SeedRolesAsync(serviceProvider);
+            await SeedAdminAsync(serviceProvider);
         }
 
-        private void SeedAdmin()
+        private async Task SeedAdminAsync(IServiceProvider serviceProvider)
         {
             if (!Users.Any(_ => _.UserName == "admin"))
             {
-                var user = new ApplicationUser
+                var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                await userManager.CreateAsync(new ApplicationUser
                 {
                     UserName = "admin",
                     Email = "admin",
                     NormalizedUserName = "ADMIN"
-                };
+                }, "admin");               
 
-                PasswordHasher<ApplicationUser> ph = new PasswordHasher<ApplicationUser>();
-                user.PasswordHash = ph.HashPassword(user, "admin");
+                var user = await userManager.FindByNameAsync("admin");
 
-                Users.Add(user);
+                await userManager.AddToRoleAsync(user, "Admin");
                 SaveChanges();
-
-
-                UserRoles.Add(new IdentityUserRole<string> { UserId = user.Id, RoleId = Roles.FirstOrDefault(_ => _.Name == "admin").Id });
-                SaveChanges();
-
-
             }
         }
 
-        private void SeedRoles()
+        private async Task SeedRolesAsync(IServiceProvider serviceProvider)
         {
-            if (!Roles.Any())
-            {
-                Roles.Add(new IdentityRole { Name = "admin", NormalizedName = "admin".ToUpper() });
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                SaveChanges();
+            string roleName = "Admin";
+
+            var roleExist = await roleManager.RoleExistsAsync(roleName);
+            if (!roleExist)
+            {
+                // Create the role
+                await roleManager.CreateAsync(new IdentityRole(roleName));
             }
         }
 
