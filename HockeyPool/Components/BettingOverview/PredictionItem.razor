@@ -50,7 +50,7 @@
                 else
                 {
                     <div> - : - </div>
-                    <MudIconButton Icon="@Icons.Material.Filled.Edit" @onclick="((e) => OpenNewPredictionDialogAsync(Matchup,UserPredictions))" Size="Size.Small" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit" @onclick="((e) => OpenEditPredictionDialogAsync(Matchup,Prediction,true))" Size="Size.Small" />
                 }
             }
             else
@@ -65,8 +65,6 @@
     [Parameter]
     public Matchup Matchup { get; set; }
     [Parameter]
-    public UserPredictions UserPredictions { get; set; }
-    [Parameter]
     public Prediction Prediction { get; set; }
     [Parameter]
     public bool IsCurrentUserPrediction { get; set; }
@@ -76,27 +74,7 @@
         return countryRepository.GetCountryFlagCode(homeCountryId) + " - " + countryRepository.GetCountryFlagCode(guestCountryId);
     }
 
-    private async Task OpenNewPredictionDialogAsync(Matchup matchup, UserPredictions prediction)
-    {
-        var newPrediction = new Prediction
-            {
-                AspNetUserId = prediction.userId,
-                MatchupId = matchup.Id,
-            };
-
-        var dialogResult = await CallDialogAsync(matchup, newPrediction);
-        if (dialogResult.Canceled)
-        {
-            return;
-        }
-
-        prediction.predictions.Add(newPrediction);
-        await predictionsRepository.AddAsync(newPrediction);
-
-        this.StateHasChanged();
-    }
-
-    private async Task OpenEditPredictionDialogAsync(Matchup matchup, Prediction prediction)
+    private async Task OpenEditPredictionDialogAsync(Matchup matchup, Prediction prediction, bool isNewPrediction = false)
     {
         var dialogResult = await CallDialogAsync(matchup, prediction);
 
@@ -105,7 +83,14 @@
             return;
         }
 
-        await predictionsRepository.UpdateAsync(prediction);
+        if (isNewPrediction)
+        {
+            await predictionsRepository.AddAsync(prediction);
+        }
+        else
+        {
+            await predictionsRepository.UpdateAsync(prediction);
+        }
 
         this.StateHasChanged();
     }

@@ -27,7 +27,7 @@ else
             <MudTd DataLabel="Name">@context.userName</MudTd>
             @foreach (var matchup in matchups)
             {
-                <PredictionItem Matchup="@matchup" UserPredictions="@context" Prediction="@context.predictions.First(_ => _.MatchupId == @matchup.Id)" IsCurrentUserPrediction="@IsCurrentUser(context.userId)" />
+                <PredictionItem Matchup="@matchup" Prediction="@context.predictions.First(_ => _.MatchupId == @matchup.Id)" IsCurrentUserPrediction="@IsCurrentUser(context.userId)" />
             }
         </RowTemplate>
     </MudTable>
@@ -66,7 +66,7 @@ else
                     predictions = predictionsRepository.GetUserPredictions(new Guid(user.Id)),
                 });
 
-            foreach(var matchup in matchups)
+            foreach (var matchup in matchups)
             {
                 var prediction = UserPredictionsList.Last().predictions.FirstOrDefault(_ => _.MatchupId == matchup.Id);
                 if (prediction == null)
