@@ -1,6 +1,8 @@
 ﻿@using HockeyPool.Infrastructure.Data.Repos
 @using static HockeyPool.Components.BettingOverview.BettingOverview
+
 @inject CountryRepository countryRepository
+@inject NavigationManager NavigationManager
 
 <MudDialog>
     <DialogContent>
@@ -56,8 +58,13 @@
     {
         await form.Validate();
 
-        if (form.IsValid && HomeScore != GuestScore)
+        if (form.IsValid)
         {
+            if (HomeScore == GuestScore)
+            {
+                NavigationManager.NavigateTo("/Rules");
+            }
+
             if (Prediction.HomeTeamScore == HomeScore && Prediction.GuestTeamScore == GuestScore)
             {
                 MudDialog.Cancel();
