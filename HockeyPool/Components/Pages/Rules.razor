@@ -3,29 +3,30 @@
 @using HockeyPool.Infrastructure.Data.Repos
 @inject TournamentRepository TournamentRepository;
 
-<section style="background-color:rgba(0,0,0,0.6)">
+<MudContainer class="text-background">
     <MudText Typo="Typo.h2">Noteikumi </MudText>
 
     <p></p>
     <MudList>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarRate">Minējumus var mainīt līdz spēles sākumam, daudz neatliekam, sistēma ir automātiska, un nevienu nežēlo</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarRate">Citu dalībnieku minējumus varēs redzēt tikai tad, kad tos vairs jau mainīt  nevarēs. Špikošana šogad izslēgta</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarRate">Neižšķirtu rezultātu nav, kāda no komandām ar +1 uzvar jebkurā gadījumā</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarRate">Uzvaras laurus un naudas katlu savāc viens cilvēks, ja ir vienādi rezultāti, tad uzvarētāji vai nu turpina derības uz citām spēlēm, vai arī dala vienādās daļās.</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarRate">Organizatori patur tiesības ieviest izmaiņas noteikumos</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarRate">Dalības maksa <b>10 EUR</b>.</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarRate" Text="Punktu sadalījums" InitiallyExpanded="true">
+        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Minējumus var mainīt līdz spēles sākumam, daudz neatliekam, sistēma ir automātiska, un nevienu nežēlo</MudListItem>
+        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Citu dalībnieku minējumus varēs redzēt tikai tad, kad tos vairs jau mainīt  nevarēs. Špikošana šogad izslēgta</MudListItem>
+        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Neizšķirtu rezultātu nav, kāda no komandām ar +1 uzvar jebkurā gadījumā</MudListItem>
+        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Uzvaras laurus un naudas katlu savāc viens cilvēks, ja ir vienādi rezultāti, tad uzvarētāji vai nu turpina derības uz citām spēlēm, vai arī dala vienādās daļās.</MudListItem>
+        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Organizatori patur tiesības ieviest izmaiņas noteikumos</MudListItem>
+        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Dalības maksa <b>10 EUR</b>.</MudListItem>
+        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers" Text="Punktu sadalījums" InitiallyExpanded="true">
             <NestedList>
-                <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.ArrowRight"> Punkti par precīzu minējumu: <b>@tournament?.PointsForPerfect </b> </MudListItem>
-                <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.ArrowRight">Punkti par pareizu vārtu starpību+uzvarētāju: <b>@tournament?.PointForDifference</b></MudListItem>
-                <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.ArrowRight">Punkti tikai par pareizo uzvarētāju: <b>@tournament?.PointsForWinnerOnly</b></MudListItem>
+                <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline"> Punkti par precīzu minējumu: <b>@tournament?.PointsForPerfect </b> </MudListItem>
+                <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti par pareizu vārtu starpību+uzvarētāju: <b>@tournament?.PointForDifference</b></MudListItem>
+                <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti tikai par pareizo uzvarētāju: <b>@tournament?.PointsForWinnerOnly</b></MudListItem>
             </NestedList>
         </MudListItem>
     </MudList>
     <MudDivider />
-    <MudText Typo="Typo.h6"> <a href="https://www.swedbank.lv/pay?id=lr3x752u0dzg"> Didzis Stivriņš LV21HABA0551039169500  (Swedbank) </a></MudText>
-</section>
-<MudDivider />
+    <MudText Typo="Typo.h6"> <a href="https://www.swedbank.lv/pay?id=pw7a2y1wypji"> Didzis Stivriņš LV21HABA0551039169500  (Swedbank) </a></MudText>
+    <MudDivider />
+</MudContainer>
+
 
 @code {
     public Tournament tournament { get; set; }
