@@ -5,7 +5,7 @@
 @using HockeyPool.Infrastructure.Data.Repos
 @using MudBlazor
 @inject ISnackbar Snackbar
-@inject CountryRepository CountryRepository;
+@inject UnitOfWork unitOfWork;
 
 
 <MudTable Items="@Countries" Dense="@dense" Hover="@hover" ReadOnly="@ronly" CanCancelEdit="@canCancelEdit"
@@ -48,7 +48,7 @@
         <MudTd DataLabel="Flag Code">@context.FlagCode</MudTd>
     </RowTemplate>
     <RowEditingTemplate>
-        <MudTd><MudButton @onclick="@(() => DeleteRow(context))">🗑️</MudButton></MudTd>
+        <MudTd><MudButton @onclick="@(() => DeleteRowAsync(context))">🗑️</MudButton></MudTd>
         <MudTd DataLabel="Id">@context.Id</MudTd>
         <MudTd DataLabel="Name">
             <MudTextField @bind-Value="@context.Name" />
@@ -86,7 +86,7 @@
     }
     private async Task<int> LoadData()
     {
-        Countries = await CountryRepository.GetAllAsync();
+        Countries = await unitOfWork.CountryRepository.GetAllAsync();
         return 0;
     }
 
@@ -100,14 +100,14 @@
     {
         editEvents.Clear();
     }
-    private void DeleteRow(Country country)
+    private async Task DeleteRowAsync(Country country)
     {
         Countries.Remove(country);
         if (country.Id == 0)
         {
             return;
         }
-        CountryRepository.Remove(country);
+        await unitOfWork.CountryRepository.RemoveAsync(country);
         StateHasChanged();
     }
 
@@ -128,11 +128,11 @@
         var country = (Country)CountryEntity;
         if (country.Id == 0)
         {
-            CountryRepository.AddAsync(country);
+            await unitOfWork.CountryRepository.AddAsync(country);
         }
         else
         {
-            CountryRepository.UpdateAsync(country);
+            await unitOfWork.CountryRepository.UpdateAsync(country);
         }
     }
 

@@ -5,21 +5,19 @@
 @using HockeyPool.Infrastructure.Data.Repos
 @using MudBlazor
 @inject ISnackbar Snackbar
-@inject TournamentRepository TournamentRepository;
-@inject TournamentRepository TournamentRepository;
-@inject CountryRepository CountryRepository;
+@inject UnitOfWork unitOfWork;
 @inject NavigationManager _navigationManager
 
 <MudTable Items="@Tournaments" Dense="@dense" Hover="@hover" ReadOnly="@ronly" CanCancelEdit="@canCancelEdit" Style="width:max-content"
           @bind-SelectedItem="selectedItem1" SortLabel="Sort By" CommitEditTooltip="Commit Edit"
           OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" RowEditPreview="BackupItem" RowEditCancel="ResetItemToOriginalValues"
-          RowEditCommit="ItemHasBeenCommitted" ApplyButtonPosition="@applyButtonPosition" EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger" >
+          RowEditCommit="ItemHasBeenCommitted" ApplyButtonPosition="@applyButtonPosition" EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger">
     <ToolBarContent>
         <MudText Typo="Typo.h4">Tournaments</MudText>
         <MudSpacer />
-        <MudButton OnClick="AddNewTournament" Variant="Variant.Filled" >
-                Add new
-            </MudButton>
+        <MudButton OnClick="AddNewTournament" Variant="Variant.Filled">
+            Add new
+        </MudButton>
         <MudSpacer />
     </ToolBarContent>
     <HeaderContent>
@@ -53,7 +51,7 @@
             <select @bind="@context.Tournament.CountryId">
                 @foreach (Country item in Countries)
                 {
-                    <option  Value="@item.Id">@item.Name</option>
+                    <option Value="@item.Id">@item.Name</option>
                 }
             </select>
         </MudTd>
@@ -110,14 +108,14 @@
     private async Task<int> LoadData()
     {
         Tournaments = new List<TournamentViewModel>();
-        Countries = await CountryRepository.GetAllAsync();
-        var baseTournaments = await TournamentRepository.GetAllAsync();
+        Countries = await unitOfWork.CountryRepository.GetAllAsync();
+        var baseTournaments = await unitOfWork.TournamentRepository.GetAllAsync();
 
 
         foreach (var tournament in baseTournaments)
         {
             var tournamentViewModel = new TournamentViewModel();
-            tournamentViewModel.Tournament =  tournament;
+            tournamentViewModel.Tournament = tournament;
             tournamentViewModel.CountryName = Countries.FirstOrDefault(x => x.Id == tournament.CountryId)?.Name;
             Tournaments.Add(tournamentViewModel);
         }
@@ -141,14 +139,14 @@
     {
         editEvents.Clear();
     }
-    private void DeleteRow(TournamentViewModel tournamentViewModel)
+    private async Task DeleteRow(TournamentViewModel tournamentViewModel)
     {
         Tournaments.Remove(tournamentViewModel);
         if (tournamentViewModel.IsNew)
         {
             return;
         }
-        TournamentRepository.Remove(tournamentViewModel.Tournament);
+        await unitOfWork.TournamentRepository.RemoveAsync(tournamentViewModel.Tournament);
     }
     private void AddEditionEvent(string message)
     {
@@ -167,11 +165,11 @@
         var TournamentViewModel = (TournamentViewModel)Tournament;
         if (TournamentViewModel.IsNew)
         {
-            TournamentRepository.AddAsync(TournamentViewModel.Tournament);
+            await unitOfWork.TournamentRepository.AddAsync(TournamentViewModel.Tournament);
         }
         else
         {
-            TournamentRepository.UpdateAsync(TournamentViewModel.Tournament);
+            await unitOfWork.TournamentRepository.UpdateAsync(TournamentViewModel.Tournament);
         }
         _navigationManager.NavigateTo("/admin/Tournaments", true);
     }

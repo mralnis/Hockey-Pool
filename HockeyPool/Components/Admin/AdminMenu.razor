@@ -5,8 +5,7 @@
 @using HockeyPool.Infrastructure.Data.Repos
 @using MudBlazor
 @inject ISnackbar Snackbar
-@inject MatchupRepository MatchupRepository;
-@inject CountryRepository CountryRepository;
+@inject UnitOfWork unitOfWork;
 
 <MudGrid Class="mud-table">
     <MudText Typo="Typo.h1">Administrātora panelis</MudText>
@@ -39,13 +38,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var matchup = await MatchupRepository.GetClosestMatchup();
+        var matchup = await unitOfWork.MatchupRepository.GetClosestMatchupAsync();
         if (matchup == null)
         {
             return;
         }
 
-        var countries = await CountryRepository.GetAllAsync();
+        var countries = await unitOfWork.CountryRepository.GetAllAsync();
         ClosestMatchup.Matchup = matchup;
         ClosestMatchup.HomeTeamName = countries.FirstOrDefault(x => x.Id == matchup.HomeTeamId)?.Name;
         ClosestMatchup.GuestTeamName = countries.FirstOrDefault(x => x.Id == matchup.GuestTeamId)?.Name;
@@ -54,7 +53,7 @@
 
     private async Task Submit()
     {
-        MatchupRepository.UpdateAsync(ClosestMatchup.Matchup);
+        await unitOfWork.MatchupRepository.UpdateAsync(ClosestMatchup.Matchup);
     }
 
 

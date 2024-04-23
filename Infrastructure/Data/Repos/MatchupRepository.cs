@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HockeyPool.Infrastructure.Data.Repos
 {
-    public class MatchupRepository : Repository<Matchup>
+    public class MatchupRepository : GenericRepository<Matchup>
     {
         private readonly TournamentRepository _tournamentRepository;
 
@@ -13,15 +13,15 @@ namespace HockeyPool.Infrastructure.Data.Repos
         }
 
 
-        public async Task<Matchup> Create(Matchup matchup)
+        public async Task<Matchup> CreateAsync(Matchup matchup)
         {
             var result = await _dbContext.Matchups.AddAsync(matchup);
-            await AddMatchupToExistingPlayerPredictions(matchup);
+            await AddMatchupToExistingPlayerPredictionsAsync(matchup);
             await _dbContext.SaveChangesAsync();
             return result.Entity;
         }
 
-        public async void Edit(Matchup matchup)
+        public async Task EditAsync(Matchup matchup)
         {
             _dbContext.Entry(matchup).State = EntityState.Modified;
             if (matchup.HomeTeamScore != null)
@@ -31,20 +31,20 @@ namespace HockeyPool.Infrastructure.Data.Repos
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Matchup>> GetActiveMatchups()
+        public async Task<List<Matchup>> GetActiveMatchupsAsync()
         {
             var activeTournament = await _tournamentRepository.GetActiveTournamentAsync();
             var result = await _dbContext.Matchups.Where(x=>x.TournamentId == activeTournament.Id).ToListAsync();
             return result;
         }
 
-        public async Task<Matchup?> GetClosestMatchup()
+        public async Task<Matchup?> GetClosestMatchupAsync()
         {
             var result = await _dbContext.Matchups.Where(x => x.HomeTeamScore == null).OrderBy(x => x.GameTime).FirstOrDefaultAsync();
             return result;
         }
 
-        public async void Delete(int matchupId)
+        public async Task DeleteAsync(int matchupId)
         {
             var matchup = await _dbContext.Matchups.FindAsync(matchupId);
             if (matchup == null)
@@ -55,7 +55,7 @@ namespace HockeyPool.Infrastructure.Data.Repos
             await _dbContext.SaveChangesAsync();
         }
 
-        private async Task AddMatchupToExistingPlayerPredictions(Matchup matchup)
+        private async Task AddMatchupToExistingPlayerPredictionsAsync(Matchup matchup)
         {
             var players = await _dbContext.PlayerTournaments.Where(x => x.TournamentId == matchup.TournamentId).ToListAsync();
             foreach (var player in players)

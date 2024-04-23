@@ -3,7 +3,7 @@
 @using System.ComponentModel.DataAnnotations
 @using HockeyPool.Infrastructure.Data.Repos
 
-@inject CountryRepository countryRepository
+@inject UnitOfWork unitOfWork;
 
 <PageTitle>Jauna turnīra izveide</PageTitle>
 
@@ -60,7 +60,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        CountryList = await countryRepository.GetAllAsync();
+        CountryList = await unitOfWork.CountryRepository.GetAllAsync();
     }
     private string ToCountryString(Country x)
         => x is null ? string.Empty : $"{x.Name}";

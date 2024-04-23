@@ -1,4 +1,4 @@
-﻿@inject CountryRepository countryRepository
+﻿@inject UnitOfWork unitOfWork;
 
 <MudTh>
     <div class="content-align" style="padding-right:20px">
@@ -34,6 +34,6 @@
 
     public string GetCountryCode(int id)
     {
-        return countryRepository.GetCountryFlagCode(id);
+        return unitOfWork.CountryRepository.GetByIdAsync(id).Result.FlagCode;
     }
 }

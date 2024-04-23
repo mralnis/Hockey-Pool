@@ -13,6 +13,7 @@ namespace HockeyPool.Infrastructure.Data
         public DbSet<PlayerTournament> PlayerTournaments { get; set; }
         public DbSet<Prediction> Predictions { get; set; }
         public DbSet<Tournament> Tournaments { get; set; }
+        public DbSet<PredictionLog> PredictionLogs { get; set; }
 
         public async Task SeedAsync(IServiceProvider serviceProvider)
         {

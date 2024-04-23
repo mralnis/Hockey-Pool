@@ -1,7 +1,6 @@
 ﻿@using static HockeyPool.Components.BettingOverview.BettingOverview
 
-@inject CountryRepository countryRepository
-@inject PredictionsRepository predictionsRepository
+@inject UnitOfWork unitOfWork;
 @inject IDialogService DialogService
 
 
@@ -71,7 +70,7 @@
 
     public string GetMatchLabel(int homeCountryId, int guestCountryId)
     {
-        return countryRepository.GetCountryFlagCode(homeCountryId) + " - " + countryRepository.GetCountryFlagCode(guestCountryId);
+        return unitOfWork.CountryRepository.GetByIdAsync(homeCountryId).Result.FlagCode + " - " + unitOfWork.CountryRepository.GetByIdAsync(guestCountryId).Result.FlagCode;
     }
 
     private async Task OpenEditPredictionDialogAsync(Matchup matchup, Prediction prediction, bool isNewPrediction = false)
@@ -85,11 +84,11 @@
 
         if (isNewPrediction)
         {
-            await predictionsRepository.AddAsync(prediction);
+            await unitOfWork.PredictionsRepository.AddAsync(prediction);
         }
         else
         {
-            await predictionsRepository.UpdateAsync(prediction);
+            await unitOfWork.PredictionsRepository.UpdateAsync(prediction);
         }
 
         this.StateHasChanged();

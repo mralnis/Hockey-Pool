@@ -2,25 +2,25 @@
 
 namespace HockeyPool.Infrastructure.Data.Repos
 {
-    public class Repository<T> where T : class
+    public class GenericRepository<T> where T : class
     {
         protected readonly ApplicationDbContext _dbContext;
-        public Repository(ApplicationDbContext dbContext)
+        public GenericRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task AddAsync(T entity)
+        public virtual async Task AddAsync(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);
             await _dbContext.SaveChangesAsync();
         }
-        public async Task UpdateAsync(T entity)
+        public virtual async Task UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
-        public async Task AddRange(IEnumerable<T> entities)
+        public virtual async Task AddRange(IEnumerable<T> entities)
         {
             await _dbContext.Set<T>().AddRangeAsync(entities);
             await _dbContext.SaveChangesAsync();
@@ -33,16 +33,16 @@ namespace HockeyPool.Infrastructure.Data.Repos
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
-        public void Remove(T entity)
+        public async Task RemoveAsync(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
-            _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
         }
-        public void RemoveRange(IEnumerable<T> entities)
+        public async Task RemoveRangeAsync(IEnumerable<T> entities)
         {
             _dbContext.Set<T>().RemoveRange(entities);
-            _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

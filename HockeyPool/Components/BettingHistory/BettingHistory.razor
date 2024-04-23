@@ -1,0 +1,122 @@
+﻿@page "/History"
+
+@using System.Security.Claims
+@using HockeyPool.Components.BettingOverview
+
+@inject UnitOfWork unitOfWork
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@if (_loading)
+{
+
+}
+else
+{
+    <MudContainer Class="mt-16" MaxWidth="MaxWidth.Small">
+        <MudTable Items="@userPredictionsLists.OrderByDescending(_=> _.TimeStamp)" Breakpoint="Breakpoint.None" Hover="true" Loading="@_loading" HorizontalScrollbar="true" FixedHeader="true" LoadingProgressColor="Color.Info" Filter="new Func<UserPredictionsHistory,bool>(FilterFunc1)">
+            <ToolBarContent>
+                <MudSpacer />
+                <MudTextField @bind-Value="searchString1" Immediate="true" Placeholder="Meklēt spēlētāju" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Spēlētājs</MudTh>
+                <MudTh><div class="content-align">Minējums</div></MudTh>
+                <MudTh><div class="content-align">Laiks</div></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Spēlētājs">@context.UserName</MudTd>
+                <MudTd DataLabel="Rezultāts">
+                    <div class="content-align">
+                        <SVGFlag CountryCode="@context.HomeTeamCountryCode" FlagType="FlagType.Wide" Width="50" Height="50" style="padding-right:5px" />
+                        @if (context.CanShow)
+                        {
+                            <MudText Style="white-space:nowrap;">@context.HomeTeamScore : @context.GuestTeamScore</MudText>
+                        }
+                        else
+                        {
+                            <MudText Style="white-space:nowrap;"> ? : ? </MudText>
+                        }
+                        <SVGFlag CountryCode="@context.GuestTeamCountryCode" FlagType="FlagType.Wide" Width="50" Height="50" style="padding-left:5px" />
+                    </div>
+
+                </MudTd>
+
+                <MudTd DataLabel="Laiks">
+                    <div class="content-align">
+                        <MudIcon Icon="@Icons.Material.Filled.CalendarMonth" Size="Size.Small" Style="padding-right:5px" />
+                        @context.TimeStamp.ToLocalTime().ToString("MM.dd")
+                    </div>
+                    <div class="content-align">
+                        <MudIcon Icon="@Icons.Material.Filled.AccessTime" Size="Size.Small" Style="padding-right:5px" />
+                        @context.TimeStamp.ToLocalTime().ToString("HH:mm")
+                    </div>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudContainer>
+}
+
+@code {
+    bool _loading = true;
+    private string searchString1 = "";
+
+    List<UserPredictionsHistory> userPredictionsLists = new List<UserPredictionsHistory>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var matchups = await unitOfWork.MatchupRepository.GetAllAsync();
+        var users = await unitOfWork.UserRepository.GetAllAsync();
+        var predictionLogs = await unitOfWork.PredictionLogRepository.GetAllAsync();
+
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var currentUser = authState.User;
+
+        Guid CurrentUserID = Guid.Empty;
+        // Check if the user is authenticated
+        if (currentUser.Identity.IsAuthenticated)
+        {
+            // Retrieve the user's ID
+            CurrentUserID = new Guid(currentUser.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        }
+
+        foreach (var predictionLog in predictionLogs)
+        {
+            var matchup = matchups.FirstOrDefault(x => x.Id == predictionLog.MatchupId);
+            userPredictionsLists.Add(new UserPredictionsHistory(predictionLog)
+                {
+                    UserName = users.FirstOrDefault(x => x.Id == predictionLog.AspNetUserId.ToString())?.UserName,
+                    HomeTeamCountryCode = GetCountryCode(matchup.HomeTeamId),
+                    GuestTeamCountryCode = GetCountryCode(matchup.GuestTeamId),
+                    CanShow = CurrentUserID == predictionLog.AspNetUserId || matchup.GameTime.Value.ToLocalTime() <= DateTime.Now.ToLocalTime()
+                }
+
+            );
+        }
+
+        _loading = false;
+
+        await base.OnInitializedAsync();
+    }
+
+    public string GetCountryCode(int? id)
+    {
+        if (id == null)
+        {
+            return "EU";
+        }
+        return unitOfWork.CountryRepository.GetByIdAsync(id.Value).Result.FlagCode;
+    }
+
+    private bool FilterFunc1(UserPredictionsHistory prediction) => FilterFunc(prediction, searchString1);
+
+    private bool FilterFunc(UserPredictionsHistory prediction, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+
+        if (prediction.UserName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        return false;
+    }
+}

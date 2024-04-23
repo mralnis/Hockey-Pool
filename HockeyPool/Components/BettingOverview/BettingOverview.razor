@@ -3,9 +3,7 @@
 @using System.Security.Claims
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject MatchupRepository matchupRepo
-@inject UserRepository userRepository
-@inject PredictionsRepository predictionsRepository
+@inject UnitOfWork unitOfWork
 
 <MudText Typo="Typo.h3" Style="color:white">Rezultāti!</MudText>
 
@@ -53,8 +51,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        matchups = await matchupRepo.GetAllAsync();
-        var users = await userRepository.GetAllAsync();
+        matchups = await unitOfWork.MatchupRepository.GetAllAsync();
+        var users = await unitOfWork.UserRepository.GetAllAsync();
 
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var currentUser = authState.User;
@@ -72,7 +70,7 @@ else
                 {
                     userId = new Guid(user.Id),
                     userName = user.UserName,
-                    predictions = predictionsRepository.GetUserPredictions(new Guid(user.Id)),
+                    predictions = unitOfWork.PredictionsRepository.GetUserPredictions(new Guid(user.Id)),
                 });
 
             foreach (var matchup in matchups)

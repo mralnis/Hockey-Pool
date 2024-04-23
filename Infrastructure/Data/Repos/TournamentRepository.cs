@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HockeyPool.Infrastructure.Data.Repos
 {
-    public class TournamentRepository : Repository<Tournament>
+    public class TournamentRepository : GenericRepository<Tournament>
     {
         public TournamentRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 

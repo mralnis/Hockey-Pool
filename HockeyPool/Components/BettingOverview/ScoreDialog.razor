@@ -1,7 +1,7 @@
 ﻿@using HockeyPool.Infrastructure.Data.Repos
 @using static HockeyPool.Components.BettingOverview.BettingOverview
 
-@inject CountryRepository countryRepository
+@inject UnitOfWork unitOfWork;
 @inject NavigationManager NavigationManager
 
 <MudDialog>
@@ -51,7 +51,7 @@
         {
             return "EU";
         }
-        return countryRepository.GetCountryFlagCode(id.Value);
+        return unitOfWork.CountryRepository.GetByIdAsync(id.Value).Result.FlagCode;
     }
 
     async Task Submit()

@@ -1,8 +1,7 @@
 ﻿
 
-using Microsoft.Extensions.DependencyInjection;
-using HockeyPool.Infrastructure.Data.Repos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace HockeyPool.Infrastructure.Data
@@ -11,11 +10,7 @@ namespace HockeyPool.Infrastructure.Data
     {
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<TournamentRepository>();
-            services.AddScoped<MatchupRepository>();
-            services.AddScoped<PredictionsRepository>();
-            services.AddScoped<UserRepository>();
-            services.AddScoped<CountryRepository>();
+            services.AddScoped<UnitOfWork>();
 
             return services;
         }

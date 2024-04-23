@@ -1,7 +1,8 @@
 ﻿@page "/Rules"
 @using HockeyPool.Infrastructure.Data.Models;
 @using HockeyPool.Infrastructure.Data.Repos
-@inject TournamentRepository TournamentRepository;
+
+@inject UnitOfWork unitOfWork
 
 <MudContainer class="text-background">
     <MudText Typo="Typo.h2">Noteikumi </MudText>
@@ -37,6 +38,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        tournament = await TournamentRepository.GetActiveTournamentAsync();
+        tournament = await unitOfWork.TournamentRepository.GetActiveTournamentAsync();
     }
 }

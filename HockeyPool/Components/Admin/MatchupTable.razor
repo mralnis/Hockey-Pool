@@ -5,9 +5,8 @@
 @using HockeyPool.Infrastructure.Data.Repos
 @using MudBlazor
 @inject ISnackbar Snackbar
-@inject MatchupRepository MatchupRepository;
-@inject TournamentRepository TournamentRepository;
-@inject CountryRepository CountryRepository;
+@inject UnitOfWork unitOfWork;
+
 @inject NavigationManager _navigationManager
 
 <MudTable Items="@Matchups" Dense="@dense" Hover="@hover" ReadOnly="@ronly" CanCancelEdit="@canCancelEdit"
@@ -17,9 +16,9 @@
     <ToolBarContent>
         <MudText Typo="Typo.h4">Matchups</MudText>
         <MudSpacer />
-        <MudButton OnClick="AddNewMatchup" Variant="Variant.Filled" >
-                Add new
-            </MudButton>
+        <MudButton OnClick="AddNewMatchup" Variant="Variant.Filled">
+            Add new
+        </MudButton>
         <MudSpacer />
         <MudSwitch T="bool" Value=@activeOnly ValueChanged=ActiveOnlyValueChanged Color="Color.Primary">Active only</MudSwitch>
     </ToolBarContent>
@@ -65,7 +64,7 @@
             <select @bind="@context.Matchup.TournamentId">
                 @foreach (Tournament item in Tournaments)
                 {
-                    <option  Value="@item.Id">@item.Name</option>
+                    <option Value="@item.Id">@item.Name</option>
                 }
             </select>
         </MudTd>
@@ -128,16 +127,16 @@
     private async Task<int> LoadData()
     {
         Matchups = new List<MatchupViewModel>();
-        Tournaments = await TournamentRepository.GetAllAsync();
-        Countries = await CountryRepository.GetAllAsync();
+        Tournaments = await unitOfWork.TournamentRepository.GetAllAsync();
+        Countries = await unitOfWork.CountryRepository.GetAllAsync();
         var matchups = new List<Matchup>();
         if (activeOnly)
         {
-            matchups = await MatchupRepository.GetActiveMatchups();
+            matchups = await unitOfWork.MatchupRepository.GetActiveMatchupsAsync();
         }
         else
         {
-            matchups = await MatchupRepository.GetAllAsync();
+            matchups = await unitOfWork.MatchupRepository.GetAllAsync();
         }
 
         foreach (var matchup in matchups)
@@ -175,14 +174,14 @@
         editEvents.Clear();
     }
 
-    private void DeleteRow(MatchupViewModel matchupViewModel)
+    private async Task DeleteRow(MatchupViewModel matchupViewModel)
     {
         Matchups.Remove(matchupViewModel);
         if (matchupViewModel.IsNew)
         {
             return;
         }
-        MatchupRepository.Remove(matchupViewModel.Matchup);
+        await unitOfWork.MatchupRepository.RemoveAsync(matchupViewModel.Matchup);
     }
 
     private void AddEditionEvent(string message)
@@ -202,11 +201,11 @@
         var matchupViewModel = (MatchupViewModel)Matchup;
         if (matchupViewModel.IsNew)
         {
-            var newItem = MatchupRepository.Create(matchupViewModel.Matchup);
+            var newItem = await unitOfWork.MatchupRepository.CreateAsync(matchupViewModel.Matchup);
         }
         else
         {
-            MatchupRepository.Edit(matchupViewModel.Matchup);
+            await unitOfWork.MatchupRepository.EditAsync(matchupViewModel.Matchup);
         }
         _navigationManager.NavigateTo("/admin/matchups", true);
     }
