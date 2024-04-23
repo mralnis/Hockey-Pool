@@ -41,7 +41,7 @@
         base.OnInitialized();
         HomeScore = Prediction.HomeTeamScore;
         GuestScore = Prediction.GuestTeamScore;
-    }   
+    }
 
     public string GetCountryCode(int? id)
     {
@@ -52,14 +52,11 @@
         return countryRepository.GetCountryFlagCode(id.Value);
     }
 
-    void Submit()
+    async Task Submit()
     {
-        if (HomeScore == null || GuestScore == null)
-        {
-            form.Validate();
-            return;
-        }
-        else
+        await form.Validate();
+
+        if (form.IsValid && HomeScore != GuestScore)
         {
             if (Prediction.HomeTeamScore == HomeScore && Prediction.GuestTeamScore == GuestScore)
             {
