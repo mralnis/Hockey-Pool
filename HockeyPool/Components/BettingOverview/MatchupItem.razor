@@ -7,7 +7,7 @@
     </div>
     <div class="content-align" style="padding-right:20px">
         <MudIcon Icon="@Icons.Material.Filled.AccessTime" Size="Size.Small" />
-        @matchup.GameTime.Value.ToLocalTime().ToString("HH.mm")
+        @matchup.GameTime.Value.ToLocalTime().ToString("HH:mm")
     </div>
     <div class="content-align" style="padding-right:20px">
         <SVGFlag CountryCode="@GetCountryCode(@matchup.HomeTeamId)" FlagType="FlagType.Wide" Width="30" Height="30" /> &zwnj; : &zwnj;  <SVGFlag CountryCode="@GetCountryCode(@matchup.GuestTeamId)" FlagType="FlagType.Wide" Width="30" Height="30" />
