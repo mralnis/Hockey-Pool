@@ -69,15 +69,29 @@
         }
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (SignInManager.IsSignedIn(HttpContext.User))
+        {
+            RedirectManager.RedirectTo("Overview");
+        }
+        base.OnAfterRender(firstRender);
+    }
+
     public async Task LoginUser()
     {
+        if (SignInManager.IsSignedIn(HttpContext.User))
+        {
+            NavigationManager.NavigateTo("/Overview");
+            return;
+        }
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
         var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
         if (result.Succeeded)
         {
             Logger.LogInformation("User logged in.");
-            RedirectManager.RedirectTo(ReturnUrl);
+            RedirectManager.RedirectTo("Overview");
         }
         else if (result.RequiresTwoFactor)
         {

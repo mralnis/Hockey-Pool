@@ -53,10 +53,20 @@
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
 
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
     private string? Message => identityErrors is null ? null : $"Kļūda: {string.Join(", ", identityErrors.Select(error => error.Description))}";
+
 
     public async Task RegisterUser(EditContext editContext)
     {
+        if (SignInManager.IsSignedIn(HttpContext.User))
+        {
+            NavigationManager.NavigateTo("/Overview");
+            return;
+        }
+
         var user = CreateUser();
 
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
