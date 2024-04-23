@@ -19,7 +19,6 @@
     <h1 style="color:white">Rēģistrēšanās</h1>
 
     <section>
-        <StatusMessage Message="@Message" />
         <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
             <DataAnnotationsValidator />
             <h2 style="color:white">Jauna konta izveide</h2>

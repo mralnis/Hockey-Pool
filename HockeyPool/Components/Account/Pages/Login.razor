@@ -15,20 +15,18 @@
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     <h1 style="color:white">Pieslēgties</h1>
     <section>
-        <StatusMessage Message="@errorMessage" />
         <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
             <DataAnnotationsValidator />
             <hr />
-            <ValidationSummary class="text-danger" role="alert" />
             <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                 <label for="email" style="color:black">Lietotājvārds</label>
-                <ValidationMessage For="() => Input.Email" class="text-danger" />
+                <ValidationMessage For="() => Input.Email" class="bg-danger text-white" />
             </div>
             <div class="form-floating mb-3">
                 <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
                 <label for="password" style="color:black">Parole</label>
-                <ValidationMessage For="() => Input.Password" class="text-danger" />
+                <ValidationMessage For="() => Input.Password" class="bg-danger text-white" />
             </div>
             <div class="checkbox mb-3" style="color:white">
                 <label tyle="color:black">
