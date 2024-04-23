@@ -2,6 +2,13 @@
 {
     public static class PasswordResetList
     {
-        public static  Dictionary<Guid,int> PasswordToReset = new Dictionary<Guid,int>();
+        public static List<PasswordToResetRequest> Requests = new List<PasswordToResetRequest>();
+    }
+
+    public class PasswordToResetRequest
+    {
+        public int Code { get; set; }
+        public string Email { get; set; }
+        public DateTime RequestedAt { get; set; }
     }
 }

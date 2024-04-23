@@ -19,7 +19,7 @@ namespace HockeyPool.Infrastructure.Data
 
             return services;
         }
-        public static async Task<IServiceScope> SetupHockeyPoolDB(this IHost app)
+        public static async Task<IServiceScope> SetupHockeyPoolDBAsync(this IHost app)
         {
             var scope = app.Services.CreateScope();
             {
