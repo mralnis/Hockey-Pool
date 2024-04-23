@@ -15,10 +15,10 @@
 }
 else
 {
-    <MudTable Items="@UserPredictionsList.OrderByDescending(x => x.userId== CurrentUserID)" Breakpoint="Breakpoint.None" Hover="true" Loading="@_loading" HorizontalScrollbar="true" FixedHeader="true" LoadingProgressColor="Color.Info" Filter="new Func<UserPredictions,bool>(FilterFunc1)">
+    <MudTable Items="@UserPredictionsList.OrderByDescending(x => x.userId== CurrentUserID)" Breakpoint="Breakpoint.None" Hover="true" Loading="@_loading" HorizontalScrollbar="true" FixedHeader="true" LoadingProgressColor="Color.Info"  Filter="new Func<UserPredictions,bool>(FilterFunc1)">
         <ToolBarContent>
             <MudSpacer />
-            <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            <MudTextField @bind-Value="searchString1" Immediate="true" Placeholder="Meklēt spēlētāju" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
         <HeaderContent>
             <MudTh></MudTh>
@@ -110,12 +110,8 @@ else
         if (prediction.userName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
-        if (prediction.userName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-
         if (prediction.predictions.Any(_ => _.PointsEarned.ToString() == searchString))
             return true;
-
         
         return false;
     }
