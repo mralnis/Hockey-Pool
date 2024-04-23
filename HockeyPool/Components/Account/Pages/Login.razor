@@ -16,6 +16,7 @@
     <h1 style="color:white">Pieslēgties</h1>
     <section>
         <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
+            <StatusMessage Message="@errorMessage" />
             <DataAnnotationsValidator />
             <hr />
             <div class="form-floating mb-3">
@@ -86,12 +87,12 @@
         }
         else if (result.IsLockedOut)
         {
-            Logger.LogWarning("User account locked out.");
+            Logger.LogWarning("Lietotājas ir bloķēts.");
             RedirectManager.RedirectTo("Account/Lockout");
         }
         else
         {
-            errorMessage = "Error: Invalid login attempt.";
+            errorMessage = "Kļūda: Neizdevās pieslēgties.";
         }
     }
 
