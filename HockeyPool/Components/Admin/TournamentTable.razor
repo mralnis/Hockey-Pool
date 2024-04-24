@@ -1,110 +1,108 @@
 ﻿@page "/Admin/Tournaments"
 @attribute [Authorize(Roles = "Admin")]
 
-@using System.Net.Http.Json
-@using HockeyPool.Infrastructure.Data.Repos
-@using MudBlazor
-@inject ISnackbar Snackbar
 @inject UnitOfWork unitOfWork;
 @inject NavigationManager _navigationManager
 
-<MudTable Items="@Tournaments" Dense="@dense" Hover="@hover" ReadOnly="@ronly" CanCancelEdit="@canCancelEdit" Style="width:max-content"
-          @bind-SelectedItem="selectedItem1" SortLabel="Sort By" CommitEditTooltip="Commit Edit"
-          OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" RowEditPreview="BackupItem" RowEditCancel="ResetItemToOriginalValues"
-          RowEditCommit="ItemHasBeenCommitted" ApplyButtonPosition="@applyButtonPosition" EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger">
-    <ToolBarContent>
-        <MudText Typo="Typo.h4">Tournaments</MudText>
-        <MudSpacer />
-        <MudButton OnClick="AddNewTournament" Variant="Variant.Filled">
-            Add new
-        </MudButton>
-        <MudSpacer />
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>🗑️</MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.Id)">Id</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.CountryName)">Country</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.StartDate ?? DateTime.MinValue)">Start date</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.EndDate ?? DateTime.MinValue)">Start date</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.Name)">Name</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.IsActive)">Is Active</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.PointsForPerfect)">Points for perfect</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.PointForDifference)">Points for diff</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.PointsForWinnerOnly)">Points for winner only</MudTableSortLabel></MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Delete"></MudTd>
-        <MudTd DataLabel="Id">@context.Tournament.Id</MudTd>
-        <MudTd DataLabel="CountryName">@context.CountryName</MudTd>
-        <MudTd DataLabel="StartDate">@context.Tournament.StartDate</MudTd>
-        <MudTd DataLabel="EndDate">@context.Tournament.EndDate</MudTd>
-        <MudTd DataLabel="Name">@context.Tournament.Name</MudTd>
-        <MudTd DataLabel="IsActive">@context.Tournament.IsActive</MudTd>
-        <MudTd DataLabel="PointsForPerfect">@context.Tournament.PointsForPerfect</MudTd>
-        <MudTd DataLabel="PointForDifference">@context.Tournament.PointForDifference</MudTd>
-        <MudTd DataLabel="PointsForWinnerOnly">@context.Tournament.PointsForWinnerOnly</MudTd>
-    </RowTemplate>
-    <RowEditingTemplate>
-        <MudTd><MudButton @onclick="@(() => DeleteRow(context))">🗑️</MudButton></MudTd>
-        <MudTd DataLabel="Id">@context.Tournament.Id</MudTd>
-        <MudTd DataLabel="Country">
-            <select @bind="@context.Tournament.CountryId">
-                @foreach (Country item in Countries)
-                {
-                    <option Value="@item.Id">@item.Name</option>
-                }
-            </select>
-        </MudTd>
-        <MudTd DataLabel="StartDate">
-            <InputDate Type="InputDateType.DateTimeLocal" @bind-Value="@context.Tournament.StartDate"></InputDate>
-        </MudTd>
-        <MudTd DataLabel="EndDate">
-            <InputDate Type="InputDateType.DateTimeLocal" @bind-Value="@context.Tournament.EndDate"></InputDate>
-        </MudTd>
-        <MudTd DataLabel="Name">
-            <MudTextField @bind-Value="@context.Tournament.Name" />
-        </MudTd>
-        <MudTd DataLabel="IsActive">
-            <MudTextField @bind-Value="@context.Tournament.IsActive" />
-        </MudTd>
-        <MudTd DataLabel="PointsForPerfect">
-            <MudTextField @bind-Value="@context.Tournament.PointsForPerfect" />
-        </MudTd>
-        <MudTd DataLabel="PointForDifference">
-            <MudTextField @bind-Value="@context.Tournament.PointForDifference" />
-        </MudTd>
-        <MudTd DataLabel="PointsForWinnerOnly">
-            <MudTextField @bind-Value="@context.Tournament.PointsForWinnerOnly" />
-        </MudTd>
-    </RowEditingTemplate>
-    <PagerContent>
-        <MudTablePager PageSizeOptions="new int[] { 50 }" />
-    </PagerContent>
-    <EditButtonContent Context="button">
-        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
-    </EditButtonContent>
-</MudTable>
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.ExtraLarge">
+    <MudText Typo="Typo.h4">Turnīri</MudText>
+    <MudTable Items="@Tournaments"
+              T="TournamentViewModel"
+              @ref="_table"
+              Hover="true"
+              CanCancelEdit="true"
+              SortLabel="Sort By"
+              CommitEditTooltip="Commit Edit"
+              RowEditPreview="BackupItem"
+              RowEditCancel="ResetItemToOriginalValues"
+              RowEditCommit="ItemHasBeenCommitted"
+              ApplyButtonPosition="TableApplyButtonPosition.End"
+              EditButtonPosition="TableEditButtonPosition.End"
+              EditTrigger="TableEditTrigger.EditButton"
+              Breakpoint="Breakpoint.None">
+
+        <HeaderContent>
+            <MudTh ><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.CountryName)">Norises valsts</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.StartDate ?? DateTime.MinValue)">Sākuma datums</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.EndDate ?? DateTime.MinValue)">Beigu datums</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.Name)">Nosaukums</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.IsActive)">Aktīvs</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.PointsForPerfect)">Punkti par precīzu minejumi</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.PointForDifference)">Punkti par uzminētu starpību</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.Tournament.PointsForWinnerOnly)">Punkti par uzminētu uzvarētāju</MudTableSortLabel></MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+
+        <RowTemplate>
+            <MudTd DataLabel="CountryName">@context.CountryName</MudTd>
+            <MudTd DataLabel="StartDate">@context.Tournament.StartDate.Value.ToString("dd.MM.yyyy")</MudTd>
+            <MudTd DataLabel="EndDate">@context.Tournament.EndDate.Value.ToString("dd.MM.yyyy")</MudTd>
+            <MudTd DataLabel="Name">@context.Tournament.Name</MudTd>
+            <MudTd DataLabel="IsActive"> <MudCheckBox @bind-Value="@context.Tournament.IsActive" Disabled="true"></MudCheckBox></MudTd>
+            <MudTd DataLabel="PointsForPerfect">@context.Tournament.PointsForPerfect</MudTd>
+            <MudTd DataLabel="PointForDifference">@context.Tournament.PointForDifference</MudTd>
+            <MudTd DataLabel="PointsForWinnerOnly">@context.Tournament.PointsForWinnerOnly</MudTd>
+            <MudTd DataLabel="Delete"></MudTd>
+        </RowTemplate>
+
+        <RowEditingTemplate>
+            <MudTd DataLabel="Country" >
+                <MudSelect FullWidth="true" @bind-Value="@context.Tournament.CountryId">
+                    @foreach (Country item in Countries)
+                    {
+                        <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudTd>
+            <MudTd Style="width:fit-content" DataLabel="StartDate">
+                <MudDatePicker Style="width:fit-content" Date="@context.Tournament.StartDate"></MudDatePicker>
+            </MudTd>
+            <MudTd DataLabel="EndDate">
+                <MudDatePicker Style="width:fit-content" Date="@context.Tournament.EndDate"></MudDatePicker>
+            </MudTd>
+            <MudTd DataLabel="Name">
+                <MudTextField @bind-Value="@context.Tournament.Name" />
+            </MudTd>
+            <MudTd DataLabel="IsActive">
+                <MudCheckBox @bind-Value="@context.Tournament.IsActive"></MudCheckBox>
+            </MudTd>
+            <MudTd DataLabel="PointsForPerfect">
+                <MudNumericField Style="width:fit-content" RequiredError="Nepieciešami punkti" MaxLength="10"  @bind-Value="@context.Tournament.PointsForPerfect" Min="0" Max="10" Variant="Variant.Text" />
+            </MudTd>
+            <MudTd DataLabel="PointForDifference">
+                <MudNumericField Style="width:fit-content" RequiredError="Nepieciešami punkti" MaxLength="10" @bind-Value="@context.Tournament.PointForDifference" Min="0" Max="10" Variant="Variant.Text" />
+            </MudTd>
+            <MudTd DataLabel="PointsForWinnerOnly">
+                <MudNumericField Style="width:fit-content" RequiredError="Nepieciešami punkti" MaxLength="10" @bind-Value="@context.Tournament.PointsForWinnerOnly" Min="0" Max="10" Variant="Variant.Text" />
+            </MudTd>
+            <MudTd>
+                <MudIconButton Icon="@Icons.Material.Outlined.Delete" @onclick="(() =>  DeleteRowAsync(context))"></MudIconButton>
+            </MudTd>
+        </RowEditingTemplate>
+
+        <EditButtonContent Context="button">
+            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
+        </EditButtonContent>
+
+    </MudTable>
+
+    <div class="d-flex justify-end mt-4">
+        <MudButton StartIcon="@Icons.Material.Outlined.Add" Color="@Color.Primary" OnClick="AddNewTournament" Variant="Variant.Filled">Izveidot jaunu turnīru</MudButton>
+    </div>
+</MudContainer>
+
 @code {
-    private List<string> editEvents = new();
-    private bool dense = false;
-    private bool hover = true;
-    private bool ronly = false;
-    private bool canCancelEdit = true;
-    private int searchString = 0;
-    private TournamentViewModel? selectedItem1 = null;
     private TournamentViewModel? TournamentBeforeEdit;
-    private HashSet<TournamentViewModel> selectedItems1 = new HashSet<TournamentViewModel>();
-    private TableApplyButtonPosition applyButtonPosition = TableApplyButtonPosition.End;
-    private TableEditButtonPosition editButtonPosition = TableEditButtonPosition.End;
-    private TableEditTrigger editTrigger = TableEditTrigger.EditButton;
+    private MudTable<TournamentViewModel> _table;
+
     private List<TournamentViewModel> Tournaments = new List<TournamentViewModel>();
     private List<Country> Countries = new List<Country>();
-
 
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
     }
+
     private async Task<int> LoadData()
     {
         Tournaments = new List<TournamentViewModel>();
@@ -122,36 +120,43 @@
         return 0;
     }
 
-    private void AddNewTournament()
+    private async Task AddNewTournament()
     {
-        var Tournament = new TournamentViewModel()
+        var defoultCountrie = Countries.FirstOrDefault();
+        var tournament = new TournamentViewModel()
             {
                 IsNew = true,
+                CountryName = defoultCountrie?.Name,
                 Tournament = new Tournament()
                 {
                     StartDate = DateTime.Now,
+                    EndDate = DateTime.Now.AddDays(20),
+                    PointForDifference = 3,
+                    PointsForPerfect = 5,
+                    PointsForWinnerOnly = 1,
+                    CountryId = defoultCountrie?.Id ?? 0
                 }
             };
-        Tournaments.Insert(0, Tournament);
+        Tournaments.Add(tournament);
+
+        await Task.Delay(50);
+        _table.SetSelectedItem(tournament);
+        _table.SetEditingItem(tournament);
     }
 
-    private void ClearEventLog()
-    {
-        editEvents.Clear();
-    }
-    private async Task DeleteRow(TournamentViewModel tournamentViewModel)
+    private async Task DeleteRowAsync(TournamentViewModel tournamentViewModel)
     {
         Tournaments.Remove(tournamentViewModel);
+        await Task.Delay(50);
+        _table.SetSelectedItem(null);
+        _table.SetEditingItem(null);
+        StateHasChanged();
+
         if (tournamentViewModel.IsNew)
         {
             return;
         }
         await unitOfWork.TournamentRepository.RemoveAsync(tournamentViewModel.Tournament);
-    }
-    private void AddEditionEvent(string message)
-    {
-        editEvents.Add(message);
-        StateHasChanged();
     }
 
     private void BackupItem(object TournamentObject)
@@ -178,6 +183,7 @@
     {
         TournamentObject = TournamentBeforeEdit;
     }
+
     public class TournamentViewModel
     {
         public Tournament Tournament { get; set; }

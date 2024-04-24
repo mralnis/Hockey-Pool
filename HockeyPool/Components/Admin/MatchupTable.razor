@@ -8,7 +8,7 @@
 
     <MudTable Items="@Matchups"
               T="MatchupViewModel"
-              @ref="table"
+              @ref="_table"
               Hover="true"
               ReadOnly="false"
               CanCancelEdit="true"
@@ -122,7 +122,7 @@
     private List<Tournament> Tournaments = new List<Tournament>();
     private List<Country> Countries = new List<Country>();
 
-    MudTable<MatchupViewModel> table;
+    MudTable<MatchupViewModel> _table;
 
     protected override async Task OnInitializedAsync()
     {
@@ -194,13 +194,18 @@
         Matchups.Add(matchup);
 
         await Task.Delay(50);
-        table.SetSelectedItem(matchup);
-        table.SetEditingItem(matchup);
+        _table.SetSelectedItem(matchup);
+        _table.SetEditingItem(matchup);
     }
 
     private async Task DeleteRow(MatchupViewModel matchupViewModel)
     {
         Matchups.Remove(matchupViewModel);
+        await Task.Delay(50);
+        _table.SetSelectedItem(null);
+        _table.SetEditingItem(null);
+        StateHasChanged();
+
         if (matchupViewModel.IsNew)
         {
             return;

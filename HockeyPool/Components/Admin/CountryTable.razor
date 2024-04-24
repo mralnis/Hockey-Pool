@@ -18,7 +18,8 @@
               RowEditCommit="ItemHasBeenCommitted"
               ApplyButtonPosition="TableApplyButtonPosition.End"
               EditButtonPosition="TableEditButtonPosition.End"
-              EditTrigger="@TableEditTrigger.EditButton">
+              EditTrigger="@TableEditTrigger.EditButton"
+              Breakpoint="Breakpoint.None">
 
         <HeaderContent>
             <MudTh><MudTableSortLabel SortBy="new Func<Country, object>(x=>x.Name)">Valsts</MudTableSortLabel></MudTh>
@@ -79,6 +80,12 @@
     private async Task DeleteRowAsync(Country country)
     {
         Countries.Remove(country);
+
+        await Task.Delay(50);
+        _table.SetSelectedItem(null);
+        _table.SetEditingItem(null);
+        StateHasChanged();
+
         if (country.Id == 0)
         {
             return;
