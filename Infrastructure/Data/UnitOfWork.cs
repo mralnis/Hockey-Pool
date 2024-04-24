@@ -1,10 +1,6 @@
 ﻿using HockeyPool.Infrastructure.Data.Models;
 using HockeyPool.Infrastructure.Data.Repos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace HockeyPool.Infrastructure.Data
 {
@@ -14,7 +10,8 @@ namespace HockeyPool.Infrastructure.Data
 
         private GenericRepository<Country>? countryRepository;
         private GenericRepository<PredictionLog>? predictionLogRepository;
-        private GenericRepository<ApplicationUser>? userRepository;
+        private GenericRepository<IdentityRole>? roleRepository;
+        private UserRepository? userRepository;
         private TournamentRepository? tournamentRepository;
         private PredictionsRepository? predictionsRepository;
         private MatchupRepository? matchupRepository;
@@ -42,17 +39,29 @@ namespace HockeyPool.Infrastructure.Data
             }
         }
 
-        public GenericRepository<ApplicationUser> UserRepository
+        public GenericRepository<IdentityRole> RoleRepository
+        {
+            get
+            {
+                if (this.roleRepository == null)
+                {
+                    this.roleRepository = new GenericRepository<IdentityRole>(context);
+                }
+                return roleRepository;
+            }
+        }
+
+        public UserRepository UserRepository
         {
             get
             {
                 if (this.userRepository == null)
                 {
-                    this.userRepository = new GenericRepository<ApplicationUser>(context);
+                    this.userRepository = new UserRepository(context);
                 }
                 return userRepository;
             }
-        }
+        }        
 
         public TournamentRepository TournamentRepository
         {

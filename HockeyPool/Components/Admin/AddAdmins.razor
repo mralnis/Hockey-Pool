@@ -1,0 +1,180 @@
+﻿@page "/Admin/AddAdmin"
+@attribute [Authorize(Roles = "Admin")]
+
+@using HockeyPool.Infrastructure.Data.Models
+@using HockeyPool.Services
+@using Microsoft.AspNetCore.Identity
+
+@inject UnitOfWork unitOfWork;
+
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+    <MudText Typo="Typo.h4">Administratoru saraksts</MudText>
+
+    <MudTable Items="@userRoles"
+              T="RoleViewModel"
+              @ref="_table"
+              Hover="true"
+              CanCancelEdit="true"
+              SortLabel="Sort By"
+              CommitEditTooltip="Commit Edit"
+              RowEditPreview="BackupItem"
+              RowEditCancel="ResetItemToOriginalValues"
+              RowEditCommit="ItemHasBeenCommitted"
+              ApplyButtonPosition="TableApplyButtonPosition.End"
+              EditButtonPosition="TableEditButtonPosition.End"
+              EditTrigger="@TableEditTrigger.EditButton"
+              Breakpoint="Breakpoint.None">
+
+        <HeaderContent>
+            <MudTh><MudTableSortLabel SortBy="new Func<RoleViewModel, object>(x=>x.User.Email)">Lietotājs</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<RoleViewModel, object>(x=>x.Rolle.Name)">Loma</MudTableSortLabel></MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+
+        <RowTemplate>
+            <MudTd>@context?.User?.Email</MudTd>
+            <MudTd>@context?.Rolle?.Name</MudTd>
+            <MudTd></MudTd>
+        </RowTemplate>
+
+        <RowEditingTemplate>
+            <MudTd>
+                <MudSelect T="ApplicationUser" @bind-Value="@context.User">
+                    @foreach (ApplicationUser item in users)
+                    {
+                        <MudSelectItem Value="@item">@item.Email</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudTd>
+            <MudTd>
+                <MudSelect T="IdentityRole" @bind-Value="@context.Rolle">
+                    @foreach (IdentityRole item in roles)
+                    {
+                        <MudSelectItem Value="@item">@item.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudTd>
+            <MudTd>
+                <MudIconButton Icon="@Icons.Material.Outlined.Delete" @onclick="@(() => DeleteRowAsync(@context))"></MudIconButton>
+            </MudTd>
+        </RowEditingTemplate>
+
+        <EditButtonContent Context="button">
+            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
+        </EditButtonContent>
+    </MudTable>
+
+    <div class="d-flex justify-end mt-4">
+        <MudButton StartIcon="@Icons.Material.Outlined.Add" Color="@Color.Primary" OnClick="AddNewCountry" Variant="Variant.Filled">Pievienot jaunu valsti</MudButton>
+    </div>
+
+</MudContainer>
+
+
+@code {
+    List<RoleViewModel> userRoles;
+    MudTable<RoleViewModel> _table;
+    List<ApplicationUser> users;
+    List<IdentityRole> roles;
+    RoleViewModel roleViewModelBeforeEdit;
+
+
+    override protected async Task OnInitializedAsync()
+    {
+        userRoles = new List<RoleViewModel>();
+        users = await unitOfWork.UserRepository.GetAllAsync();
+        var userRolesList = await unitOfWork.UserRepository.GetAllUserRolles();
+        roles = await unitOfWork.RoleRepository.GetAllAsync();
+
+        foreach (var userRole in userRolesList)
+        {
+            var roleViewModel = new RoleViewModel
+                {
+                    UserRole = userRole,
+                    User = users.FirstOrDefault(x => x.Id == userRole.UserId),
+                    Rolle = roles.FirstOrDefault(x => x.Id == userRole.RoleId),
+                };
+
+            userRoles.Add(roleViewModel);
+        }
+    }
+
+    private async Task AddNewCountry()
+    {
+        var roleViewModel = new RoleViewModel()
+            {
+                UserRole = null,
+                User = null,
+                Rolle = roles.FirstOrDefault(),
+        };
+
+        userRoles.Add(roleViewModel);
+
+        await Task.Delay(50);
+        _table.SetSelectedItem(roleViewModel);
+        _table.SetEditingItem(roleViewModel);
+    }
+
+    private async Task DeleteRowAsync(RoleViewModel roleViewModel)
+    {
+        userRoles.Remove(roleViewModel);
+
+        await Task.Delay(50);
+        _table.SetSelectedItem(null);
+        _table.SetEditingItem(null);
+        StateHasChanged();
+
+        if (roleViewModel.Rolle == null)
+        {
+            return;
+        }
+
+        await unitOfWork.UserRepository.RemoveUserRoleAsync(roleViewModel.UserRole);
+        StateHasChanged();
+    }
+
+    private void BackupItem(object roleObject)
+    {
+        var role = (RoleViewModel)roleObject;
+        roleViewModelBeforeEdit = role;
+    }
+
+    private async void ItemHasBeenCommitted(object CountryEntity)
+    {
+
+        var roleViewModel = (RoleViewModel)CountryEntity;
+
+        if (roleViewModel.UserRole == null)
+        {
+            if (roleViewModel.User == null || roleViewModel.Rolle == null)
+            {
+                DeleteRowAsync(roleViewModel);
+                return;
+            }
+
+            roleViewModel.UserRole = new IdentityUserRole<string>
+                {
+                    UserId = roleViewModel.User.Id,
+                    RoleId = roleViewModel.Rolle.Id
+                };
+
+            await unitOfWork.UserRepository.AddUserRoleAsync(roleViewModel.UserRole);
+        }
+        else
+        {
+            await unitOfWork.UserRepository.UpdateUserRoleAsync(roleViewModel.UserRole);
+        }
+    }
+
+    private void ResetItemToOriginalValues(object roleObject)
+    {
+        roleObject = roleViewModelBeforeEdit;
+    }
+
+    private class RoleViewModel
+    {
+        public IdentityUserRole<string> UserRole { get; set; }
+        public ApplicationUser User { get; set; }
+        public IdentityRole Rolle { get; set; }
+    }
+}
