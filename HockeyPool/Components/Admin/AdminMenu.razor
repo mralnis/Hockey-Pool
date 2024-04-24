@@ -1,4 +1,4 @@
-﻿@page "/admin"
+﻿@page "/Admin"
 @attribute [Authorize(Roles = "Admin")]
 
 @inject UnitOfWork unitOfWork;
@@ -29,6 +29,7 @@
         </MudItem>
     </MudGrid>
 </MudContainer>
+
 @code {
     private MatchupViewModel ClosestMatchup = new MatchupViewModel() { Matchup = new Matchup() };
 
