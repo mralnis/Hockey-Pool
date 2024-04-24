@@ -11,8 +11,7 @@
               @ref="table"
               Hover="true"
               ReadOnly="false"
-              CanCancelEdit="@canCancelEdit"
-              @bind-SelectedItem="selectedItem1"
+              CanCancelEdit="true"
               SortLabel="Sort By"
               CommitEditTooltip="Commit Edit"
               RowEditPreview="BackupItem"
@@ -113,8 +112,6 @@
 @code {
     private List<string> editEvents = new();
 
-    private bool canCancelEdit = true;
-    private int searchString = 0;
     private bool activeOnly;
 
     private MatchupViewModel? selectedItem1 = null;
@@ -131,6 +128,7 @@
     {
         await LoadData();
     }
+
     private async Task<int> LoadData()
     {
         Matchups = new List<MatchupViewModel>();
@@ -163,6 +161,7 @@
         StateHasChanged();
         return 0;
     }
+
     void ActiveOnlyValueChanged(bool value)
     {
         activeOnly = value;
@@ -199,11 +198,6 @@
         table.SetEditingItem(matchup);
     }
 
-    private void ClearEventLog()
-    {
-        editEvents.Clear();
-    }
-
     private async Task DeleteRow(MatchupViewModel matchupViewModel)
     {
         Matchups.Remove(matchupViewModel);
@@ -212,12 +206,6 @@
             return;
         }
         await unitOfWork.MatchupRepository.RemoveAsync(matchupViewModel.Matchup);
-    }
-
-    private void AddEditionEvent(string message)
-    {
-        editEvents.Add(message);
-        StateHasChanged();
     }
 
     private void BackupItem(object MatchupObject)
@@ -244,6 +232,7 @@
     {
         MatchupObject = MatchupBeforeEdit;
     }
+
     public class MatchupViewModel
     {
         public Matchup Matchup { get; set; }

@@ -2,6 +2,7 @@
 @attribute [Authorize(Roles = "Admin")]
 
 @inject UnitOfWork unitOfWork;
+
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     <MudText Typo="Typo.h4">Dalīb valstis</MudText>
 
@@ -24,11 +25,13 @@
             <MudTh><MudTableSortLabel SortBy="new Func<Country, object>(x=>x.FlagCode)">Karoga kods</MudTableSortLabel></MudTh>
             <MudTh></MudTh>
         </HeaderContent>
+
         <RowTemplate>
             <MudTd DataLabel="Name">@context.Name</MudTd>
             <MudTd DataLabel="Flag Code">@context.FlagCode</MudTd>
             <MudTd DataLabel="Delete"></MudTd>
         </RowTemplate>
+
         <RowEditingTemplate>
             <MudTd DataLabel="Name">
                 <MudTextField @bind-Value="@context.Name" />
@@ -40,6 +43,7 @@
                 <MudIconButton Icon="@Icons.Material.Outlined.Delete" @onclick="@(() => DeleteRowAsync(context))"></MudIconButton>
             </MudTd>
         </RowEditingTemplate>
+
         <EditButtonContent Context="button">
             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
         </EditButtonContent>
