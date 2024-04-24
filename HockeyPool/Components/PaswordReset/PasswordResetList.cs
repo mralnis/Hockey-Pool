@@ -7,7 +7,7 @@
 
     public class PasswordToResetRequest
     {
-        public int Code { get; set; }
+        public Guid Code { get; set; }
         public string Email { get; set; }
         public DateTime RequestedAt { get; set; }
     }
