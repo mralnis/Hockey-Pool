@@ -4,107 +4,111 @@
 @inject UnitOfWork unitOfWork;
 @inject NavigationManager _navigationManager
 
-<MudTable Items="@Matchups"
-          T="MatchupViewModel"
-          @ref="table"
-          Hover="true"
-          ReadOnly="false"
-          CanCancelEdit="@canCancelEdit"
-          @bind-SelectedItem="selectedItem1"
-          SortLabel="Sort By"
-          CommitEditTooltip="Commit Edit"
-          RowEditPreview="BackupItem"
-          RowEditCancel="ResetItemToOriginalValues"
-          RowEditCommit="ItemHasBeenCommitted"
-          ApplyButtonPosition="TableApplyButtonPosition.End"
-          EditButtonPosition="TableEditButtonPosition.End"
-          EditTrigger="TableEditTrigger.EditButton"
-          Breakpoint="Breakpoint.None">
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
 
-    <ToolBarContent>
-        <MudText Typo="Typo.h4">Spēles</MudText>
-        <MudSpacer />
-        <MudSwitch T="bool" Value=@activeOnly ValueChanged=ActiveOnlyValueChanged Color="Color.Primary">Active only</MudSwitch>
-    </ToolBarContent>
+    <MudTable Items="@Matchups"
+              T="MatchupViewModel"
+              @ref="table"
+              Hover="true"
+              ReadOnly="false"
+              CanCancelEdit="@canCancelEdit"
+              @bind-SelectedItem="selectedItem1"
+              SortLabel="Sort By"
+              CommitEditTooltip="Commit Edit"
+              RowEditPreview="BackupItem"
+              RowEditCancel="ResetItemToOriginalValues"
+              RowEditCommit="ItemHasBeenCommitted"
+              ApplyButtonPosition="TableApplyButtonPosition.End"
+              EditButtonPosition="TableEditButtonPosition.End"
+              EditTrigger="TableEditTrigger.EditButton"
+              Breakpoint="Breakpoint.None">
 
-    <ColGroup>
-        <col style="width:auto;" />
-        <col style="width:auto;" />
-        <col style="width:auto;" />
-        <col style="width:auto;" />
-        <col />
-        <col />
-        <col style="width:auto;" />
-        <col style="width:auto;" />
-    </ColGroup>
+        <ToolBarContent>
+            <MudText Typo="Typo.h4">Spēles</MudText>
+            <MudSpacer />
+            <MudSwitch T="bool" Value=@activeOnly ValueChanged=ActiveOnlyValueChanged Color="Color.Primary">Active only</MudSwitch>
+        </ToolBarContent>
 
-    <HeaderContent>
-        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.TournamentName)">Turnīrs</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.HomeCountryName)">Mājas komanda</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.GuestCountryName)">Viesu komanda</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.GameTime ?? DateTime.MinValue)">Spēles laiks</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.HomeTeamScore ?? 0)">Mājinieku rezultāts</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.GuestTeamScore ?? 0)">Viesu Rezultāts</MudTableSortLabel></MudTh>
-        <MudTh></MudTh>
-    </HeaderContent>
+        <ColGroup>
+            <col style="width:auto;" />
+            <col style="width:auto;" />
+            <col style="width:auto;" />
+            <col style="width:auto;" />
+            <col />
+            <col />
+            <col style="width:auto;" />
+            <col style="width:auto;" />
+        </ColGroup>
 
-    <RowTemplate>
-        <MudTd DataLabel="Tournament">@context.TournamentName</MudTd>
-        <MudTd DataLabel="HomeTeamId"><SVGFlag CountryCode="@context.HomeCountryFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-right:5px"/>@context.HomeCountryName</MudTd>
-        <MudTd DataLabel="GuestTeamId"><SVGFlag CountryCode="@context.GuestCountryFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-right:5px" />@context.GuestCountryName</MudTd>
-        <MudTd DataLabel="GameTime">@context.Matchup.GameTime</MudTd>
-        <MudTd DataLabel="GuestTeamScore">@context.Matchup.HomeTeamScore</MudTd>
-        <MudTd DataLabel="HomeTeamScore">@context.Matchup.GuestTeamScore</MudTd>
-        <MudTd DataLabel="Delete"></MudTd>
-    </RowTemplate>
+        <HeaderContent>
+            <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.TournamentName)">Turnīrs</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.HomeCountryName)">Mājas komanda</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.GuestCountryName)">Viesu komanda</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.GameTime ?? DateTime.MinValue)">Spēles laiks</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.HomeTeamScore ?? 0)">Mājinieku rezultāts</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.GuestTeamScore ?? 0)">Viesu Rezultāts</MudTableSortLabel></MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
 
-    <RowEditingTemplate>
-        <MudTd DataLabel="Tournament">
-            <MudSelect @bind-Value="@context.Matchup.TournamentId">
-                @foreach (Tournament item in Tournaments)
-                {
-                    <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
-                }
-            </MudSelect>
-        </MudTd>
-        <MudTd DataLabel="Home team">
-            <MudSelect @bind-Value="@context.Matchup.HomeTeamId">
-                @foreach (Country item in Countries)
-                {
-                    <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
-                }
-            </MudSelect>
-        </MudTd>
-        <MudTd DataLabel="Guest team">
-            <MudSelect @bind-Value="@context.Matchup.GuestTeamId">
-                @foreach (Country item in Countries)
-                {
-                    <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
-                }
-            </MudSelect>
-        </MudTd>
-        <MudTd DataLabel="Game time">
-            <MudDateTime @bind-Value="@context.Matchup.GameTime" Required="true"></MudDateTime>
-        </MudTd>
-        <MudTd DataLabel="Home team score">
-            <MudNumericField RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@context.Matchup.HomeTeamScore" Min="0" Max="20" Label="@context.HomeCountryName" Variant="Variant.Text" />
-        </MudTd>
-        <MudTd DataLabel="Guest team score">
-            <MudNumericField RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@context.Matchup.GuestTeamScore" Min="0" Max="20" Label="@context.GuestCountryName" Variant="Variant.Text" />
-        </MudTd>
-        <MudTd>
-            <MudIconButton Icon="@Icons.Material.Outlined.Delete" @onclick="@(() => DeleteRow(context))"></MudIconButton>
-        </MudTd>
-    </RowEditingTemplate>
+        <RowTemplate>
+            <MudTd DataLabel="Tournament">@context.TournamentName</MudTd>
+            <MudTd DataLabel="HomeTeamId"><SVGFlag CountryCode="@context.HomeCountryFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-right:5px" />@context.HomeCountryName</MudTd>
+            <MudTd DataLabel="GuestTeamId"><SVGFlag CountryCode="@context.GuestCountryFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-right:5px" />@context.GuestCountryName</MudTd>
+            <MudTd DataLabel="GameTime">@context.Matchup.GameTime</MudTd>
+            <MudTd DataLabel="GuestTeamScore">@context.Matchup.HomeTeamScore</MudTd>
+            <MudTd DataLabel="HomeTeamScore">@context.Matchup.GuestTeamScore</MudTd>
+            <MudTd DataLabel="Delete"></MudTd>
+        </RowTemplate>
 
-    <EditButtonContent Context="button">
-        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
-    </EditButtonContent>
-</MudTable>
+        <RowEditingTemplate>
+            <MudTd DataLabel="Tournament">
+                <MudSelect @bind-Value="@context.Matchup.TournamentId">
+                    @foreach (Tournament item in Tournaments)
+                    {
+                        <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudTd>
+            <MudTd DataLabel="Home team">
+                <MudSelect @bind-Value="@context.Matchup.HomeTeamId">
+                    @foreach (Country item in Countries)
+                    {
+                        <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudTd>
+            <MudTd DataLabel="Guest team">
+                <MudSelect @bind-Value="@context.Matchup.GuestTeamId">
+                    @foreach (Country item in Countries)
+                    {
+                        <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudTd>
+            <MudTd DataLabel="Game time">
+                <MudDateTime @bind-Value="@context.Matchup.GameTime" Required="true"></MudDateTime>
+            </MudTd>
+            <MudTd DataLabel="Home team score">
+                <MudNumericField RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@context.Matchup.HomeTeamScore" Min="0" Max="20" Label="@context.HomeCountryName" Variant="Variant.Text" />
+            </MudTd>
+            <MudTd DataLabel="Guest team score">
+                <MudNumericField RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@context.Matchup.GuestTeamScore" Min="0" Max="20" Label="@context.GuestCountryName" Variant="Variant.Text" />
+            </MudTd>
+            <MudTd>
+                <MudIconButton Icon="@Icons.Material.Outlined.Delete" @onclick="@(() => DeleteRow(context))"></MudIconButton>
+            </MudTd>
+        </RowEditingTemplate>
 
-<div class="d-flex justify-end mt-4">
-    <MudButton StartIcon="@Icons.Material.Outlined.Add" Color="@Color.Primary" OnClick="AddNewMatchup" Variant="Variant.Filled">Pievienot jaunu spēli</MudButton>
-</div>
+        <EditButtonContent Context="button">
+            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
+        </EditButtonContent>
+    </MudTable>
+
+    <div class="d-flex justify-end mt-4">
+        <MudButton StartIcon="@Icons.Material.Outlined.Add" Color="@Color.Primary" OnClick="AddNewMatchup" Variant="Variant.Filled">Pievienot jaunu spēli</MudButton>
+    </div>
+
+</MudContainer>
 
 @code {
     private List<string> editEvents = new();
