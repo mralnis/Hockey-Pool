@@ -135,8 +135,8 @@
 
     private void BackupItem(object roleObject)
     {
-        var role = (RoleViewModel)roleObject;
-        roleViewModelBeforeEdit = role;
+        var roleViewModel = (RoleViewModel)roleObject;
+        roleViewModelBeforeEdit = roleViewModel;
     }
 
     private async void ItemHasBeenCommitted(object CountryEntity)
@@ -168,6 +168,12 @@
 
     private void ResetItemToOriginalValues(object roleObject)
     {
+        var roleViewModel = (RoleViewModel)roleObject;
+        if (roleViewModel.User == null || roleViewModel.Rolle == null)
+        {
+            DeleteRowAsync(roleViewModel);
+            return;
+        }
         roleObject = roleViewModelBeforeEdit;
     }
 
