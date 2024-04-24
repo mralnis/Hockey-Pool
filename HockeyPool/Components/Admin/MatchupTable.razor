@@ -1,124 +1,127 @@
 ﻿@page "/admin/matchups"
 @attribute [Authorize(Roles = "Admin")]
 
-@using System.Net.Http.Json
-@using HockeyPool.Infrastructure.Data.Repos
-@using MudBlazor
-@inject ISnackbar Snackbar
 @inject UnitOfWork unitOfWork;
-
 @inject NavigationManager _navigationManager
 
-<MudTable Items="@Matchups" Dense="@dense" Hover="@hover" ReadOnly="@ronly" CanCancelEdit="@canCancelEdit"
-          @bind-SelectedItem="selectedItem1" SortLabel="Sort By" CommitEditTooltip="Commit Edit"
-          OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" RowEditPreview="BackupItem" RowEditCancel="ResetItemToOriginalValues"
-          RowEditCommit="ItemHasBeenCommitted" ApplyButtonPosition="@applyButtonPosition" EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger">
+<MudTable Items="@Matchups"
+          T="MatchupViewModel"
+          @ref="table"
+          Hover="true"
+          ReadOnly="false"
+          CanCancelEdit="@canCancelEdit"
+          @bind-SelectedItem="selectedItem1"
+          SortLabel="Sort By"
+          CommitEditTooltip="Commit Edit"
+          RowEditPreview="BackupItem"
+          RowEditCancel="ResetItemToOriginalValues"
+          RowEditCommit="ItemHasBeenCommitted"
+          ApplyButtonPosition="TableApplyButtonPosition.End"
+          EditButtonPosition="TableEditButtonPosition.End"
+          EditTrigger="TableEditTrigger.EditButton"
+          Breakpoint="Breakpoint.None">
+
     <ToolBarContent>
-        <MudText Typo="Typo.h4">Matchups</MudText>
-        <MudSpacer />
-        <MudButton OnClick="AddNewMatchup" Variant="Variant.Filled">
-            Add new
-        </MudButton>
+        <MudText Typo="Typo.h4">Spēles</MudText>
         <MudSpacer />
         <MudSwitch T="bool" Value=@activeOnly ValueChanged=ActiveOnlyValueChanged Color="Color.Primary">Active only</MudSwitch>
     </ToolBarContent>
+
     <ColGroup>
-        @if (applyButtonPosition.DisplayApplyButtonAtStart() || (editButtonPosition.DisplayEditButtonAtStart() && editTrigger == TableEditTrigger.EditButton))
-        {
-            <col style="width:auto;" />
-        }
+        <col style="width:auto;" />
         <col style="width:auto;" />
         <col style="width:auto;" />
         <col style="width:auto;" />
         <col />
         <col />
-        @if (applyButtonPosition.DisplayApplyButtonAtEnd() || (editButtonPosition.DisplayEditButtonAtEnd() && editTrigger == TableEditTrigger.EditButton))
-        {
-            <col style="width:auto;" />
-        }
+        <col style="width:auto;" />
+        <col style="width:auto;" />
     </ColGroup>
+
     <HeaderContent>
-        <MudTh>🗑️</MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.Id)">Nr</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.TournamentName)">Tournament</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.HomeCountryName)">Home team</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.GuestCountryName)">Guest team</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.GameTime ?? DateTime.MinValue)">GameTime</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.HomeTeamScore ?? 0)">Home</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.GuestTeamScore ?? 0)">Guest</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.TournamentName)">Turnīrs</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.HomeCountryName)">Mājas komanda</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.GuestCountryName)">Viesu komanda</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.GameTime ?? DateTime.MinValue)">Spēles laiks</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.HomeTeamScore ?? 0)">Mājinieku rezultāts</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.Matchup.GuestTeamScore ?? 0)">Viesu Rezultāts</MudTableSortLabel></MudTh>
+        <MudTh></MudTh>
     </HeaderContent>
+
     <RowTemplate>
-        <MudTd DataLabel="Delete"></MudTd>
-        <MudTd DataLabel="Id">@context.Matchup.Id</MudTd>
         <MudTd DataLabel="Tournament">@context.TournamentName</MudTd>
-        <MudTd DataLabel="HomeTeamId">@context.HomeCountryName</MudTd>
-        <MudTd DataLabel="GuestTeamId">@context.GuestCountryName</MudTd>
+        <MudTd DataLabel="HomeTeamId"><SVGFlag CountryCode="@context.HomeCountryFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-right:5px"/>@context.HomeCountryName</MudTd>
+        <MudTd DataLabel="GuestTeamId"><SVGFlag CountryCode="@context.GuestCountryFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-right:5px" />@context.GuestCountryName</MudTd>
         <MudTd DataLabel="GameTime">@context.Matchup.GameTime</MudTd>
         <MudTd DataLabel="GuestTeamScore">@context.Matchup.HomeTeamScore</MudTd>
         <MudTd DataLabel="HomeTeamScore">@context.Matchup.GuestTeamScore</MudTd>
+        <MudTd DataLabel="Delete"></MudTd>
     </RowTemplate>
+
     <RowEditingTemplate>
-        <MudTd><MudButton @onclick="@(() => DeleteRow(context))">🗑️</MudButton></MudTd>
-        <MudTd DataLabel="Id">@context.Matchup.Id</MudTd>
         <MudTd DataLabel="Tournament">
-            <select @bind="@context.Matchup.TournamentId">
+            <MudSelect @bind-Value="@context.Matchup.TournamentId">
                 @foreach (Tournament item in Tournaments)
                 {
-                    <option Value="@item.Id">@item.Name</option>
+                    <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
                 }
-            </select>
+            </MudSelect>
         </MudTd>
         <MudTd DataLabel="Home team">
-            <select @bind="@context.Matchup.HomeTeamId" HelperText="Home team">
+            <MudSelect @bind-Value="@context.Matchup.HomeTeamId">
                 @foreach (Country item in Countries)
                 {
-                    <option Value="@item.Id">@item.Name</option>
+                    <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
                 }
-            </select>
+            </MudSelect>
         </MudTd>
         <MudTd DataLabel="Guest team">
-            <select @bind="@context.Matchup.GuestTeamId" Label="Select guest team" HelperText="Guest team">
+            <MudSelect @bind-Value="@context.Matchup.GuestTeamId">
                 @foreach (Country item in Countries)
                 {
-                    <option Value="@item.Id">@item.Name</option>
+                    <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
                 }
-            </select>
+            </MudSelect>
         </MudTd>
         <MudTd DataLabel="Game time">
-            <InputDate Type="InputDateType.DateTimeLocal" @bind-Value="@context.Matchup.GameTime"></InputDate>
+            <MudDateTime @bind-Value="@context.Matchup.GameTime" Required="true"></MudDateTime>
         </MudTd>
         <MudTd DataLabel="Home team score">
-            <MudTextField @bind-Value="@context.Matchup.HomeTeamScore" />
+            <MudNumericField RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@context.Matchup.HomeTeamScore" Min="0" Max="20" Label="@context.HomeCountryName" Variant="Variant.Text" />
         </MudTd>
         <MudTd DataLabel="Guest team score">
-            <MudTextField @bind-Value="@context.Matchup.GuestTeamScore" />
+            <MudNumericField RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@context.Matchup.GuestTeamScore" Min="0" Max="20" Label="@context.GuestCountryName" Variant="Variant.Text" />
+        </MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Outlined.Delete" @onclick="@(() => DeleteRow(context))"></MudIconButton>
         </MudTd>
     </RowEditingTemplate>
-    <PagerContent>
-        <MudTablePager PageSizeOptions="new int[] { 50 }" />
-    </PagerContent>
+
     <EditButtonContent Context="button">
         <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
     </EditButtonContent>
 </MudTable>
+
+<div class="d-flex justify-end mt-4">
+    <MudButton StartIcon="@Icons.Material.Outlined.Add" Color="@Color.Primary" OnClick="AddNewMatchup" Variant="Variant.Filled">Pievienot jaunu spēli</MudButton>
+</div>
+
 @code {
     private List<string> editEvents = new();
-    private bool dense = false;
-    private bool hover = true;
-    private bool ronly = false;
+
     private bool canCancelEdit = true;
     private int searchString = 0;
     private bool activeOnly;
+
     private MatchupViewModel? selectedItem1 = null;
     private MatchupViewModel? MatchupBeforeEdit;
+
     private HashSet<MatchupViewModel> selectedItems1 = new HashSet<MatchupViewModel>();
-    private TableApplyButtonPosition applyButtonPosition = TableApplyButtonPosition.End;
-    private TableEditButtonPosition editButtonPosition = TableEditButtonPosition.End;
-    private TableEditTrigger editTrigger = TableEditTrigger.EditButton;
     private List<MatchupViewModel> Matchups = new List<MatchupViewModel>();
     private List<Tournament> Tournaments = new List<Tournament>();
     private List<Country> Countries = new List<Country>();
 
+    MudTable<MatchupViewModel> table;
 
     protected override async Task OnInitializedAsync()
     {
@@ -141,11 +144,16 @@
 
         foreach (var matchup in matchups)
         {
+            var homeCountry = Countries.FirstOrDefault(x => x.Id == matchup.HomeTeamId);
+            var guestCountry = Countries.FirstOrDefault(x => x.Id == matchup.GuestTeamId);
+
             var matchupViewModel = new MatchupViewModel();
             matchupViewModel.Matchup = matchup;
             matchupViewModel.TournamentName = Tournaments.FirstOrDefault(x => x.Id == matchup.TournamentId)?.Name;
-            matchupViewModel.HomeCountryName = Countries.FirstOrDefault(x => x.Id == matchup.HomeTeamId)?.Name;
-            matchupViewModel.GuestCountryName = Countries.FirstOrDefault(x => x.Id == matchup.GuestTeamId)?.Name;
+            matchupViewModel.HomeCountryName = homeCountry?.Name;
+            matchupViewModel.HomeCountryFlagCode = homeCountry?.FlagCode;
+            matchupViewModel.GuestCountryName = homeCountry?.Name;
+            matchupViewModel.GuestCountryFlagCode = homeCountry?.FlagCode;
             Matchups.Add(matchupViewModel);
         }
         StateHasChanged();
@@ -156,17 +164,35 @@
         activeOnly = value;
         LoadData();
     }
-    private void AddNewMatchup()
+
+    private async Task AddNewMatchup()
     {
+        var defoultTournament = Tournaments.FirstOrDefault();
+        var defoultHomeCountry = Countries.FirstOrDefault();
+        var defoultGuestCountry = Countries.LastOrDefault();
+
         var matchup = new MatchupViewModel()
             {
                 IsNew = true,
+                GuestCountryName = defoultGuestCountry.Name,
+                GuestCountryFlagCode = defoultGuestCountry.FlagCode,
+                HomeCountryName = defoultHomeCountry.Name,
+                HomeCountryFlagCode = defoultHomeCountry.FlagCode,
+                TournamentName = defoultTournament.Name,
                 Matchup = new Matchup()
                 {
                     GameTime = DateTime.Now,
+                    TournamentId = defoultTournament.Id,
+                    HomeTeamId = defoultHomeCountry.Id,
+                    GuestTeamId = defoultGuestCountry.Id,
                 }
             };
-        Matchups.Insert(0, matchup);
+
+        Matchups.Add(matchup);
+
+        await Task.Delay(50);
+        table.SetSelectedItem(matchup);
+        table.SetEditingItem(matchup);
     }
 
     private void ClearEventLog()
@@ -219,7 +245,9 @@
         public Matchup Matchup { get; set; }
         public string? TournamentName { get; set; }
         public string? HomeCountryName { get; set; }
+        public string? HomeCountryFlagCode { get; set; }
         public string? GuestCountryName { get; set; }
+        public string? GuestCountryFlagCode { get; set; }
         public bool IsNew { get; set; }
     }
 }
