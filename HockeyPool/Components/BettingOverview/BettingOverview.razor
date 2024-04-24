@@ -15,7 +15,7 @@
 }
 else
 {
-    <MudTable Items="@UserPredictionsList.OrderByDescending(x => x.userId== CurrentUserID)" Breakpoint="Breakpoint.None" Hover="true" Loading="@_loading" HorizontalScrollbar="true" FixedHeader="true" LoadingProgressColor="Color.Info"  Filter="new Func<UserPredictions,bool>(FilterFunc1)">
+    <MudTable Style="background-color: rgb(55 55 64 / 85%);" Items="@UserPredictionsList.OrderByDescending(x => x.userId== CurrentUserID)" Breakpoint="Breakpoint.None" Hover="true" Loading="@_loading" HorizontalScrollbar="true" FixedHeader="true" LoadingProgressColor="Color.Info" Filter="new Func<UserPredictions,bool>(FilterFunc1)">
         <ToolBarContent>
             <MudSpacer />
             <MudTextField @bind-Value="searchString1" Immediate="true" Placeholder="Meklēt spēlētāju" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
