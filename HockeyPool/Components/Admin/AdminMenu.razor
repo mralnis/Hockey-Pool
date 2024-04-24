@@ -7,16 +7,23 @@
     <MudText Typo="Typo.h1">Administrātora panelis</MudText>
     <MudGrid Class="mud-table">        
         <MudDivider></MudDivider>
-        <MudItem xs="6">
+        <MudItem xs="4">
             <div class="d-block">
+                <MudText>Turnīra Administrēšana</MudText>
                 <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.Girl" DisableElevation="true" Label="Pārvaldīt Spēles" Href="/admin/matchups" />
                 <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.Flag" DisableElevation="true" Label="Pārvaldīt valstis" Href="/admin/countries" />
                 <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.SportsHockey" DisableElevation="true" Label="Pārvaldīt turnīrus" Href="/admin/tournaments" />
-                <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.LockReset" DisableElevation="true" Label="Atiestatīt paroli" Href="/ResetPasswordSetup" />
-                <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.AddModerator" DisableElevation="true" Label="Pārvaldīt administratorus" Href="/Admin/AddAdmin" />
             </div>
         </MudItem>
-        <MudItem xs="6">
+        <MudItem xs="4">
+            <div class="d-block">
+                <MudText >Web lapas Administrēšana</MudText>
+                <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.LockReset" DisableElevation="true" Label="Atiestatīt paroli" Href="/ResetPasswordSetup" />
+                <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.AddModerator" DisableElevation="true" Label="Pārvaldīt administratorus" Href="/Admin/AddAdmin" />
+                <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.PersonRemove" DisableElevation="true" Label="Dzēst lietotāju" Href="/Admin/RemoveUsers" />
+            </div>
+        </MudItem>
+        <MudItem xs="4">
             <MudCard>
                 <MudCardContent>
                     <SVGFlag CountryCode="@ClosestMatchup.HomeTeamFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-right:5px" /> @ClosestMatchup.HomeTeamName VS @ClosestMatchup.GuestTeamName  <SVGFlag CountryCode="@ClosestMatchup.GuestTeamFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-left:5px" />

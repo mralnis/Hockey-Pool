@@ -1,0 +1,48 @@
+﻿@page "/Admin/RemoveUsers"
+@attribute [Authorize(Roles = "Admin")]
+@using Microsoft.AspNetCore.Identity
+
+@inject UnitOfWork unitOfWork;
+@inject UserManager<ApplicationUser> UserManager
+
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+    <MudText Typo="Typo.h3">Lietotāju dzēšana</MudText>
+    <MudForm Class="mud-table" @ref="form">
+        <MudSelect Variant="Variant.Filled" T="string" @bind-value="SelectedUser" Label="Lietotājs" AnchorOrigin="Origin.BottomCenter" MultiSelection="false" Required="true" ErrorText="Nepieciešams izvēlēties lietotāju">
+            @foreach (var user in users)
+            {
+                <MudSelectItem Value="@user.Email">@user.Email</MudSelectItem>
+            }
+        </MudSelect>
+        <MudCardActions>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Dzēst lietotāju</MudButton>
+        </MudCardActions>
+    </MudForm>
+</MudContainer>
+
+
+@code {
+    MudForm form;
+    List<ApplicationUser> users;
+    private string SelectedUser { get; set; }
+
+    override protected async Task OnInitializedAsync()
+    {
+        users = await unitOfWork.UserRepository.GetAllAsync();
+    }
+
+    private async Task Submit()
+    {
+        await form.Validate();
+
+        if (form.IsValid)
+        {
+            var userToDelete = await UserManager.FindByEmailAsync(SelectedUser);
+            await UserManager.DeleteAsync(userToDelete);
+            users = await unitOfWork.UserRepository.GetAllAsync();
+
+            await form.ResetAsync();
+            StateHasChanged();
+        }
+    }
+}

@@ -154,8 +154,8 @@
             matchupViewModel.TournamentName = Tournaments.FirstOrDefault(x => x.Id == matchup.TournamentId)?.Name;
             matchupViewModel.HomeCountryName = homeCountry?.Name;
             matchupViewModel.HomeCountryFlagCode = homeCountry?.FlagCode;
-            matchupViewModel.GuestCountryName = homeCountry?.Name;
-            matchupViewModel.GuestCountryFlagCode = homeCountry?.FlagCode;
+            matchupViewModel.GuestCountryName = guestCountry?.Name;
+            matchupViewModel.GuestCountryFlagCode = guestCountry?.FlagCode;
             Matchups.Add(matchupViewModel);
         }
         StateHasChanged();
