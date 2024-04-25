@@ -6,7 +6,7 @@
 
 
 <MudTd DataLabel="@GetMatchLabel(@Matchup.HomeTeamId, @Matchup.GuestTeamId)" HideSmall="false">
-    @if (Matchup.GameTime.Value.ToLocalTime() < DateTime.Now.ToLocalTime())
+    @if (Matchup.GameTime.Value < DateTime.Now)
     {
         @if (@Prediction.HomeTeamScore.HasValue)
         {
@@ -84,7 +84,7 @@
         }
 
         if (isNewPrediction)
-        {
+        {           
             await unitOfWork.PredictionsRepository.AddAsync(prediction);
         }
         else

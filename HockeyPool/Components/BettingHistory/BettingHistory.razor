@@ -76,11 +76,11 @@ else
                 <MudTd DataLabel="Laiks">
                     <div class="content-align">
                         <MudIcon Icon="@Icons.Material.Filled.CalendarMonth" Size="Size.Small" Style="padding-right:5px" />
-                        @context.TimeStamp.ToLocalTime().ToString("MM.dd")
+                        @context.TimeStamp.ToString("MM.dd")
                     </div>
                     <div class="content-align">
                         <MudIcon Icon="@Icons.Material.Filled.AccessTime" Size="Size.Small" Style="padding-right:5px" />
-                        @context.TimeStamp.ToLocalTime().ToString("HH:mm.ss")
+                        @context.TimeStamp.ToString("HH:mm.ss")
                     </div>
                 </MudTd>
             </RowTemplate>
@@ -132,7 +132,7 @@ else
                     UserName = users.FirstOrDefault(x => x.Id == predictionLog.AspNetUserId.ToString())?.UserName,
                     HomeTeamCountryCode = GetCountryCode(matchup.HomeTeamId),
                     GuestTeamCountryCode = GetCountryCode(matchup.GuestTeamId),
-                    CanShow = CurrentUserID == predictionLog.AspNetUserId || matchup.GameTime.Value.ToLocalTime() <= DateTime.Now.ToLocalTime()
+                    CanShow = CurrentUserID == predictionLog.AspNetUserId || matchup.GameTime.Value <= DateTime.Now
                 }
 
             );
