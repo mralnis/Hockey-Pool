@@ -28,8 +28,8 @@ else
                 <MudSpacer />
                 <MudTextField @bind-Value="searchString1" Immediate="true" Placeholder="Meklēt spēlētāju" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
             </ToolBarContent>
-            <ColGroup>
-                <col style="width: 60px;" />
+            <ColGroup >
+                <col  style="width: 60px;" />
                 <col />
                 <col />
                 <col />
@@ -37,9 +37,9 @@ else
                 <col />
             </ColGroup>
             <HeaderContent>
-                <MudTh></MudTh>
-                <MudTh><div class="content-align">Minējums</div></MudTh>
-                <MudTh><div class="content-align">Izmaiņas veiktas</div></MudTh>
+                <MudTh Class="bg-transparent"></MudTh>
+                <MudTh Class="bg-transparent"><div class="content-align">Minējums</div></MudTh>
+                <MudTh Class="bg-transparent"><div class="content-align">Izmaiņas veiktas</div></MudTh>
             </HeaderContent>
             <GroupHeaderTemplate>
                 <MudTh>
@@ -55,7 +55,7 @@ else
                 </MudTh>
             </GroupHeaderTemplate>
             <RowTemplate>
-                <MudTd></MudTd>
+                <MudTd ></MudTd>
                 <MudTd DataLabel="Rezultāts">
                     <div class="content-align">
 
@@ -84,7 +84,7 @@ else
                 </MudTd>
             </RowTemplate>
             <GroupFooterTemplate>
-                <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer" colspan="5">Pavisam rezultāts mainīts @context.Items.Count() reizes</MudTh>
+                <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer " colspan="5">Pavisam rezultāts mainīts @context.Items.Count() reizes</MudTh>
             </GroupFooterTemplate>
         </MudTable>
     </MudContainer>
