@@ -7,7 +7,7 @@
 
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     <MudText Typo="Typo.h3">Lietotāju dzēšana</MudText>
-    <MudForm Class="mud-table" @ref="form">
+    <MudForm Class="mud-table background-transparent" @ref="form">
         <MudSelect Variant="Variant.Filled" T="string" @bind-value="SelectedUser" Label="Lietotājs" AnchorOrigin="Origin.BottomCenter" MultiSelection="false" Required="true" ErrorText="Nepieciešams izvēlēties lietotāju">
             @foreach (var user in users)
             {

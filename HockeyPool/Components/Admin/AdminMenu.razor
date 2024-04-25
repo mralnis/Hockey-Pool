@@ -5,7 +5,7 @@
 
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     <MudText Typo="Typo.h1">Administrātora panelis</MudText>
-    <MudGrid Class="mud-table">        
+    <MudGrid Class="mud-table background-transparent">
         <MudDivider></MudDivider>
         <MudItem xs="4">
             <div class="d-block">
@@ -24,7 +24,7 @@
             </div>
         </MudItem>
         <MudItem xs="4">
-            <MudCard>
+            <MudCard Class="bg-transparent">
                 <MudCardContent>
                     <SVGFlag CountryCode="@ClosestMatchup.HomeTeamFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-right:5px" /> @ClosestMatchup.HomeTeamName VS @ClosestMatchup.GuestTeamName  <SVGFlag CountryCode="@ClosestMatchup.GuestTeamFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-left:5px" />
                     <MudNumericField Style="width:fit-content" RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@ClosestMatchup.Matchup.HomeTeamScore" Min="0" Max="20" Label="@ClosestMatchup.HomeTeamName" Variant="Variant.Text" />

@@ -15,6 +15,7 @@ else
 {
     <MudContainer Class="mt-16" MaxWidth="MaxWidth.Small">
         <MudTable Items="@userPredictionsLists.OrderByDescending(_=> _.TimeStamp)"
+                  Class="background-transparent"
                   Breakpoint="Breakpoint.None"
                   Hover="true"
                   Loading="@_loading"
