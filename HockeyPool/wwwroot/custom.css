@@ -1,6 +1,7 @@
 ﻿body, html {
     height: 100%;
     margin: 0;
+    background-color: rgba(230 230 230 / 255);
 }
 
 .page-background-class {
