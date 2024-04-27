@@ -78,8 +78,8 @@
     {
         var dialogResult = await CallDialogAsync(matchup, prediction);
 
-        if (dialogResult.Canceled)
-        {
+        if (dialogResult.Canceled || matchup.GameTime.Value >= DateTime.Now)
+    {
             return;
         }
 
