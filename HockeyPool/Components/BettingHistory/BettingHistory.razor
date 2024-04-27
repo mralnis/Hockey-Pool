@@ -152,6 +152,11 @@ else
         foreach (var predictionLog in predictionLogs)
         {
             var matchup = matchups.FirstOrDefault(x => x.Id == predictionLog.MatchupId);
+            if (matchup == null)
+            {
+                continue;
+            }
+
             userPredictionsLists.Add(new UserPredictionsHistory(predictionLog)
                 {
                     UserName = users.FirstOrDefault(x => x.Id == predictionLog.AspNetUserId.ToString())?.UserName,
