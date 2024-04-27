@@ -1,4 +1,5 @@
 ﻿@using HockeyPool.Components.Account.Shared
+@using MudBlazor.Utilities
 @inherits LayoutComponentBase
 
 
@@ -18,10 +19,9 @@
 @code {
     private MudTheme _currentTheme = new MudTheme()
         {
-            Palette = new Palette
+            PaletteDark =  new PaletteDark
             {
-            //     TextPrimary = Colors.Indigo.Lighten5,
-            //     Secondary = Colors.Indigo.Lighten5,
+                Surface = new MudColor(55, 55, 64, 85),
             },
         };
 }
