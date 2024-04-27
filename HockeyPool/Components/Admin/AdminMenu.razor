@@ -17,49 +17,57 @@
         </MudItem>
         <MudItem xs="5">
             <div class="d-block">
-                <MudText >Web lapas Administrēšana</MudText>
+                <MudText>Web lapas Administrēšana</MudText>
                 <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.LockReset" DisableElevation="true" Label="Atiestatīt paroli" Href="/ResetPasswordSetup" />
                 <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.AddModerator" DisableElevation="true" Label="Pārvaldīt adminus" Href="/Admin/AddAdmin" />
                 <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.PersonRemove" DisableElevation="true" Label="Dzēst lietotāju" Href="/Admin/RemoveUsers" />
             </div>
         </MudItem>
-        <MudItem xs="8">
-            <MudCard Class="bg-transparent">
-                <MudCardContent>
-                    <SVGFlag CountryCode="@ClosestMatchup.HomeTeamFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-right:5px" /> @ClosestMatchup.HomeTeamName VS @ClosestMatchup.GuestTeamName  <SVGFlag CountryCode="@ClosestMatchup.GuestTeamFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-left:5px" />
-                    <MudNumericField Style="width:fit-content" RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@ClosestMatchup.Matchup.HomeTeamScore" Min="0" Max="20" Label="@ClosestMatchup.HomeTeamName" Variant="Variant.Text" />
-                    <MudNumericField Style="width:fit-content" RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@ClosestMatchup.Matchup.GuestTeamScore" Min="0" Max="20" Label="@ClosestMatchup.GuestTeamName" Variant="Variant.Text" />
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await Submit())">Save</MudButton>
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
+        @if (ClosestMatchup != null)
+        {
+            <MudItem xs="8">
+                <MudCard Class="bg-transparent">
+                    <MudCardContent>
+                        <SVGFlag CountryCode="@ClosestMatchup.HomeTeamFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-right:5px" /> @ClosestMatchup.HomeTeamName VS @ClosestMatchup.GuestTeamName  <SVGFlag CountryCode="@ClosestMatchup.GuestTeamFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-left:5px" />
+                        <MudNumericField Style="width:fit-content" RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@ClosestMatchup.Matchup.HomeTeamScore" Min="0" Max="20" Label="@ClosestMatchup.HomeTeamName" Variant="Variant.Text" />
+                        <MudNumericField Style="width:fit-content" RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@ClosestMatchup.Matchup.GuestTeamScore" Min="0" Max="20" Label="@ClosestMatchup.GuestTeamName" Variant="Variant.Text" />
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await Submit())">Save</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
     </MudGrid>
 </MudContainer>
 
 @code {
-    private MatchupViewModel ClosestMatchup = new MatchupViewModel() { Matchup = new Matchup() };
+    private MatchupViewModel ClosestMatchup = null;
 
     protected override async Task OnInitializedAsync()
+    {
+        await SetClosestMatchupAsync();
+    }
+
+    private async Task SetClosestMatchupAsync()
     {
         var matchup = await unitOfWork.MatchupRepository.GetClosestMatchupAsync();
         if (matchup == null)
         {
-            return;        
+            return;
         }
 
         var countries = await unitOfWork.CountryRepository.GetAllAsync();
         var homeCountry = countries.FirstOrDefault(x => x.Id == matchup.HomeTeamId);
         var guestCountry = countries.FirstOrDefault(x => x.Id == matchup.GuestTeamId);
-     
-        ClosestMatchup.Matchup = matchup;
-
-        ClosestMatchup.HomeTeamName = homeCountry.Name;
-        ClosestMatchup.HomeTeamFlagCode = homeCountry.FlagCode;
-
-        ClosestMatchup.GuestTeamName = guestCountry.Name;
-        ClosestMatchup.GuestTeamFlagCode = guestCountry.FlagCode;
+        ClosestMatchup = new MatchupViewModel()
+            {
+                Matchup = matchup,
+                HomeTeamName = homeCountry.Name,
+                HomeTeamFlagCode = homeCountry.FlagCode,
+                GuestTeamName = guestCountry.Name,
+                GuestTeamFlagCode = guestCountry.FlagCode,
+            };
     }
 
     private async Task Submit()
