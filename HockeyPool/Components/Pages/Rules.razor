@@ -7,31 +7,33 @@
 @inject UnitOfWork unitOfWork
 
 <MudContainer>
-    <MudText Typo="Typo.h2">Noteikumi </MudText>
+    <MudPaper Class="pa-2">
+        <MudText Typo="Typo.h2">Noteikumi </MudText>
 
-    <p></p>
-    <MudList>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Turnīram dalībnieki var pievienoties jebkurā laikā, taču par notikušajām vai pašreiz notiekošajam spēlēm punktus saņemt nevar!</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Minējumus var ievadīt vai mainīt līdz spēles sākumam! Spēlei sākoties izmaiņas vairs nevarēs veikt!</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Citu dalībnieku minējumus varēs redzēt tikai tad, kad būs sākusies spēle.</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Spēle nevar noslēgties ar neizšķirtu rezultātu līdz ar to punktus par pamatlaika neizšķirtu arī nevar iegūt.</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Turnīrs norisinās kamēr Latvijas izlasei turpina dalību turnīrā. Tiekot tālāk administratori pievienos jaunās spēles.</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Uzvaras dalībnieks ar viss lielāko punktu skaitu </MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Ja diviem vai vairākiem dalībniekiem ir vienāds punktu skaits, tad šie dalībnieki turpina likt likmes uz kādas citas komandas spēlēm līdz noskaidrojas uzvarētājs.</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Uzvarētājs saņem visu balvu fondu</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Organizatori patur tiesības ieviest izmaiņas noteikumos</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Dalības maksa <b>10 EUR</b>.</MudListItem>
-        <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers" Text="Punktu sadalījums" InitiallyExpanded="true">
-            <NestedList>
-                <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti par precīzu minējumu: <b>@tournament?.PointsForPerfect </b> </MudListItem>
-                <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti par pareizu vārtu starpību+uzvarētāju: <b>@tournament?.PointForDifference</b></MudListItem>
-                <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti tikai par pareizo uzvarētāju: <b>@tournament?.PointsForWinnerOnly</b></MudListItem>
-            </NestedList>
-        </MudListItem>
-    </MudList>
-    <MudDivider />
-    <MudText Typo="Typo.h6"> <a href="https://www.swedbank.lv/pay?id=pw7a2y1wypji"> Didzis Stivriņš LV21HABA0551039169500  (Swedbank) </a></MudText>
-    <MudDivider />
+        <p></p>
+        <MudList>
+            <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Turnīram dalībnieki var pievienoties jebkurā laikā, taču par notikušajām vai pašreiz notiekošajam spēlēm punktus saņemt nevar!</MudListItem>
+            <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Minējumus var ievadīt vai mainīt līdz spēles sākumam! Spēlei sākoties izmaiņas vairs nevarēs veikt!</MudListItem>
+            <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Citu dalībnieku minējumus varēs redzēt tikai tad, kad būs sākusies spēle.</MudListItem>
+            <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Spēle nevar noslēgties ar neizšķirtu rezultātu līdz ar to punktus par pamatlaika neizšķirtu arī nevar iegūt.</MudListItem>
+            <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Turnīrs norisinās kamēr Latvijas izlasei turpina dalību turnīrā. Tiekot tālāk administratori pievienos jaunās spēles.</MudListItem>
+            <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Uzvaras dalībnieks ar viss lielāko punktu skaitu </MudListItem>
+            <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Ja diviem vai vairākiem dalībniekiem ir vienāds punktu skaits, tad šie dalībnieki turpina likt likmes uz kādas citas komandas spēlēm līdz noskaidrojas uzvarētājs.</MudListItem>
+            <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Uzvarētājs saņem visu balvu fondu</MudListItem>
+            <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Organizatori patur tiesības ieviest izmaiņas noteikumos</MudListItem>
+            <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Dalības maksa <b>10 EUR</b>.</MudListItem>
+            <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers" Text="Punktu sadalījums" InitiallyExpanded="true">
+                <NestedList>
+                    <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti par precīzu minējumu: <b>@tournament?.PointsForPerfect </b> </MudListItem>
+                    <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti par pareizu vārtu starpību+uzvarētāju: <b>@tournament?.PointForDifference</b></MudListItem>
+                    <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti tikai par pareizo uzvarētāju: <b>@tournament?.PointsForWinnerOnly</b></MudListItem>
+                </NestedList>
+            </MudListItem>
+        </MudList>
+        <MudDivider />
+        <MudText Typo="Typo.h6"> <a href="https://www.swedbank.lv/pay?id=pw7a2y1wypji"> Didzis Stivriņš LV21HABA0551039169500  (Swedbank) </a></MudText>
+        <MudDivider />
+    </MudPaper>
 </MudContainer>
 
 
