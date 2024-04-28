@@ -228,7 +228,7 @@
         }
         else
         {
-            await unitOfWork.MatchupRepository.EditAsync(matchupViewModel.Matchup);
+            await unitOfWork.MatchupRepository.UpdateAsync(matchupViewModel.Matchup);
         }
         _navigationManager.NavigateTo("/admin/matchups", true);
     }

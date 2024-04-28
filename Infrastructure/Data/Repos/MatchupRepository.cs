@@ -21,13 +21,14 @@ namespace HockeyPool.Infrastructure.Data.Repos
             return result.Entity;
         }
 
-        public async Task EditAsync(Matchup matchup)
+        public override async Task UpdateAsync(Matchup matchup)
         {
             _dbContext.Entry(matchup).State = EntityState.Modified;
-            if (matchup.HomeTeamScore != null)
+            if (matchup.HomeTeamScore != null && matchup.GuestTeamScore != null)
             {
                 SetScore(matchup);
             }
+
             await _dbContext.SaveChangesAsync();
         }
 

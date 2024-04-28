@@ -73,7 +73,7 @@
 
     private async Task Submit()
     {
-        await unitOfWork.MatchupRepository.EditAsync(ClosestMatchup.Matchup);
+        await unitOfWork.MatchupRepository.UpdateAsync(ClosestMatchup.Matchup);
         ShowNotification($"Rezultāts {ClosestMatchup.HomeTeamFlagCode} : {ClosestMatchup.GuestTeamFlagCode} saglabāts", Severity.Success);
         ClosestMatchup = null;
         await SetClosestMatchupAsync();
