@@ -28,7 +28,7 @@ else
                 <MudSpacer />
                 <MudTextField @bind-Value="searchString1" Immediate="true" Placeholder="Meklēt spēlētāju" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
             </ToolBarContent>
-        
+
 
             <HeaderContent>
                 <MudTh></MudTh>
@@ -37,8 +37,6 @@ else
             </HeaderContent>
 
             <GroupHeaderTemplate>
-                @*    <MudTh Class="mud-table-cell-custom-group" colspan="6">@context.GroupName</MudTh>
-            <MudTh Class="mud-table-cell-custom-group" colspan="6">@($"{context.GroupName}: {context.Key}")</MudTh> *@
                 @if (context.GroupName == "Lietotāji")
                 {
                     <MudTh Class="mud-table-cell-custom-group">@($"{context.Key}")</MudTh>
@@ -53,13 +51,6 @@ else
                     </MudTh>
                     <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer " colspan="5">Rezultāts mainīts @context.Items.Count() reizes</MudTh>
                 }
-                @*                 <MudTh>
-            @($"{context.Items.FirstOrDefault().UserName}")
-            </MudTh> *@
-
-                @*                 <MudTh>
-            @($"{context.Items.MaxBy(_ => _.TimeStamp).TimeStamp}")
-            </MudTh> *@
             </GroupHeaderTemplate>
 
             <RowTemplate>
@@ -142,19 +133,20 @@ else
         foreach (var predictionLog in predictionLogs)
         {
             var matchup = matchups.FirstOrDefault(x => x.Id == predictionLog.MatchupId);
-            if (matchup == null)
+            var user = users.FirstOrDefault(x => x.Id == predictionLog.AspNetUserId.ToString());
+
+            if (matchup == null || user == null)
             {
                 continue;
             }
 
             userPredictionsLists.Add(new UserPredictionsHistory(predictionLog)
                 {
-                    UserName = users.FirstOrDefault(x => x.Id == predictionLog.AspNetUserId.ToString())?.UserName,
+                    UserName = user.UserName,
                     HomeTeamCountryCode = GetCountryCode(matchup.HomeTeamId),
                     GuestTeamCountryCode = GetCountryCode(matchup.GuestTeamId),
                     CanShow = CurrentUserID == predictionLog.AspNetUserId || matchup.GameTime.Value <= DateTime.Now
                 }
-
             );
         }
 
