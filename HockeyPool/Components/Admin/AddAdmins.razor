@@ -6,6 +6,7 @@
 @using Microsoft.AspNetCore.Identity
 
 @inject UnitOfWork unitOfWork;
+@inject ISnackbar Snackbar
 
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     <MudText Typo="Typo.h4">Administratoru saraksts</MudText>
@@ -40,7 +41,7 @@
         <RowEditingTemplate>
             <MudTd>
                 <MudSelect T="ApplicationUser" @bind-Value="@context.User">
-                    @foreach (ApplicationUser item in users)
+                    @foreach (ApplicationUser item in eligibleUsers)
                     {
                         <MudSelectItem Value="@item">@item.Email</MudSelectItem>
                     }
@@ -65,7 +66,7 @@
     </MudTable>
 
     <div class="d-flex justify-end mt-4">
-        <MudButton StartIcon="@Icons.Material.Outlined.Add" Color="@Color.Primary" OnClick="AddNewCountry" Variant="Variant.Filled">Pievienot jaunu valsti</MudButton>
+        <MudButton StartIcon="@Icons.Material.Outlined.Add" Color="@Color.Primary" OnClick="AddAdmin" Variant="Variant.Filled">Pievienot jaunu Adminu</MudButton>
     </div>
 
 </MudContainer>
@@ -74,7 +75,7 @@
 @code {
     List<RoleViewModel> userRoles;
     MudTable<RoleViewModel> _table;
-    List<ApplicationUser> users;
+    List<ApplicationUser> eligibleUsers;
     List<IdentityRole> roles;
     RoleViewModel roleViewModelBeforeEdit;
 
@@ -82,37 +83,43 @@
     override protected async Task OnInitializedAsync()
     {
         userRoles = new List<RoleViewModel>();
-        users = await unitOfWork.UserRepository.GetAllAsync();
+        var allUsers = await unitOfWork.UserRepository.GetAllAsync();
         var userRolesList = await unitOfWork.UserRepository.GetAllUserRolles();
         roles = await unitOfWork.RoleRepository.GetAllAsync();
 
+        eligibleUsers = allUsers;
         foreach (var userRole in userRolesList)
         {
+            var userWithRolle = allUsers.FirstOrDefault(x => x.Id == userRole.UserId);
             var roleViewModel = new RoleViewModel
                 {
                     UserRole = userRole,
-                    User = users.FirstOrDefault(x => x.Id == userRole.UserId),
+                    User = userWithRolle,
                     Rolle = roles.FirstOrDefault(x => x.Id == userRole.RoleId),
                 };
 
             userRoles.Add(roleViewModel);
+            eligibleUsers.Remove(userWithRolle);
         }
+
     }
 
-    private async Task AddNewCountry()
+    private async Task AddAdmin()
     {
         var roleViewModel = new RoleViewModel()
             {
                 UserRole = null,
                 User = null,
                 Rolle = roles.FirstOrDefault(),
-        };
+            };
 
         userRoles.Add(roleViewModel);
 
         await Task.Delay(50);
         _table.SetSelectedItem(roleViewModel);
         _table.SetEditingItem(roleViewModel);
+
+        StateHasChanged();
     }
 
     private async Task DeleteRowAsync(RoleViewModel roleViewModel)
@@ -130,6 +137,9 @@
         }
 
         await unitOfWork.UserRepository.RemoveUserRoleAsync(roleViewModel.UserRole);
+        ShowNotification($"Lietotājam {roleViewModel.User.UserName} noņemtas administratora tiesības", Severity.Success);
+
+        eligibleUsers.Add(roleViewModel.User);
         StateHasChanged();
     }
 
@@ -164,6 +174,8 @@
         {
             await unitOfWork.UserRepository.UpdateUserRoleAsync(roleViewModel.UserRole);
         }
+        eligibleUsers.Remove(roleViewModel.User);
+        ShowNotification($"Lietotājs {roleViewModel.User.UserName} paaugstināts kā administrators", Severity.Success);
     }
 
     private void ResetItemToOriginalValues(object roleObject)
@@ -182,5 +194,17 @@
         public IdentityUserRole<string> UserRole { get; set; }
         public ApplicationUser User { get; set; }
         public IdentityRole Rolle { get; set; }
+    }
+
+    public void ShowNotification(string message, Severity severity)
+    {
+        Snackbar.Add(message, severity, config =>
+        {
+            config.RequireInteraction = false;
+            config.ShowCloseIcon = false;
+            config.VisibleStateDuration = 600;
+            config.HideTransitionDuration = 250;
+            config.ShowTransitionDuration = 250;
+        });
     }
 }
