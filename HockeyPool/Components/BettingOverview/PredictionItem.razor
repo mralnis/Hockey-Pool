@@ -3,7 +3,7 @@
 
 @inject UnitOfWork unitOfWork;
 @inject IDialogService DialogService
-
+@inject ISnackbar Snackbar
 
 <MudTd DataLabel="@GetMatchLabel(@Matchup.HomeTeamId, @Matchup.GuestTeamId)" HideSmall="false">
     @if (Matchup.GameTime.Value < DateTime.Now)
@@ -78,19 +78,22 @@
     {
         var dialogResult = await CallDialogAsync(matchup, prediction);
 
-        if (dialogResult.Canceled || matchup.GameTime.Value >= DateTime.Now)
-    {
+        if (dialogResult.Canceled || matchup.GameTime.Value <= DateTime.Now)
+        {
+            ShowNotification("Prognoze netika pievienota", Severity.Warning);
             return;
         }
 
         if (isNewPrediction)
-        {           
+        {
             await unitOfWork.PredictionsRepository.AddAsync(prediction);
         }
         else
         {
             await unitOfWork.PredictionsRepository.UpdateAsync(prediction);
         }
+
+        ShowNotification("Prognoze veiksmīgi pievienota", Severity.Success);
 
         this.StateHasChanged();
     }
@@ -107,4 +110,15 @@
         return await dialog.Result;
     }
 
+    public void ShowNotification(string message, Severity severity)
+    {
+        Snackbar.Add(message, severity, config =>
+        {
+            config.RequireInteraction = false;
+            config.ShowCloseIcon = false;
+            config.VisibleStateDuration = 600;
+            config.HideTransitionDuration = 250;
+            config.ShowTransitionDuration = 250;
+        });
+    }
 }
