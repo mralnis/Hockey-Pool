@@ -19,6 +19,7 @@ else
                   Hover="true"
                   Loading="@_loading"
                   HorizontalScrollbar="true"
+                  Dense ="true"
                   FixedHeader="true"
                   LoadingProgressColor="Color.Info"
                   GroupBy="@_groupDefinition"
@@ -40,16 +41,16 @@ else
                 @if (context.GroupName == "Lietotāji")
                 {
                     <MudTh Class="mud-table-cell-custom-group">@($"{context.Key}")</MudTh>
-                    <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer " colspan="5">Rezultāti mainīti @context.Items.Count() reizes</MudTh>
+                    <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer " colspan="5">Rezultāti ievadīts @context.Items.Count() reizes</MudTh>
                 }
                 else
                 {
                     <MudTh>
-                        <SVGFlag CountryCode="@context.Items.FirstOrDefault().HomeTeamCountryCode" FlagType="FlagType.Wide" Width="50" Height="50" style="padding-right:5px" />
+                        <SVGFlag CountryCode="@context.Items.FirstOrDefault().HomeTeamCountryCode" FlagType="FlagType.Wide" Width="35" Height="35" style="padding-right:5px" />
                         VS
-                        <SVGFlag CountryCode="@context.Items.FirstOrDefault().GuestTeamCountryCode" FlagType="FlagType.Wide" Width="50" Height="50" style="padding-left:5px" />
+                        <SVGFlag CountryCode="@context.Items.FirstOrDefault().GuestTeamCountryCode" FlagType="FlagType.Wide" Width="35" Height="35" style="padding-left:5px" />
                     </MudTh>
-                    <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer " colspan="5">Rezultāts mainīts @context.Items.Count() reizes</MudTh>
+                    <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer " colspan="5">Rezultāts ievadīts @context.Items.Count() reizes</MudTh>
                 }
             </GroupHeaderTemplate>
 
@@ -80,10 +81,10 @@ else
                 </MudTd>
             </RowTemplate>
 
-            <GroupFooterTemplate>
+            <GroupFooterTemplate Class="bg-dark">
                 @if (context.GroupName == "Lietotāji")
                 {
-
+                    
                 }
             </GroupFooterTemplate>
         </MudTable>
