@@ -13,18 +13,18 @@
 }
 else
 {
-    <MudTable Class="background-transparent" Items="@UserPredictionsList.OrderByDescending(x => x.userId== CurrentUserID)" Breakpoint="Breakpoint.None" Hover="true" Loading="@_loading" HorizontalScrollbar="true" FixedHeader="true" LoadingProgressColor="Color.Info" Filter="new Func<UserPredictions,bool>(FilterFunc1)">
+    <MudTable Items="@UserPredictionsList.OrderByDescending(x => x.userId== CurrentUserID)" Breakpoint="Breakpoint.None" Hover="true" Loading="@_loading" HorizontalScrollbar="true" FixedHeader="true" LoadingProgressColor="Color.Info" Filter="new Func<UserPredictions,bool>(FilterFunc1)">
         <ToolBarContent>
             <MudSpacer />
             <MudTextField @bind-Value="searchString1" Immediate="true" Placeholder="Meklēt spēlētāju" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
         <HeaderContent>
-            <MudTh Class="bg-transparent"></MudTh>
+            <MudTh></MudTh>
             @foreach (var matchup in matchups)
             {
                 <MatchupItem matchup="@matchup" />
             }
-            <MudTh Class="bg-transparent"><MudTableSortLabel SortBy="new Func<UserPredictions, object>(x=>x.predictions.Sum(_=> _.PointsEarned ?? 0))">Punkti</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<UserPredictions, object>(x=>x.predictions.Sum(_=> _.PointsEarned ?? 0))">Punkti</MudTableSortLabel></MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Name">@context.userName</MudTd>
