@@ -1,9 +1,12 @@
 ﻿@page "/Admin/RemoveUsers"
 @attribute [Authorize(Roles = "Admin")]
 @using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
 
 @inject UnitOfWork unitOfWork;
 @inject UserManager<ApplicationUser> UserManager
+@inject ISnackbar Snackbar
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     <MudText Typo="Typo.h3">Lietotāju dzēšana</MudText>
@@ -29,6 +32,10 @@
     override protected async Task OnInitializedAsync()
     {
         users = await unitOfWork.UserRepository.GetAllAsync();
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        var currentUser = users.FirstOrDefault(_ => _.Id == authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        users.Remove(currentUser);
     }
 
     private async Task Submit()
@@ -42,7 +49,20 @@
             users = await unitOfWork.UserRepository.GetAllAsync();
 
             await form.ResetAsync();
+            ShowNotification($"Lietotājs {userToDelete.UserName} veiksmīgi dzēsts", Severity.Success);
             StateHasChanged();
         }
+    }
+
+    public void ShowNotification(string message, Severity severity)
+    {
+        Snackbar.Add(message, severity, config =>
+        {
+            config.RequireInteraction = false;
+            config.ShowCloseIcon = false;
+            config.VisibleStateDuration = 600;
+            config.HideTransitionDuration = 250;
+            config.ShowTransitionDuration = 250;
+        });
     }
 }
