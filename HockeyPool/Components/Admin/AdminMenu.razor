@@ -2,6 +2,7 @@
 @attribute [Authorize(Roles = "Admin")]
 
 @inject UnitOfWork unitOfWork;
+@inject ISnackbar Snackbar
 
 <MudContainer Class="mt-16 align-content-xxl-center" MaxWidth="MaxWidth.Small">
     <MudText Typo="Typo.h3">Administrātora panelis</MudText>
@@ -72,7 +73,11 @@
 
     private async Task Submit()
     {
-        await unitOfWork.MatchupRepository.UpdateAsync(ClosestMatchup.Matchup);
+        await unitOfWork.MatchupRepository.EditAsync(ClosestMatchup.Matchup);
+        ShowNotification($"Rezultāts {ClosestMatchup.HomeTeamFlagCode} : {ClosestMatchup.GuestTeamFlagCode} saglabāts", Severity.Success);
+        ClosestMatchup = null;
+        await SetClosestMatchupAsync();
+        StateHasChanged();
     }
 
     private class MatchupViewModel
@@ -82,5 +87,17 @@
         public string GuestTeamName { get; set; }
         public string HomeTeamFlagCode { get; set; }
         public string GuestTeamFlagCode { get; set; }
+    }
+
+    public void ShowNotification(string message, Severity severity)
+    {
+        Snackbar.Add(message, severity, config =>
+        {
+            config.RequireInteraction = false;
+            config.ShowCloseIcon = false;
+            config.VisibleStateDuration = 1000;
+            config.HideTransitionDuration = 500;
+            config.ShowTransitionDuration = 500;
+        });
     }
 }
