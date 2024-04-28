@@ -30,7 +30,7 @@ else
             {
                 <MatchupItem matchup="@matchup" />
             }
-            <MudTh><MudTableSortLabel SortBy="new Func<UserPredictions, object>(x=>x.predictions.Sum(_=> _.PointsEarned ?? 0))">Punkti</MudTableSortLabel></MudTh>
+            <MudTh Style="background-color:inherit;"><MudTableSortLabel SortBy="new Func<UserPredictions, object>(x=>x.predictions.Sum(_=> _.PointsEarned ?? 0))">Punkti</MudTableSortLabel></MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Name">@context.userName</MudTd>
