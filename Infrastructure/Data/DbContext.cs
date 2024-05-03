@@ -34,7 +34,7 @@ namespace HockeyPool.Infrastructure.Data
                     UserName = "admin",
                     Email = "admin",
                     NormalizedUserName = "ADMIN"
-                }, "admin");               
+                }, "admin");
 
                 var user = await userManager.FindByNameAsync("admin");
 
@@ -70,7 +70,7 @@ namespace HockeyPool.Infrastructure.Data
                     TournamentId = tournament.Id,
                     HomeTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.PL).Id,
                     GuestTeamId = latvija.Id,
-                    GameTime = new DateTimeOffset(new DateTime(2024, 05, 11, 17, 20, 00), TimeSpan.FromHours(3)).UtcDateTime
+                    GameTime = new DateTime(2024, 05, 11, 17, 20, 00),
                 });
 
                 Matchups.Add(new Matchup
@@ -78,7 +78,7 @@ namespace HockeyPool.Infrastructure.Data
                     TournamentId = tournament.Id,
                     HomeTeamId = latvija.Id,
                     GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.FR).Id,
-                    GameTime = new DateTimeOffset(new DateTime(2024, 05, 12, 17, 20, 00), TimeSpan.FromHours(3)).UtcDateTime
+                    GameTime = new DateTime(2024, 05, 12, 17, 20, 00),
                 });
 
                 Matchups.Add(new Matchup
@@ -86,7 +86,7 @@ namespace HockeyPool.Infrastructure.Data
                     TournamentId = tournament.Id,
                     HomeTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.KZ).Id,
                     GuestTeamId = latvija.Id,
-                    GameTime = new DateTimeOffset(new DateTime(2024, 05, 14, 17, 20, 00), TimeSpan.FromHours(3)).UtcDateTime
+                    GameTime = new DateTime(2024, 05, 14, 17, 20, 00),
                 });
 
                 Matchups.Add(new Matchup
@@ -94,7 +94,7 @@ namespace HockeyPool.Infrastructure.Data
                     TournamentId = tournament.Id,
                     HomeTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.DE).Id,
                     GuestTeamId = latvija.Id,
-                    GameTime = new DateTimeOffset(new DateTime(2024, 05, 15, 17, 20, 00), TimeSpan.FromHours(3)).UtcDateTime
+                    GameTime = new DateTime(2024, 05, 15, 17, 20, 00),
                 });
 
                 Matchups.Add(new Matchup
@@ -102,7 +102,7 @@ namespace HockeyPool.Infrastructure.Data
                     TournamentId = tournament.Id,
                     HomeTeamId = latvija.Id,
                     GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.SE).Id,
-                    GameTime = new DateTimeOffset(new DateTime(2024, 05, 18, 13, 20, 00), TimeSpan.FromHours(3)).UtcDateTime
+                    GameTime = new DateTime(2024, 05, 18, 13, 20, 00),
                 });
 
                 Matchups.Add(new Matchup
@@ -110,7 +110,7 @@ namespace HockeyPool.Infrastructure.Data
                     TournamentId = tournament.Id,
                     HomeTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.SK).Id,
                     GuestTeamId = latvija.Id,
-                    GameTime = new DateTimeOffset(new DateTime(2024, 05, 19, 21, 20, 00), TimeSpan.FromHours(3)).UtcDateTime
+                    GameTime = new DateTime(2024, 05, 19, 21, 20, 00),
                 });
 
                 Matchups.Add(new Matchup
@@ -118,7 +118,7 @@ namespace HockeyPool.Infrastructure.Data
                     TournamentId = tournament.Id,
                     HomeTeamId = latvija.Id,
                     GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.US).Id,
-                    GameTime = new DateTimeOffset(new DateTime(2024, 05, 21, 17, 20, 00), TimeSpan.FromHours(3)).UtcDateTime
+                    GameTime = new DateTime(2024, 05, 21, 17, 20, 00)
                 });
 
                 SaveChanges();
