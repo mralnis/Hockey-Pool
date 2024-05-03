@@ -4,6 +4,7 @@
 @inject UnitOfWork unitOfWork;
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
+@inject IHttpContextAccessor httpContextAccessor
 
 <MudTd DataLabel="@GetMatchLabel(@Matchup.HomeTeamId, @Matchup.GuestTeamId)" HideSmall="false">
     @if (Matchup.GameTime.Value < DateTime.Now)
@@ -84,13 +85,16 @@
             return;
         }
 
+        var userAgent = httpContextAccessor.HttpContext.Request.Headers["User-Agent"];
+        var ipAddress = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+
         if (isNewPrediction)
         {
-            await unitOfWork.PredictionsRepository.AddAsync(prediction);
+            await unitOfWork.PredictionsRepository.AddAsync(prediction, ipAddress, userAgent);
         }
         else
         {
-            await unitOfWork.PredictionsRepository.UpdateAsync(prediction);
+            await unitOfWork.PredictionsRepository.UpdateAsync(prediction, ipAddress, userAgent);
         }
 
         ShowNotification("Prognoze veiksmīgi pievienota", Severity.Success);

@@ -8,5 +8,7 @@
         public Guid AspNetUserId { get; set; }
         public int? HomeTeamScore { get; set; }
         public int? GuestTeamScore { get; set; }
+        public string IpAddress { get; set; }
+        public string BrowserVersion { get; set;}
     }
 }
