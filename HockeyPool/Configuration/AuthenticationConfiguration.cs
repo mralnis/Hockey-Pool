@@ -43,7 +43,7 @@ namespace HockeyPool.Configuration
                 options.Password.RequiredLength = 3;
 
                 options.User.RequireUniqueEmail = false;
-                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.AllowedUserNameCharacters = null;
                 options.ClaimsIdentity.RoleClaimType = "Role";
 
                 options.SignIn.RequireConfirmedEmail = false;
