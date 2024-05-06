@@ -15,6 +15,7 @@ builder.Services.AddHockeyPoolDatabase(builder.Configuration);
 builder.Services.AddHockeyPoolIdentity();
 builder.Services.AddHockeyPoolAuthorization();
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ClipboardService>();
 
 var app = builder.Build();

@@ -84,9 +84,19 @@
             ShowNotification("Prognoze netika pievienota", Severity.Warning);
             return;
         }
+        var userAgent = string.Empty;  
+        var ipAddress = string.Empty;
 
-        var userAgent = httpContextAccessor.HttpContext.Request.Headers["User-Agent"];
-        var ipAddress = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+        try
+        {
+            userAgent = httpContextAccessor.HttpContext.Request.Headers["User-Agent"];
+            ipAddress = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
 
         if (isNewPrediction)
         {
