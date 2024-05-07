@@ -35,8 +35,16 @@ else
         <RowTemplate>
             <MudTd DataLabel="Name">
                 @if (context.userName == "Edgars")
+                {                    
+                    <img src="./medal1.png" title="Iepriekšējā gada uzvarētājs" alt="Iepriekšējā gada uzvarētājs"> <img />
+                }
+                @if (context.userName == "Krii")
                 {
-                    <img src="./crown.png" title="Iepriekšējā gada uzvarētājs" alt="Iepriekšējā gada uzvarētājs"> <img />
+                    <img src="./medal2.png" title="Iepriekšējā gada 2. vieta" alt="Iepriekšējā gada uzvarētājs"> <img />
+                }
+                @if (context.userName == "Oskars" || context.userName == "Laura")
+                {
+                    <img src="./medal3.png" title="Iepriekšējā gada 3. vieta" alt="Iepriekšējā gada uzvarētājs"> <img />
                 }
                 @context.userName      
                 </MudTd>
