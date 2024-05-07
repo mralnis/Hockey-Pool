@@ -33,20 +33,20 @@ else
             <MudTh Style="background-color:inherit;"><MudTableSortLabel SortBy="new Func<UserPredictions, object>(x=>x.predictions.Sum(_=> _.PointsEarned ?? 0))">Punkti</MudTableSortLabel></MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Name">
+            <MudTd DataLabel="Name">               
+                @context.userName
                 @if (context.userName == "Edgars")
-                {                    
-                    <img src="./medal1.png" title="Iepriekšējā gada uzvarētājs" alt="Iepriekšējā gada uzvarētājs"> <img />
+                {
+                    <img src="./images/crown1.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada uzvarētājs" alt="Iepriekšējā gada uzvarētājs"> <img />
                 }
                 @if (context.userName == "Krii")
                 {
-                    <img src="./medal2.png" title="Iepriekšējā gada 2. vieta" alt="Iepriekšējā gada uzvarētājs"> <img />
+                    <img src="./images/crown2.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada 2. vieta" alt="Iepriekšējā gada uzvarētājs"> <img />
                 }
                 @if (context.userName == "Oskars" || context.userName == "Laura")
                 {
-                    <img src="./medal3.png" title="Iepriekšējā gada 3. vieta" alt="Iepriekšējā gada uzvarētājs"> <img />
+                    <img src="./images/crown3.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada 3. vieta" alt="Iepriekšējā gada uzvarētājs"> <img />
                 }
-                @context.userName      
                 </MudTd>
                     @foreach (var matchup in matchups)
                     {
