@@ -26,7 +26,7 @@ namespace HockeyPool.Infrastructure.Data
 
         private async Task SeedAdminAsync(IServiceProvider serviceProvider)
         {
-            if (!Users.Any(_ => _.UserName == "admin"))
+            if (!Users.Any())
             {
                 var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 await userManager.CreateAsync(new ApplicationUser
