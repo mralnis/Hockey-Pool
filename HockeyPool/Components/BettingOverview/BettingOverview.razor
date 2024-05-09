@@ -57,10 +57,10 @@ else
             </MudTd>
         </RowTemplate>
     </MudTable>
-    <div class="d-flex justify-end flex-wrap text-background">
+    <MudPaper class="d-flex justify-end flex-wrap">
         <MudSwitch @bind-Value="@hideFinishedGames" Color="Color.Primary">Paslēpt notikušās spēles</MudSwitch>
         <MudSwitch @bind-Value="@hideUpComingGames" Color="Color.Primary">Paslēpt gaidāmās spēles</MudSwitch>
-    </div>
+    </MudPaper>
     <div Style="padding-bottom:20px"></div>
 }
 
