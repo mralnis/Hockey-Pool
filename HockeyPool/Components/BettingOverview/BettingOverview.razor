@@ -25,7 +25,7 @@ else
             <MudTextField @bind-Value="searchString1" Immediate="true" Placeholder="Meklēt spēlētāju" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
         <HeaderContent>
-            <MudTh Style="background-color:inherit;">Balvu fonds:@PrizeMoney€ </MudTh>
+            <MudTh Style="background-color:inherit;width:200px;">Balvu fonds:@PrizeMoney€ </MudTh>
             @foreach (var matchup in matchups)
             {
                 <MatchupItem matchup="@matchup" />
@@ -57,11 +57,38 @@ else
             </MudTd>
         </RowTemplate>
     </MudTable>
+    <div class="d-flex justify-end flex-wrap text-background">
+        <MudSwitch @bind-Value="@hideFinishedGames" Color="Color.Primary">Paslēmt notikušās spēles</MudSwitch>
+        <MudSwitch @bind-Value="@hideUpComingGames" Color="Color.Primary">Paslēpt gaidāmās spēles</MudSwitch>
+    </div>
     <div Style="padding-bottom:20px"></div>
 }
 
 @code
 {
+    bool _hideFinishedGames;
+    private bool hideFinishedGames
+    {
+        get { return _hideFinishedGames; }
+        set
+        {
+            _hideFinishedGames = value;
+            matchups = GetMatchupsAsync().Result;
+            StateHasChanged();
+        }
+    }
+    bool _hideUpComingGames;
+    private bool hideUpComingGames
+    {
+        get { return _hideUpComingGames; }
+        set
+        {
+            _hideUpComingGames = value;
+            matchups = GetMatchupsAsync().Result;
+            StateHasChanged();
+        }
+    }
+
     List<Matchup> matchups { get; set; }
     Guid CurrentUserID { get; set; }
     int PrizeMoney { get; set; }
@@ -75,7 +102,7 @@ else
     {
         matchups = await GetMatchupsAsync();
         var users = await unitOfWork.UserRepository.GetAllAsync();
-        PrizeMoney = 10 * users.Count; 
+        PrizeMoney = 10 * users.Count;
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var currentUser = authState.User;
 
@@ -95,7 +122,7 @@ else
                     predictions = unitOfWork.PredictionsRepository.GetUserPredictions(new Guid(user.Id)),
                 });
 
-            foreach (var matchup in matchups)
+            foreach (var matchup in await unitOfWork.MatchupRepository.GetAllAsync())
             {
                 var prediction = UserPredictionsList.Last().predictions.FirstOrDefault(_ => _.MatchupId == matchup.Id);
                 if (prediction == null)
@@ -139,9 +166,18 @@ else
     private async Task<List<Matchup>> GetMatchupsAsync()
     {
         var allMatchups = await unitOfWork.MatchupRepository.GetAllAsync();
+        var orderedMetchups = new List<Matchup>();
 
-        var orderedMetchups = allMatchups.Where(_ => _.GameTime > DateTime.Now).ToList();
-        orderedMetchups.AddRange(allMatchups.Where(_ => _.GameTime <= DateTime.Now).ToList());
+        if (!hideUpComingGames)
+        {
+            orderedMetchups.AddRange(allMatchups.Where(_ => _.GameTime > DateTime.Now).ToList());
+        }
+
+        if (!hideFinishedGames)
+        {
+            orderedMetchups.AddRange(allMatchups.Where(_ => _.GameTime <= DateTime.Now).ToList());
+        }
+
 
         return orderedMetchups;
     }
