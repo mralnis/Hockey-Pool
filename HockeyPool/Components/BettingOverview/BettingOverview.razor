@@ -3,9 +3,11 @@
 
 @using HockeyPool.Infrastructure.Data.Repos
 @using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UnitOfWork unitOfWork
+@inject ProtectedLocalStorage LocalStorage
 
 @if (_loading)
 {
@@ -74,6 +76,7 @@ else
         {
             _hideFinishedGames = value;
             matchups = GetMatchupsAsync().Result;
+            LocalStorage.SetAsync("HideFinishedGamesSetting", value).AndForget();
             StateHasChanged();
         }
     }
@@ -85,6 +88,7 @@ else
         {
             _hideUpComingGames = value;
             matchups = GetMatchupsAsync().Result;
+            LocalStorage.SetAsync("HideUpComingGamesSetting", value).AndForget();
             StateHasChanged();
         }
     }
@@ -136,10 +140,24 @@ else
             }
         }
 
-
-        _loading = false;
-
         await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var hideUpComingGamesSetting = await LocalStorage.GetAsync<bool>("HideUpComingGamesSetting");
+            hideUpComingGames = hideUpComingGamesSetting.Success ? hideUpComingGamesSetting.Value : false;
+
+            var hideFinishedGamesSetting = await LocalStorage.GetAsync<bool>("HideFinishedGamesSetting");
+            hideFinishedGames = hideFinishedGamesSetting.Success ? hideFinishedGamesSetting.Value : false;
+
+            _loading = false;
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     public bool IsCurrentUser(Guid userId)
