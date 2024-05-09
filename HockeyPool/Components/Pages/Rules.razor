@@ -3,8 +3,11 @@
 
 @using HockeyPool.Infrastructure.Data.Models;
 @using HockeyPool.Infrastructure.Data.Repos
+@using HockeyPool.Services
 
 @inject UnitOfWork unitOfWork
+@inject ClipboardService ClipboardService
+@inject ISnackbar Snackbar
 
 <MudContainer>
     <MudPaper Class="pa-2">
@@ -31,7 +34,8 @@
             </MudListItem>
         </MudList>
         <MudDivider />
-        <MudText Typo="Typo.h6"> <a href="https://www.swedbank.lv/pay?id=pw7a2y1wypji"> Didzis Stivriņš LV21HABA0551039169500  (Swedbank) </a></MudText>
+        <MudText onclick="@CopyToClipboard" Color="Color.Secondary" Typo="Typo.h6"> <MudIconButton Size="Size.Small" Color="Color.Secondary" Icon="@Icons.Material.Outlined.CopyAll" OnClick="@CopyToClipboard"> </MudIconButton> Didzis Stivriņš LV21HABA0551039169500  (Swedbank)</MudText>
+        <MudText Color="Color.Primary" Typo="Typo.h6"> <MudLink Color="Color.Secondary" Href="https://www.swedbank.lv/pay?id=pw7a2y1wypji" Target="_blank"><MudIcon Color="Color.Secondary" Icon="@Icons.Material.Outlined.Link"></MudIcon> Swedbank naudas pieprasījums</MudLink></MudText>
         <MudDivider />
     </MudPaper>
 </MudContainer>
@@ -43,5 +47,19 @@
     protected override async Task OnInitializedAsync()
     {
         tournament = await unitOfWork.TournamentRepository.GetActiveTournamentAsync();
+    }
+
+    private async Task CopyToClipboard()
+    {
+        await ClipboardService.CopyToClipboard("LV21HABA0551039169500");
+
+        Snackbar.Add("Konta Nr nokopets", Severity.Info, config =>
+           {
+               config.RequireInteraction = false;
+               config.ShowCloseIcon = false;
+               config.VisibleStateDuration = 1000;
+               config.HideTransitionDuration = 1000;
+               config.ShowTransitionDuration = 1000;
+           });
     }
 }
