@@ -70,9 +70,6 @@ else
 
 @code
 {
-    [CascadingParameter]
-    private UserStateProvider? UserStateProvider { get; set; }
-
     bool _hideFinishedGames;
     private bool hideFinishedGames
     {
@@ -81,7 +78,7 @@ else
         {
             _hideFinishedGames = value;
             matchups = GetMatchupsAsync().Result;
-            UserStateProvider!.SetHideFinishedGames(value);
+            SetHideFinishedGames(value);
             StateHasChanged();
         }
     }
@@ -93,7 +90,7 @@ else
         {
             _hideUpComingGames = value;
             matchups = GetMatchupsAsync().Result;
-            UserStateProvider!.SetHideUpComingGames(value);
+            SetHideUpComingGames(value);
             StateHasChanged();
         }
     }
@@ -107,11 +104,40 @@ else
 
     private bool _loading = true;
 
+    static string HideUpComingGamesSettingKey = "HideUpComingGamesSetting";
+    static string HideFinishedGamesSettingKey = "HideFinishedGamesSetting";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var hideUpComingGamesSetting = await LocalStorage.GetAsync<bool>(HideUpComingGamesSettingKey);
+            hideUpComingGames = hideUpComingGamesSetting.Success ? hideUpComingGamesSetting.Value : false;
+
+            var hideFinishedGamesSetting = await LocalStorage.GetAsync<bool>(HideFinishedGamesSettingKey);
+            hideFinishedGames = hideFinishedGamesSetting.Success ? hideFinishedGamesSetting.Value : false;
+            _loading = false;
+
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    public void SetHideUpComingGames(bool value)
+    {
+        _hideUpComingGames = value;
+        LocalStorage.SetAsync(HideUpComingGamesSettingKey, value).AndForget();
+    }
+
+    public void SetHideFinishedGames(bool value)
+    {
+        _hideFinishedGames = value;
+        LocalStorage.SetAsync(HideFinishedGamesSettingKey, value).AndForget();
+    }
+
     protected override async Task OnInitializedAsync()
     {
-        _hideFinishedGames = UserStateProvider!.HideFinishedGames;
-        _hideUpComingGames = UserStateProvider!.HideUpComingGames;
-
         matchups = await GetMatchupsAsync();
         var users = await unitOfWork.UserRepository.GetAllAsync();
         PrizeMoney = 10 * users.Count;
