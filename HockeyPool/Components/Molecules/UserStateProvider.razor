@@ -1,9 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject ProtectedLocalStorage LocalStorage
 
-<CascadingValue Value="this">
-    @ChildContent
-</CascadingValue>
+@if(isLoaded)
+{
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+}
 
 @code {
     private bool isLoaded = false;
@@ -26,7 +29,11 @@
 
             var hideFinishedGamesSetting = await LocalStorage.GetAsync<bool>(HideFinishedGamesSettingKey);
             HideFinishedGames = hideFinishedGamesSetting.Success ? hideFinishedGamesSetting.Value : false;
+            isLoaded = true;
+            StateHasChanged();
         }
+        
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     public void SetHideUpComingGames(bool value)

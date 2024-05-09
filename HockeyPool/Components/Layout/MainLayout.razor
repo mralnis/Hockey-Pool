@@ -2,10 +2,9 @@
 @using MudBlazor.Utilities
 @inherits LayoutComponentBase
 
-
-<MudThemeProvider IsDarkMode="true"  Theme="_currentTheme" />
-<MudDialogProvider/>
-<MudSnackbarProvider/> 
+<MudThemeProvider IsDarkMode="true" Theme="_currentTheme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
 <MudLayout>
     <NavMenu />
@@ -19,7 +18,7 @@
 @code {
     private MudTheme _currentTheme = new MudTheme()
         {
-            PaletteDark =  new PaletteDark
+            PaletteDark = new PaletteDark
             {
                 Surface = new MudColor(55, 55, 64, 204),
             },
