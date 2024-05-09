@@ -69,6 +69,9 @@ else
 
 @code
 {
+    [CascadingParameter]
+    private UserStateProvider? UserStateProvider { get; set; }
+
     bool _hideFinishedGames;
     private bool hideFinishedGames
     {
@@ -77,7 +80,7 @@ else
         {
             _hideFinishedGames = value;
             matchups = GetMatchupsAsync().Result;
-            LocalStorage.SetAsync("HideFinishedGamesSetting", value).AndForget();
+            UserStateProvider!.SetHideFinishedGames(value);
             StateHasChanged();
         }
     }
@@ -89,7 +92,7 @@ else
         {
             _hideUpComingGames = value;
             matchups = GetMatchupsAsync().Result;
-            LocalStorage.SetAsync("HideUpComingGamesSetting", value).AndForget();
+            UserStateProvider!.SetHideUpComingGames(value);
             StateHasChanged();
         }
     }
@@ -105,6 +108,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        _hideFinishedGames = UserStateProvider!.HideFinishedGames;
+        _hideUpComingGames = UserStateProvider!.HideUpComingGames;
+
         matchups = await GetMatchupsAsync();
         var users = await unitOfWork.UserRepository.GetAllAsync();
         PrizeMoney = 10 * users.Count;
@@ -148,11 +154,7 @@ else
     {
         if (firstRender)
         {
-            var hideUpComingGamesSetting = await LocalStorage.GetAsync<bool>("HideUpComingGamesSetting");
-            hideUpComingGames = hideUpComingGamesSetting.Success ? hideUpComingGamesSetting.Value : false;
 
-            var hideFinishedGamesSetting = await LocalStorage.GetAsync<bool>("HideFinishedGamesSetting");
-            hideFinishedGames = hideFinishedGamesSetting.Success ? hideFinishedGamesSetting.Value : false;
 
             _loading = false;
             StateHasChanged();
