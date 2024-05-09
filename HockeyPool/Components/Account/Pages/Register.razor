@@ -13,41 +13,52 @@
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject UnitOfWork unitOfWork
 
-<PageTitle>Rēģistrēšanās</PageTitle>
-<MudContainer MaxWidth="MaxWidth.Medium">
-    <MudPaper Class="pa-2">
-        <h1 style="color:white">Rēģistrēšanās</h1>
+@if (DateTime.Now >= deadline)
+{
+    <TooLate></TooLate>
+}
+else
+{
+    <PageTitle>Rēģistrēšanās</PageTitle>
+    <MudContainer MaxWidth="MaxWidth.Medium">
+        <MudPaper Class="pa-2">
+            <h1 style="color:white">Rēģistrēšanās</h1>
 
-        <section>
-            <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
-                <StatusMessage Message="@Message" />
-                <DataAnnotationsValidator />
-                <h2 style="color:white">Jauna konta izveide</h2>
-                <hr />
-                <div class="form-floating mb-3">
-                    <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="" />
-                    <label style="color:black" for="email">Lietotāj vārds</label>
-                    <ValidationMessage For="() => Input.Email" class="bg-danger text-white" />
-                </div>
-                <div class="form-floating mb-3">
-                    <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                    <label style="color:black" for="password">Parole</label>
-                    <ValidationMessage For="() => Input.Password" class="bg-danger text-white" />
-                </div>
-                <div class="form-floating mb-3">
-                    <InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                    <label style="color:black" for="confirm-password">Atkārtoti parole</label>
-                    <ValidationMessage For="() => Input.ConfirmPassword" class="bg-danger text-white" />
-                </div>
-                <button type="submit" class="w-100 btn btn-lg btn-primary">Reģistrēties</button>
-            </EditForm>
-        </section>
-    </MudPaper>
-</MudContainer>
+            <section>
+                <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
+                    <StatusMessage Message="@Message" />
+                    <DataAnnotationsValidator />
+                    <h2 style="color:white">Jauna konta izveide</h2>
+                    <hr />
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="" />
+                        <label style="color:black" for="email">Lietotāj vārds</label>
+                        <ValidationMessage For="() => Input.Email" class="bg-danger text-white" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                        <label style="color:black" for="password">Parole</label>
+                        <ValidationMessage For="() => Input.Password" class="bg-danger text-white" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                        <label style="color:black" for="confirm-password">Atkārtoti parole</label>
+                        <ValidationMessage For="() => Input.ConfirmPassword" class="bg-danger text-white" />
+                    </div>
+                    <button type="submit" class="w-100 btn btn-lg btn-primary">Reģistrēties</button>
+                </EditForm>
+            </section>
+        </MudPaper>
+    </MudContainer>
+}
+
 
 @code {
     private IEnumerable<IdentityError>? identityErrors;
+
+    private DateTime deadline;
 
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
@@ -60,7 +71,12 @@
 
     private string? Message => identityErrors is null ? null : $"Kļūda: {string.Join(", ", identityErrors.Select(error => error.Description))}";
 
+    protected override void OnInitialized()
+    {
+        deadline = (DateTime)unitOfWork.MatchupRepository.GetAllAsync().Result.OrderBy(_ => _.GameTime).First().GameTime;
 
+        base.OnInitialized();
+    }
     public async Task RegisterUser(EditContext editContext)
     {
         if (SignInManager.IsSignedIn(HttpContext.User))
