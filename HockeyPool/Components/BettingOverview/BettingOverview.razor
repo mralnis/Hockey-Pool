@@ -25,7 +25,7 @@ else
             <MudTextField @bind-Value="searchString1" Immediate="true" Placeholder="Meklēt spēlētāju" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
         <HeaderContent>
-            <MudTh Style="background-color:inherit;"></MudTh>
+            <MudTh Style="background-color:inherit;">Balvu fonds:@PrizeMoney€ </MudTh>
             @foreach (var matchup in matchups)
             {
                 <MatchupItem matchup="@matchup" />
@@ -63,6 +63,7 @@ else
 {
     List<Matchup> matchups { get; set; }
     Guid CurrentUserID { get; set; }
+    int PrizeMoney { get; set; }
     private string searchString1 = "";
 
     private List<UserPredictions> UserPredictionsList { get; set; } = new List<UserPredictions>();
@@ -73,7 +74,7 @@ else
     {
         matchups = await GetMatchupsAsync();
         var users = await unitOfWork.UserRepository.GetAllAsync();
-
+        PrizeMoney = 10 * users.Count; 
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var currentUser = authState.User;
 
