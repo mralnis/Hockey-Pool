@@ -16,7 +16,8 @@
 else
 {
     <MudTable Items="@UserPredictionsList.OrderByDescending(x => x.userId== CurrentUserID)"
-              Breakpoint="Breakpoint.None" Hover="true" Loading="@_loading"
+              Breakpoint="Breakpoint.None" 
+              Hover="true"
               HorizontalScrollbar="true"
               FixedHeader="true"
               LoadingProgressColor="Color.Info"
