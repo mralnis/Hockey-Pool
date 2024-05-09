@@ -19,7 +19,7 @@ else
                   Hover="true"
                   Loading="@_loading"
                   HorizontalScrollbar="true"
-                  Dense ="true"
+                  Dense="true"
                   FixedHeader="true"
                   LoadingProgressColor="Color.Info"
                   GroupBy="@_groupDefinition"
@@ -46,9 +46,11 @@ else
                 else
                 {
                     <MudTh>
-                        <SVGFlag CountryCode="@context.Items.FirstOrDefault().HomeTeamCountryCode" FlagType="FlagType.Wide" Width="35" Height="35" style="padding-right:5px" />
-                        VS
-                        <SVGFlag CountryCode="@context.Items.FirstOrDefault().GuestTeamCountryCode" FlagType="FlagType.Wide" Width="35" Height="35" style="padding-left:5px" />
+                        <div class="content-align">
+                            <SVGFlag CountryCode="@context.Items.FirstOrDefault().HomeTeamCountryCode" FlagType="FlagType.Wide" Width="35" Height="35" style="padding-right:5px" />
+                            VS
+                            <SVGFlag CountryCode="@context.Items.FirstOrDefault().GuestTeamCountryCode" FlagType="FlagType.Wide" Width="35" Height="35" style="padding-left:5px" />
+                        </div>
                     </MudTh>
                     <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer " colspan="5">Rezultāts ievadīts @context.Items.Count() reizes</MudTh>
                 }
@@ -84,7 +86,7 @@ else
             <GroupFooterTemplate>
                 @if (context.GroupName == "Lietotāji")
                 {
-                    
+
                 }
             </GroupFooterTemplate>
         </MudTable>
