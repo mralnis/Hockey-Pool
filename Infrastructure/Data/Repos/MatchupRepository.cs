@@ -41,7 +41,7 @@ namespace HockeyPool.Infrastructure.Data.Repos
 
         public async Task<Matchup?> GetClosestMatchupAsync()
         {
-            var result = await _dbContext.Matchups.Where(x => x.HomeTeamScore == null).OrderBy(x => x.GameTime).FirstOrDefaultAsync();
+            var result = await _dbContext.Matchups.Where(_ => _.GameTime.Value.AddHours(4) > DateTime.Now).OrderBy(x => x.GameTime).FirstOrDefaultAsync();
             return result;
         }
 
