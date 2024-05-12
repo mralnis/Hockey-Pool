@@ -9,10 +9,10 @@
     <DialogContent>
         <MudGrid>
             <MudItem class="content-align" xs="6">
-                <SVGFlag CountryCode="@GetCountryCode(@Matchup.HomeTeamId)" FlagType="FlagType.Wide" Width="50" Height="50" />
+                <span class="fi fi-@GetCountryCode(@Matchup.HomeTeamId).ToLower()" style="width:50px;height:50px;"></span>
             </MudItem>
             <MudItem class="content-align" xs="6">
-                <SVGFlag CountryCode="@GetCountryCode(@Matchup.GuestTeamId)" FlagType="FlagType.Wide" Width="50" Height="50" />
+                <span class="fi fi-@GetCountryCode(@Matchup.GuestTeamId).ToLower()" style="width:50px;height:50px;"></span>
             </MudItem>
         </MudGrid>
         <MudForm Class="d-flex flex-grow-1 gap-4" @ref="form" Style="min-height:105px">

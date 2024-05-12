@@ -12,7 +12,9 @@
         @matchup.GameTime.Value.ToString("HH:mm")
     </div>
     <div class="content-align" style="padding-right:20px">
-        <SVGFlag CountryCode="@GetCountryCode(@matchup.HomeTeamId)" FlagType="FlagType.Wide" Width="30" Height="30" /> &zwnj; : &zwnj;  <SVGFlag CountryCode="@GetCountryCode(@matchup.GuestTeamId)" FlagType="FlagType.Wide" Width="30" Height="30" />
+        <span class="fi fi-@GetCountryCode(@matchup.HomeTeamId)" style="width:30px;height:30px"></span>
+        &zwnj; : &zwnj;
+        <span class="fi fi-@GetCountryCode(@matchup.GuestTeamId)" style="width:30px;height:30px"></span>
     </div>
 
     @if (matchup.HomeTeamScore == null)
@@ -35,6 +37,6 @@
 
     public string GetCountryCode(int id)
     {
-        return unitOfWork.CountryRepository.GetByIdAsync(id).Result.FlagCode;
+        return unitOfWork.CountryRepository.GetByIdAsync(id).Result.FlagCode.ToLower();
     }
 }

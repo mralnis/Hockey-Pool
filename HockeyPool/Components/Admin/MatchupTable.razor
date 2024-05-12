@@ -51,8 +51,8 @@
 
         <RowTemplate>
             <MudTd DataLabel="Tournament">@context.TournamentName</MudTd>
-            <MudTd DataLabel="HomeTeamId"><SVGFlag CountryCode="@context.HomeCountryFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-right:5px" />@context.HomeCountryName</MudTd>
-            <MudTd DataLabel="GuestTeamId"><SVGFlag CountryCode="@context.GuestCountryFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-right:5px" />@context.GuestCountryName</MudTd>
+            <MudTd DataLabel="HomeTeamId">  <span class="fi fi-@context.HomeCountryFlagCode.ToLower()" style="width:25px;height:25px;padding-right:5px"></span></MudTd>
+            <MudTd DataLabel="GuestTeamId">  <span class="fi fi-@context.GuestCountryFlagCode.ToLower()" style="width:25px;height:25px;padding-right:5px"></span></MudTd>
             <MudTd DataLabel="GameTime">@context.Matchup.GameTime</MudTd>
             <MudTd DataLabel="GuestTeamScore">@context.Matchup.HomeTeamScore</MudTd>
             <MudTd DataLabel="HomeTeamScore">@context.Matchup.GuestTeamScore</MudTd>

@@ -29,7 +29,7 @@
             <MudItem xs="8">
                 <MudCard>
                     <MudCardContent>
-                        <SVGFlag CountryCode="@ClosestMatchup.HomeTeamFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-right:5px" /> @ClosestMatchup.HomeTeamName VS @ClosestMatchup.GuestTeamName  <SVGFlag CountryCode="@ClosestMatchup.GuestTeamFlagCode" FlagType="FlagType.Wide" Width="25" Height="25" style="padding-left:5px" />
+                        <span class="fi fi-@ClosestMatchup.HomeTeamFlagCode.ToLower()" style="width:25px;height:25px;padding-right:5px"></span> @ClosestMatchup.HomeTeamName VS @ClosestMatchup.GuestTeamName  <span class="fi fi-@ClosestMatchup.GuestTeamFlagCode.ToLower()" style="width:25px;height:25px;padding-left:5px"></span>
                         <MudNumericField Style="width:fit-content" RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@ClosestMatchup.Matchup.HomeTeamScore" Min="0" Max="20" Label="@ClosestMatchup.HomeTeamName" Variant="Variant.Text" />
                         <MudNumericField Style="width:fit-content" RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@ClosestMatchup.Matchup.GuestTeamScore" Min="0" Max="20" Label="@ClosestMatchup.GuestTeamName" Variant="Variant.Text" />
                     </MudCardContent>
