@@ -80,7 +80,7 @@ namespace HockeyPool.Infrastructure.Data.Repos
 
             foreach (var prediction in predictions)
             {
-                if (prediction.HomeTeamScore == null)
+                if (prediction.HomeTeamScore == null || prediction.HomeTeamScore == prediction.GuestTeamScore)
                 {
                     prediction.PointsEarned = 0;
                     continue;
