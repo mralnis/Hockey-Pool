@@ -69,7 +69,7 @@ else
 }
 
 @code
-{
+{    
     bool _hideFinishedGames;
     private bool hideFinishedGames
     {
@@ -206,12 +206,12 @@ else
 
         if (!hideUpComingGames)
         {
-            orderedMetchups.AddRange(allMatchups.Where(_ => _.GameTime > DateTime.Now).ToList());
+            orderedMetchups.AddRange(allMatchups.Where(_ => _.GameTime.Value.AddHours(4) > DateTime.Now).ToList());
         }
 
         if (!hideFinishedGames)
         {
-            orderedMetchups.AddRange(allMatchups.Where(_ => _.GameTime <= DateTime.Now).ToList());
+            orderedMetchups.AddRange(allMatchups.Where(_ => _.GameTime.Value.AddHours(4) <= DateTime.Now).ToList());
         }
 
 
