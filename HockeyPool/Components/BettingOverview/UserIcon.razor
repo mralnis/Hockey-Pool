@@ -1,0 +1,17 @@
+﻿@if (Username == "Edgars")
+{
+    <img src="./images/crown1.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada uzvarētājs" alt="Iepriekšējā gada uzvarētājs"/>
+}
+@if (Username == "Krii")
+{
+    <img src="./images/crown2.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada 2. vieta" alt="Iepriekšējā gada uzvarētājs"/>
+}
+@if (Username == "Oskars")
+{
+    <img src="./images/crown3.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada 3. vieta" alt="Iepriekšējā gada uzvarētājs"/>
+}
+
+@code {
+    [Parameter]
+    public string Username { get; set; }
+}
