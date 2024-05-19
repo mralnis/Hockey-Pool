@@ -81,10 +81,10 @@
 
         if (dialogResult.Canceled || matchup.GameTime.Value <= DateTime.Now)
         {
-            ShowNotification("Prognoze netika pievienota", Severity.Warning);
+            ShowNotification("Prognoze netika pievienota", Severity.Warning, Guid.Empty);
             return;
         }
-        var userAgent = string.Empty;  
+        var userAgent = string.Empty;
         var ipAddress = string.Empty;
 
         try
@@ -92,7 +92,7 @@
             userAgent = httpContextAccessor.HttpContext.Request.Headers["User-Agent"];
             ipAddress = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
@@ -107,7 +107,7 @@
             await unitOfWork.PredictionsRepository.UpdateAsync(prediction, ipAddress, userAgent);
         }
 
-        ShowNotification("Prognoze veiksmīgi pievienota", Severity.Success);
+        ShowNotification("Prognoze veiksmīgi pievienota", Severity.Success, prediction.AspNetUserId);
 
         this.StateHasChanged();
     }
@@ -115,6 +115,7 @@
     public async Task<DialogResult> CallDialogAsync(Matchup matchup, Prediction prediction)
     {
         var parameters = new DialogParameters<ScoreDialog>();
+
         parameters.Add(_ => _.Matchup, matchup);
         parameters.Add(_ => _.Prediction, prediction);
 
@@ -124,15 +125,34 @@
         return await dialog.Result;
     }
 
-    public void ShowNotification(string message, Severity severity)
+
+    public void ShowNotification(string message, Severity severity, Guid userId)
     {
+        // if (userId != Guid.Empty)
+        // {
+        //     var user = unitOfWork.UserRepository.GetByIdAsync(userId.ToString()).Result;
+
+        //     if (user.UserName == "Aivis")
+        //     {
+        //         Snackbar.Add("Nebūs!!!Raivis saka mēģini velreiz!", severity, config =>
+        //         {
+        //             config.RequireInteraction = false;
+        //             config.ShowCloseIcon = false;
+        //             config.VisibleStateDuration = 10000;
+        //             config.HideTransitionDuration = 500;
+        //             config.ShowTransitionDuration = 500;
+        //         });
+        //     }
+        // }
+
         Snackbar.Add(message, severity, config =>
-        {
-            config.RequireInteraction = false;
-            config.ShowCloseIcon = false;
-            config.VisibleStateDuration = 1000;
-            config.HideTransitionDuration = 250;
-            config.ShowTransitionDuration = 250;
-        });
+               {
+                   config.RequireInteraction = false;
+                   config.ShowCloseIcon = false;
+                   config.VisibleStateDuration = 1000;
+                   config.HideTransitionDuration = 250;
+                   config.ShowTransitionDuration = 250;
+               });
+
     }
 }

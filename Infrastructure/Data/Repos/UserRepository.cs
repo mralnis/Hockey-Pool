@@ -1,6 +1,7 @@
 ﻿using HockeyPool.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace HockeyPool.Infrastructure.Data.Repos
 {
@@ -21,6 +22,10 @@ namespace HockeyPool.Infrastructure.Data.Repos
             }
         }
 
+        public Task<ApplicationUser?> GetByIdAsync(string id)
+        {
+            return _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+        }
         public async Task AddUserRoleAsync(IdentityUserRole<string> identityUserRole)
         {
             _dbContext.UserRoles.Add(identityUserRole);

@@ -29,7 +29,7 @@ namespace HockeyPool.Infrastructure.Data.Repos
         {
             return await _dbContext.Set<T>().ToListAsync();
         }
-        public async Task<T?> GetByIdAsync(int id)
+        public virtual async Task<T?> GetByIdAsync(int id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
