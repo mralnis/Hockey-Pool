@@ -4,8 +4,8 @@
 
 <MudTh Style="background-color:inherit;">
     <div class="content-align" style="padding-right:20px">
-        <MudIcon Icon="@Icons.Material.Filled.CalendarMonth" Size="Size.Small" />
-        @matchup.GameTime.Value.ToString("MM.dd")
+        <MudIcon Icon="@Icons.Material.Filled.CalendarMonth" Size="Size.Small" Style="margin-right:1px"/>
+        @matchup.GameTime.Value.DayOfWeekLv() @matchup.GameTime.Value.ToString("MM.dd")
     </div>
     <div class="content-align" style="padding-right:20px">
         <MudIcon Icon="@Icons.Material.Filled.AccessTime" Size="Size.Small" />
@@ -13,7 +13,7 @@
     </div>
     <div class="content-align" style="padding-right:20px">
         <span class="fi fi-@GetCountryCode(@matchup.HomeTeamId)" style="width:30px;height:30px"></span>
-        &zwnj; : &zwnj;
+         : &zwnj;
         <span class="fi fi-@GetCountryCode(@matchup.GuestTeamId)" style="width:30px;height:30px"></span>
     </div>
 
