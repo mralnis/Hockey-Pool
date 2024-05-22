@@ -2,7 +2,7 @@
 
 @inject UnitOfWork unitOfWork;
 
-<MudTh Style="background-color:inherit;">   
+<MudTh Style="background-color:inherit;">
     <div class="content-align" style="padding-right:20px">
         <MudIcon Icon="@Icons.Material.Filled.CalendarMonth" Size="Size.Small" Style="margin-right:1px" />
         @matchup.GameTime.Value.ToString("MM.dd")
@@ -14,17 +14,7 @@
         <MudIcon Icon="@Icons.Material.Filled.AccessTime" Size="Size.Small" />
         @matchup.GameTime.Value.ToString("HH:mm")
     </div>
-@*<div class="content-align" style="padding-right:20px">
-        @matchup.GameTime.Value.DayOfWeekLv()
-    </div>
     <div class="content-align" style="padding-right:20px">
-        <MudIcon Icon="@Icons.Material.Filled.CalendarMonth" Size="Size.Small" />
-        @matchup.GameTime.Value.ToString("MM.dd")
-        <MudIcon Icon="@Icons.Material.Filled.AccessTime" Size="Size.Small"  Style="margin-left:5px" />
-        @matchup.GameTime.Value.ToString("HH:mm")
-    </div>
- *@
- <div class="content-align" style="padding-right:20px">
         <span class="fi fi-@GetCountryCode(@matchup.HomeTeamId)" style="width:30px;height:30px"></span>
         &zwnj; : &zwnj;
         <span class="fi fi-@GetCountryCode(@matchup.GuestTeamId)" style="width:30px;height:30px"></span>
