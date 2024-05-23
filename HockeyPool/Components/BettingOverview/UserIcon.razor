@@ -1,17 +1,21 @@
-﻿@if (Username == "Edgars")
+﻿@if (FirstPlaceUsers.Contains(Username))
 {
-    <img src="./images/crown1.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada uzvarētājs" alt="Iepriekšējā gada uzvarētājs"/>
+    <img src="./images/crown1.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada uzvarētājs" alt="Iepriekšējā gada uzvarētājs" />
 }
-@if (Username == "Krii")
+@if (SecondPlaceUsers.Contains(Username))
 {
-    <img src="./images/crown2.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada 2. vieta" alt="Iepriekšējā gada uzvarētājs"/>
+    <img src="./images/crown2.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada 2. vieta" alt="Iepriekšējā gada uzvarētājs" />
 }
-@if (Username == "Oskars")
+@if (ThirdPlaceUsers.Contains(Username))
 {
-    <img src="./images/crown3.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada 3. vieta" alt="Iepriekšējā gada uzvarētājs"/>
+    <img src="./images/crown3.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada 3. vieta" alt="Iepriekšējā gada uzvarētājs" />
 }
 
 @code {
     [Parameter]
     public string Username { get; set; }
+
+    public List<string> FirstPlaceUsers = new List<string> { "Edgars" };
+    public List<string> SecondPlaceUsers = new List<string> { "Krii" };
+    public List<string> ThirdPlaceUsers = new List<string> { "Oskars" };
 }

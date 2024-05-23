@@ -128,23 +128,6 @@
 
     public void ShowNotification(string message, Severity severity, Guid userId)
     {
-        // if (userId != Guid.Empty)
-        // {
-        //     var user = unitOfWork.UserRepository.GetByIdAsync(userId.ToString()).Result;
-
-        //     if (user.UserName == "Aivis")
-        //     {
-        //         Snackbar.Add("Nebūs!!!Raivis saka mēģini velreiz!", severity, config =>
-        //         {
-        //             config.RequireInteraction = false;
-        //             config.ShowCloseIcon = false;
-        //             config.VisibleStateDuration = 10000;
-        //             config.HideTransitionDuration = 500;
-        //             config.ShowTransitionDuration = 500;
-        //         });
-        //     }
-        // }
-
         Snackbar.Add(message, severity, config =>
                {
                    config.RequireInteraction = false;
