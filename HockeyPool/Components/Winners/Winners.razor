@@ -1,14 +1,6 @@
 ﻿@page "/Winners"
 @attribute [Authorize]
 
-@using HockeyPool.Infrastructure.Data.Models;
-@using HockeyPool.Infrastructure.Data.Repos
-@using HockeyPool.Services
-
-@inject UnitOfWork unitOfWork
-@inject ClipboardService ClipboardService
-@inject ISnackbar Snackbar
-
 <MudContainer>
     <MudPaper Class="pa-2">
         <MudList>
@@ -22,10 +14,3 @@
         </MudList>
     </MudPaper>
 </MudContainer>
-
-
-@code {
-    protected override async Task OnInitializedAsync()
-    {
-    }
-}
