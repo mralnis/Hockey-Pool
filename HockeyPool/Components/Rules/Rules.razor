@@ -1,10 +1,6 @@
 ﻿@page "/Rules"
 @attribute [Authorize]
 
-@using HockeyPool.Infrastructure.Data.Models;
-@using HockeyPool.Infrastructure.Data.Repos
-@using HockeyPool.Services
-
 @inject UnitOfWork unitOfWork
 @inject ClipboardService ClipboardService
 @inject ISnackbar Snackbar
@@ -27,9 +23,9 @@
             <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Dalības maksa <b>10 EUR</b>.</MudListItem>
             <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers" Text="Punktu sadalījums" InitiallyExpanded="true">
                 <NestedList>
-                    <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti par precīzu minējumu: <b>@tournament?.PointsForPerfect </b> </MudListItem>
-                    <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti par pareizu vārtu starpību+uzvarētāju: <b>@tournament?.PointForDifference</b></MudListItem>
-                    <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti tikai par pareizo uzvarētāju: <b>@tournament?.PointsForWinnerOnly</b></MudListItem>
+                    <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti par precīzu minējumu: <b>@Tournament?.PointsForPerfect </b> </MudListItem>
+                    <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti par pareizu vārtu starpību+uzvarētāju: <b>@Tournament?.PointForDifference</b></MudListItem>
+                    <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti tikai par pareizo uzvarētāju: <b>@Tournament?.PointsForWinnerOnly</b></MudListItem>
                 </NestedList>
             </MudListItem>
         </MudList>
@@ -42,11 +38,11 @@
 
 
 @code {
-    public Tournament tournament { get; set; }
+    public Tournament Tournament { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        tournament = await unitOfWork.TournamentRepository.GetActiveTournamentAsync();
+        Tournament = await unitOfWork.TournamentRepository.GetActiveTournamentAsync();
     }
 
     private async Task CopyToClipboard()
