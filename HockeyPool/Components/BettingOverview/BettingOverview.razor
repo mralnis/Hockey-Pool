@@ -2,10 +2,6 @@
 @page "/"
 @attribute [Authorize]
 
-@using HockeyPool.Infrastructure.Data.Repos
-@using System.Security.Claims
-@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
-
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UnitOfWork unitOfWork
 @inject ProtectedLocalStorage LocalStorage

@@ -1,7 +1,5 @@
 ﻿@page "/Admin/RemoveUsers"
 @attribute [Authorize(Roles = "Admin")]
-@using Microsoft.AspNetCore.Identity
-@using System.Security.Claims
 
 @inject UnitOfWork unitOfWork;
 @inject UserManager<ApplicationUser> UserManager
