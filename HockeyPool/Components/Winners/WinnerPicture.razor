@@ -1,0 +1,12 @@
+﻿@page "/Winners/Overview"
+
+<div class="d-flex justify-center">
+    <MudImage Fluid="true" Src="@Image" Alt="Year" Elevation="25" Class="rounded-lg" />
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    private string? Year { get; set; }
+
+    private string? Image => $"images/W{Year}.jpeg";
+}
