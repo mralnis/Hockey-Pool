@@ -11,8 +11,6 @@ namespace HockeyPool.Configuration
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlite("Data Source=databse.dat");
-
-               // options.UseSqlServer(connectionString);
             });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
