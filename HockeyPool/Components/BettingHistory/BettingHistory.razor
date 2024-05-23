@@ -118,20 +118,19 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        await FillUserPredictionsListsAsync();
+
+        _loading = false;
+
+        await base.OnInitializedAsync();
+    }
+
+    public async Task FillUserPredictionsListsAsync()
+    {
         var matchups = await unitOfWork.MatchupRepository.GetAllAsync();
         var users = await unitOfWork.UserRepository.GetAllAsync();
         var predictionLogs = await unitOfWork.PredictionLogRepository.GetAllAsync();
-
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var currentUser = authState.User;
-
-        Guid CurrentUserID = Guid.Empty;
-        // Check if the user is authenticated
-        if (currentUser.Identity.IsAuthenticated)
-        {
-            // Retrieve the user's ID
-            CurrentUserID = new Guid(currentUser.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        }
+        var currentUserID = await GetCurrentUserIdAsync();
 
         foreach (var predictionLog in predictionLogs)
         {
@@ -148,15 +147,26 @@ else
                     UserName = user.UserName,
                     HomeTeamCountryCode = GetCountryCode(matchup.HomeTeamId),
                     GuestTeamCountryCode = GetCountryCode(matchup.GuestTeamId),
-                    CanShow = CurrentUserID == predictionLog.AspNetUserId || matchup.GameTime.Value <= DateTime.Now
+                    CanShow = currentUserID == predictionLog.AspNetUserId || matchup.GameTime.Value <= DateTime.Now
                 }
             );
         }
-
-        _loading = false;
-
-        await base.OnInitializedAsync();
     }
+
+    public async Task<Guid> GetCurrentUserIdAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var currentUser = authState.User;
+        // Check if the user is authenticated
+        if (currentUser?.Identity != null && currentUser.Identity.IsAuthenticated)
+        {
+            // Retrieve the user's ID
+            return new Guid(currentUser.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        }
+
+        return Guid.Empty;
+    }
+
 
     public string GetCountryCode(int? id)
     {
@@ -164,6 +174,7 @@ else
         {
             return "EU";
         }
+
         return unitOfWork.CountryRepository.GetByIdAsync(id.Value).Result.FlagCode;
     }
 
