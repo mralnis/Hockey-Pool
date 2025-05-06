@@ -115,13 +115,13 @@ else
     public void SetHideUpComingGames(bool value)
     {
         _hideUpComingGames = value;
-        LocalStorage.SetAsync(HideUpComingGamesSettingKey, value).AndForget();
+        LocalStorage.SetAsync(HideUpComingGamesSettingKey, value);
     }
 
     public void SetHideFinishedGames(bool value)
     {
         _hideFinishedGames = value;
-        LocalStorage.SetAsync(HideFinishedGamesSettingKey, value).AndForget();
+        LocalStorage.SetAsync(HideFinishedGamesSettingKey, value);
     }
 
     protected override async Task OnInitializedAsync()

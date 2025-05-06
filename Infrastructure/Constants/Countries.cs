@@ -19,5 +19,7 @@
         public static string FR = "Francija";
         public static string SK = "Slovākija";
         public static string PL = "Polija";
+        public static string EE = "Igaunija";
+        public static string SI = "Slovēnija";
     }
 }

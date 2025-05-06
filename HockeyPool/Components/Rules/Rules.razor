@@ -10,7 +10,7 @@
         <MudText Typo="Typo.h2">Noteikumi </MudText>
 
         <p></p>
-        <MudList>
+        <MudList T="string">
             <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Turnīram dalībnieki var pievienoties jebkurā laikā, taču par notikušajām vai pašreiz notiekošajam spēlēm punktus saņemt nevar!</MudListItem>
             <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Minējumus var ievadīt vai mainīt līdz spēles sākumam! Spēlei sākoties izmaiņas vairs nevarēs veikt!</MudListItem>
             <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Citu dalībnieku minējumus varēs redzēt tikai tad, kad būs sākusies spēle.</MudListItem>
@@ -21,7 +21,7 @@
             <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Uzvarētājs saņem visu balvu fondu</MudListItem>
             <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Organizatori patur tiesības ieviest izmaiņas noteikumos</MudListItem>
             <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers">Dalības maksa <b>10 EUR</b>.</MudListItem>
-            <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers" Text="Punktu sadalījums" InitiallyExpanded="true">
+            <MudListItem IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.Numbers" Text="Punktu sadalījums" Expanded="true">
                 <NestedList>
                     <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti par precīzu minējumu: <b>@Tournament?.PointsForPerfect </b> </MudListItem>
                     <MudListItem IconSize="Size.Small" IconColor="@Color.Secondary" Icon="@Icons.Material.Filled.StarOutline">Punkti par pareizu vārtu starpību+uzvarētāju: <b>@Tournament?.PointForDifference</b></MudListItem>
@@ -31,7 +31,7 @@
         </MudList>
         <MudDivider />
         <MudText onclick="@CopyToClipboard" Color="Color.Secondary" Typo="Typo.h6"> <MudIconButton Size="Size.Small" Color="Color.Secondary" Icon="@Icons.Material.Outlined.CopyAll" OnClick="@CopyToClipboard"> </MudIconButton> Didzis Stivriņš LV21HABA0551039169500  (Swedbank)</MudText>
-        <MudText Color="Color.Primary" Typo="Typo.h6"> <MudLink Color="Color.Secondary" Href="https://www.swedbank.lv/pay?id=pw7a2y1wypji" Target="_blank"><MudIcon Color="Color.Secondary" Icon="@Icons.Material.Outlined.Link"></MudIcon> Swedbank naudas pieprasījums</MudLink></MudText>
+        <MudText Color="Color.Primary" Typo="Typo.h6"> <MudLink Color="Color.Secondary" Href="https://www.swedbank.lv/pay?id=3an7muyw0dzlg" Target="_blank"><MudIcon Color="Color.Secondary" Icon="@Icons.Material.Outlined.Link"></MudIcon> Swedbank naudas pieprasījums</MudLink></MudText>
         <MudDivider />
     </MudPaper>
 </MudContainer>

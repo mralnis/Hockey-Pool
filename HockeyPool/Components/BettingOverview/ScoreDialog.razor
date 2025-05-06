@@ -5,25 +5,33 @@
 @inject UnitOfWork unitOfWork;
 @inject NavigationManager NavigationManager
 
-<MudDialog Style="background-color: rgba(55, 55, 64, 0.9)">
+<MudDialog Style="background-color: rgba(55, 55, 64, 0.9); max-width: 100vw; max-height: 100vh; overflow: auto;">
     <DialogContent>
         <MudGrid>
-            <MudItem class="content-align" xs="6">
-                <span class="fi fi-@GetCountryCode(@Matchup.HomeTeamId).ToLower()" style="width:50px;height:50px;"></span>
-            </MudItem>
-            <MudItem class="content-align" xs="6">
-                <span class="fi fi-@GetCountryCode(@Matchup.GuestTeamId).ToLower()" style="width:50px;height:50px;"></span>
-            </MudItem>
-        </MudGrid>
-        <MudForm Class="d-flex flex-grow-1 gap-4" @ref="form" Style="min-height:105px">
-            <MudNumericField RequiredError="Nepieciešams rezultāts" Required="true" T="int?" @bind-Value="HomeScore" Min="0" Max="20" Label="@GetCountryCode(@Matchup.HomeTeamId)" Variant="Variant.Outlined" />
-            <div Class="align-content-center" style="padding-bottom:40px" >
-                <MudText>VS</MudText>
-            </div>
-            <MudNumericField RequiredError="Nepieciešams rezultāts" Required="true" MaxLength="10" T="int?" @bind-Value="GuestScore" Min="0" Max="20" Label="@GetCountryCode(@Matchup.GuestTeamId)" Variant="Variant.Outlined" />
+                <MudItem class="content-align" xs="5">
+                    <span class="fi fi-@GetCountryCode(@Matchup.HomeTeamId).ToLower()" style="width:50px;height:50px;"></span
+                </MudItem>
+                <MudItem class="content-align" xs="1">
+                </MudItem>
+                <MudItem class="content-align" xs="5">
+                    <span class="fi fi-@GetCountryCode(@Matchup.GuestTeamId).ToLower()" style="width:50px;height:50px;"></span>
+                </MudItem>
+            </MudGrid>
+        <MudForm Class="d-flex flex-grow-1 gap-4" @ref="form" >
+            <MudGrid>
+                <MudItem class="content-align" xs="5">                    
+                    <MudNumericField RequiredError="Nepieciešams rezultāts" Required="true" T="int?" @bind-Value="HomeScore" Min="0" Max="20" Label="@GetCountryCode(@Matchup.HomeTeamId)" Variant="Variant.Outlined" />
+                </MudItem>
+                <MudItem class="content-align" xs="1">
+                    <MudText>VS</MudText>
+                </MudItem>
+                <MudItem class="content-align" xs="5">                  
+                    <MudNumericField RequiredError="Nepieciešams rezultāts" Required="true" MaxLength="10" T="int?" @bind-Value="GuestScore" Min="0" Max="20" Label="@GetCountryCode(@Matchup.GuestTeamId)" Variant="Variant.Outlined" />
+                </MudItem>
+            </MudGrid>          
         </MudForm>
     </DialogContent>
-    <DialogActions>
+    <DialogActions >
         <MudButton OnClick="Cancel">Atcelt</MudButton>
         <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
     </DialogActions>
@@ -33,7 +41,7 @@
     int? HomeScore { get; set; }
     int? GuestScore { get; set; }
 
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
     [Parameter] public Prediction Prediction { get; set; }
     [Parameter] public Matchup Matchup { get; set; }
 

@@ -18,7 +18,7 @@ namespace HockeyPool.Infrastructure.Data
         {
             var scope = app.Services.CreateScope();
             {
-                ApplicationDbContext dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+                ApplicationDbContext dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>()!;
                 await dbContext.Database.EnsureCreatedAsync();
                 try
                 {

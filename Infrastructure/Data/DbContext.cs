@@ -18,8 +18,8 @@ namespace HockeyPool.Infrastructure.Data
         public async Task SeedAsync(IServiceProvider serviceProvider)
         {
             SeedCountrys();
-            Seed2024Tournament();
-            Seed2024Matchups();
+            Seed2025Tournament();
+            Seed2025Matchups();
             await SeedRolesAsync(serviceProvider);
             await SeedAdminAsync(serviceProvider);
         }
@@ -57,44 +57,36 @@ namespace HockeyPool.Infrastructure.Data
             }
         }
 
-        private void Seed2024Matchups()
+        private void Seed2025Matchups()
         {
             if (!Matchups.Any())
             {
-                var tournament = Tournaments.FirstOrDefault(_ => _.Name == "IIHF 2024");
+                var tournament = Tournaments.FirstOrDefault(_ => _.Name == "IIHF 2025");
 
                 var latvija = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.LV);
 
                 Matchups.Add(new Matchup
                 {
                     TournamentId = tournament.Id,
-                    HomeTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.PL).Id,
-                    GuestTeamId = latvija.Id,
-                    GameTime = new DateTime(2024, 05, 11, 17, 20, 00),
+                    HomeTeamId = latvija.Id,
+                    GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.FR).Id,
+                    GameTime = new DateTime(2025, 05, 10, 21, 20, 00),
                 });
 
                 Matchups.Add(new Matchup
                 {
                     TournamentId = tournament.Id,
                     HomeTeamId = latvija.Id,
-                    GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.FR).Id,
-                    GameTime = new DateTime(2024, 05, 12, 17, 20, 00),
+                    GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.CA).Id,
+                    GameTime = new DateTime(2025, 05, 11, 17, 20, 00),
                 });
 
                 Matchups.Add(new Matchup
                 {
                     TournamentId = tournament.Id,
-                    HomeTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.KZ).Id,
-                    GuestTeamId = latvija.Id,
-                    GameTime = new DateTime(2024, 05, 14, 17, 20, 00),
-                });
-
-                Matchups.Add(new Matchup
-                {
-                    TournamentId = tournament.Id,
-                    HomeTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.DE).Id,
-                    GuestTeamId = latvija.Id,
-                    GameTime = new DateTime(2024, 05, 15, 17, 20, 00),
+                    HomeTeamId = latvija.Id,
+                    GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.SI).Id,
+                    GameTime = new DateTime(2025, 05, 13, 17, 20, 00),
                 });
 
                 Matchups.Add(new Matchup
@@ -102,43 +94,51 @@ namespace HockeyPool.Infrastructure.Data
                     TournamentId = tournament.Id,
                     HomeTeamId = latvija.Id,
                     GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.SE).Id,
-                    GameTime = new DateTime(2024, 05, 18, 13, 20, 00),
-                });
-
-                Matchups.Add(new Matchup
-                {
-                    TournamentId = tournament.Id,
-                    HomeTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.SK).Id,
-                    GuestTeamId = latvija.Id,
-                    GameTime = new DateTime(2024, 05, 19, 21, 20, 00),
+                    GameTime = new DateTime(2025, 05, 14, 21, 20, 00),
                 });
 
                 Matchups.Add(new Matchup
                 {
                     TournamentId = tournament.Id,
                     HomeTeamId = latvija.Id,
-                    GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.US).Id,
-                    GameTime = new DateTime(2024, 05, 21, 17, 20, 00)
+                    GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.FI).Id,
+                    GameTime = new DateTime(2025, 05, 17, 13, 20, 00),
+                });
+
+                Matchups.Add(new Matchup
+                {
+                    TournamentId = tournament.Id,
+                    HomeTeamId = latvija.Id,
+                    GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.SK).Id,
+                    GameTime = new DateTime(2025, 05, 18, 21, 20, 00),
+                });
+
+                Matchups.Add(new Matchup
+                {
+                    TournamentId = tournament.Id,
+                    HomeTeamId = latvija.Id,
+                    GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.AT).Id,
+                    GameTime = new DateTime(2025, 05, 20, 13, 20, 00),
                 });
 
                 SaveChanges();
             }
         }
 
-        private void Seed2024Tournament()
+        private void Seed2025Tournament()
         {
-            if (!Tournaments.Any(_ => _.Name == "IIHF 2024"))
+            if (!Tournaments.Any(_ => _.Name == "IIHF 2025"))
             {
                 Tournaments.Add(new Tournament
                 {
                     CountryId = 10,
-                    StartDate = new DateTime(2024, 05, 10),
-                    EndDate = new DateTime(2024, 05, 27),
+                    StartDate = new DateTime(2025, 05, 09),
+                    EndDate = new DateTime(2025, 05, 25),
                     MatchupClosingTime = 15,
-                    Name = "IIHF 2024",
+                    Name = "IIHF 2025",
                     IsActive = true,
-                    PointsForPerfect = 5,
-                    PointForDifference = 3,
+                    PointsForPerfect = 4,
+                    PointForDifference = 2,
                     PointsForWinnerOnly = 1
                 });
 
@@ -167,6 +167,7 @@ namespace HockeyPool.Infrastructure.Data
                 Countries.Add(new Country { Name = Constants.Countries.FR, FlagCode = "FR" });
                 Countries.Add(new Country { Name = Constants.Countries.SK, FlagCode = "SK" });
                 Countries.Add(new Country { Name = Constants.Countries.PL, FlagCode = "PL" });
+                Countries.Add(new Country { Name = Constants.Countries.SI, FlagCode = "SI" });
 
                 SaveChanges();
             }

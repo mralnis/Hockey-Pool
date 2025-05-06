@@ -77,7 +77,9 @@
 
     private async Task OpenEditPredictionDialogAsync(Matchup matchup, Prediction prediction, bool isNewPrediction = false)
     {
-        var dialogResult = await CallDialogAsync(matchup, prediction);
+        var dialogReference = await CallDialogAsync(matchup, prediction);
+
+        var dialogResult = await dialogReference.Result;
 
         if (dialogResult.Canceled || matchup.GameTime.Value <= DateTime.Now)
         {
@@ -112,7 +114,7 @@
         this.StateHasChanged();
     }
 
-    public async Task<DialogResult> CallDialogAsync(Matchup matchup, Prediction prediction)
+    public async Task<IDialogReference> CallDialogAsync(Matchup matchup, Prediction prediction)
     {
         var parameters = new DialogParameters<ScoreDialog>();
 
@@ -120,9 +122,9 @@
         parameters.Add(_ => _.Prediction, prediction);
 
         var options = new DialogOptions { CloseOnEscapeKey = true };
-        var dialog = DialogService.Show<ScoreDialog>("Ievadi savu prognozi", parameters, options);
+        var dialog = DialogService.ShowAsync<ScoreDialog>("Ievadi savu prognozi", parameters, options);
 
-        return await dialog.Result;
+        return await dialog;
     }
 
 
