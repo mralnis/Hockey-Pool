@@ -364,3 +364,4 @@ FodyWeavers.xsd
 /HockeyPool/databse.dat
 /HockeyPool/databse.dat-shm
 /HockeyPool/databse.dat-wal
+/HockeyPool/Properties/ServiceDependencies/hokejs2025 - Web Deploy/profile.arm.json
