@@ -365,3 +365,4 @@ FodyWeavers.xsd
 /HockeyPool/databse.dat-shm
 /HockeyPool/databse.dat-wal
 /HockeyPool/Properties/ServiceDependencies/hokejs2025 - Web Deploy/profile.arm.json
+/HockeyPool/Properties/ServiceDependencies/liepabet - Web Deploy/profile.arm.json
