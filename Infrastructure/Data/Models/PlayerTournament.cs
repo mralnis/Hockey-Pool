@@ -1,9 +1,8 @@
-﻿namespace HockeyPool.Infrastructure.Data.Models
+﻿namespace HockeyPool.Infrastructure.Data.Models;
+
+public class PlayerTournament
 {
-    public class PlayerTournament
-    {
-        public int Id { get; set; }
-        public int TournamentId { get; set; }
-        public Guid ApsnetUserId { get; set; }
-    }
+    public int Id { get; set; }
+    public int TournamentId { get; set; }
+    public Guid ApsnetUserId { get; set; }
 }

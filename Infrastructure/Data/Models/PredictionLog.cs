@@ -1,14 +1,13 @@
-﻿namespace HockeyPool.Infrastructure.Data.Models
+﻿namespace HockeyPool.Infrastructure.Data.Models;
+
+public class PredictionLog
 {
-    public class PredictionLog
-    {
-        public int Id { get; set; }
-        public int MatchupId { get; set; }
-        public DateTime TimeStamp { get; set; }
-        public Guid AspNetUserId { get; set; }
-        public int? HomeTeamScore { get; set; }
-        public int? GuestTeamScore { get; set; }
-        public string IpAddress { get; set; }
-        public string BrowserVersion { get; set;}
-    }
+    public int Id { get; set; }
+    public int MatchupId { get; set; }
+    public DateTime TimeStamp { get; set; }
+    public Guid AspNetUserId { get; set; }
+    public int? HomeTeamScore { get; set; }
+    public int? GuestTeamScore { get; set; }
+    public string IpAddress { get; set; }
+    public string BrowserVersion { get; set;}
 }

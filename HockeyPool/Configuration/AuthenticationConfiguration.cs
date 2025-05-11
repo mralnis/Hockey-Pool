@@ -2,62 +2,61 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 
-namespace HockeyPool.Configuration
+namespace HockeyPool.Configuration;
+
+public static class AuthenticationConfiguration
 {
-    public static class AuthenticationConfiguration
+    public static IServiceCollection AddHockeyPoolAuthentication(this IServiceCollection services)
     {
-        public static IServiceCollection AddHockeyPoolAuthentication(this IServiceCollection services)
+        services.AddCascadingAuthenticationState();
+        services.AddScoped<IdentityUserAccessor>();
+        services.AddScoped<IdentityRedirectManager>();
+        services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+
+        services.AddAuthentication(options =>
         {
-            services.AddCascadingAuthenticationState();
-            services.AddScoped<IdentityUserAccessor>();
-            services.AddScoped<IdentityRedirectManager>();
-            services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+            options.DefaultScheme = IdentityConstants.ApplicationScheme;
+            options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+        })
+        .AddIdentityCookies();
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = IdentityConstants.ApplicationScheme;
-                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-            })
-            .AddIdentityCookies();
+        return services;
+    }
 
-            return services;
-        }
+    public static IServiceCollection AddHockeyPoolAuthorization(this IServiceCollection services)
+    {
+        services.AddOptions();
+        services.AddAuthorizationCore();
 
-        public static IServiceCollection AddHockeyPoolAuthorization(this IServiceCollection services)
+        return services;
+    }
+
+    public static IServiceCollection AddHockeyPoolIdentity(this IServiceCollection services)
+    {
+        services.AddIdentityCore<ApplicationUser>(options =>
         {
-            services.AddOptions();
-            services.AddAuthorizationCore();
+            options.SignIn.RequireConfirmedAccount = false;
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequiredLength = 3;
 
-            return services;
-        }
+            options.User.RequireUniqueEmail = false;
+            options.User.AllowedUserNameCharacters = null;
+            options.ClaimsIdentity.RoleClaimType = "Role";
 
-        public static IServiceCollection AddHockeyPoolIdentity(this IServiceCollection services)
-        {
-            services.AddIdentityCore<ApplicationUser>(options =>
-            {
-                options.SignIn.RequireConfirmedAccount = false;
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredLength = 3;
+            options.SignIn.RequireConfirmedEmail = false;
+            options.SignIn.RequireConfirmedPhoneNumber = false;
+        })
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddSignInManager()
+            .AddDefaultTokenProviders()
+            .AddErrorDescriber<AppErrorDescriber>();
 
-                options.User.RequireUniqueEmail = false;
-                options.User.AllowedUserNameCharacters = null;
-                options.ClaimsIdentity.RoleClaimType = "Role";
+        services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
-                options.SignIn.RequireConfirmedEmail = false;
-                options.SignIn.RequireConfirmedPhoneNumber = false;
-            })
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddSignInManager()
-                .AddDefaultTokenProviders()
-                .AddErrorDescriber<AppErrorDescriber>();
-
-            services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
-
-            return services;
-        }
+        return services;
     }
 }
