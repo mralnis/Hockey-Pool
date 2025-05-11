@@ -38,9 +38,9 @@ else
             <MudTd Class="justify-content-end" style="width:1px;" DataLabel="Punkti">
                 @context.Predictions.Sum(_ => _.PointsEarned ?? 0)p
             </MudTd>
-            <MudTd DataLabel="Name">
+                <MudTd Class="text-nowrap" style="max-width: max-content;" DataLabel="Name">  
                 @context.UserName
-                <UserIcon Username="@context.UserName"/>
+                   <UserIcon Username="@context.UserName" />  
             </MudTd>
             @foreach (var matchup in matchups)
             {
