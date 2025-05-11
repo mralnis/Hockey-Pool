@@ -3,14 +3,34 @@
 
 <MudContainer>
     <MudPaper Class="pa-2">
-        <MudList T="string">
-            <MudListItem T="string" Href="/Winners/Overview?year=2024" IconColor="@Color.Secondary"> <MudText Typo="Typo.h3">2024 Jēkabs G</MudText>  </MudListItem>
-            <MudListItem T="string" Href="/Winners/Overview?year=2023" IconColor="@Color.Secondary"> <MudText Typo="Typo.h4">2023 Edgars</MudText>  </MudListItem>
-            <MudListItem T="string" Href="/Winners/Overview?year=2022" IconColor="@Color.Secondary"> <MudText Typo="Typo.h5">2022 Līga</MudText></MudListItem>
-            <MudListItem T="string" Href="/Winners/Overview?year=2021" IconColor="@Color.Secondary"> <MudText Typo="Typo.h6">2021 Didzis R</MudText></MudListItem>
-            <MudListItem T="string" Href="https://www.iihf.com/en/events/2020/wm/news/18344/2020-iihf-ice-hockey-world-championship-cancelled" Target="_blank" IconColor="@Color.Secondary"> <MudText Typo="Typo.h6"> 2020 <MudIcon Icon="@Icons.Material.Rounded.Coronavirus" /> </MudText></MudListItem>
-            <MudListItem T="string" Href="/Winners/Overview?year=2019" IconColor="@Color.Secondary"> <MudText Typo="Typo.h6">2019 Didzis S</MudText></MudListItem>
-            <MudListItem T="string" Href="/Winners/Overview?year=2018" IconColor="@Color.Secondary"> <MudText Typo="Typo.h6">2018 Edgars</MudText></MudListItem>
+        <MudList T="string" Class="d-flex flex-column">
+            <MudListItem T="string" Href="/Winners/Overview?year=2024" IconColor="@Color.Secondary">
+                <MudText Typo="Typo.h3" Class="d-inline-flex align-items-center">2024 Jēkabs G</MudText>
+            </MudListItem>
+            <MudDivider />
+            <MudListItem T="string" Href="/Winners/Overview?year=2023" IconColor="@Color.Secondary">
+                <MudText Typo="Typo.h4" Class="d-inline-flex align-items-center">2023 Edgars</MudText>
+            </MudListItem>
+            <MudDivider />
+            <MudListItem T="string" Href="/Winners/Overview?year=2022" IconColor="@Color.Secondary">
+                <MudText Typo="Typo.h5" Class="d-inline-flex align-items-center">2022 Līga</MudText>
+            </MudListItem>
+            <MudDivider />
+            <MudListItem T="string" Href="/Winners/Overview?year=2021" IconColor="@Color.Secondary">
+                <MudText Typo="Typo.h6" Class="d-inline-flex align-items-center">2021 Didzis R</MudText>
+            </MudListItem>
+            <MudDivider />
+            <MudListItem T="string" Href="https://www.iihf.com/en/events/2020/wm/news/18344/2020-iihf-ice-hockey-world-championship-cancelled" Target="_blank" IconColor="@Color.Secondary">
+                <MudText Typo="Typo.h6" Class="d-inline-flex align-items-center">2020 <MudIcon Icon="@Icons.Material.Rounded.Coronavirus" /></MudText>
+            </MudListItem>
+            <MudDivider />
+            <MudListItem T="string" Href="/Winners/Overview?year=2019" IconColor="@Color.Secondary">
+                <MudText Typo="Typo.h6" Class="d-inline-flex align-items-center">2019 Didzis S</MudText>
+            </MudListItem>
+            <MudDivider />
+            <MudListItem T="string" Href="/Winners/Overview?year=2018" IconColor="@Color.Secondary">
+                <MudText Typo="Typo.h6" Class="d-inline-flex align-items-center">2018 Edgars</MudText>
+            </MudListItem>
         </MudList>
     </MudPaper>
 </MudContainer>
