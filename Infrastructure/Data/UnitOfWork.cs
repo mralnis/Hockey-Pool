@@ -99,6 +99,11 @@ public class UnitOfWork(ApplicationDbContext dbContext)
         }
     }
 
+    public async Task<int> SaveChangesAsync()
+    {
+        return await context.SaveChangesAsync();
+    }
+
 
 
 

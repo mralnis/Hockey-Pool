@@ -148,7 +148,7 @@ else
                 {
                     UserId = new Guid(user.Id),
                     UserName = user.UserName,
-                    Predictions = unitOfWork.PredictionsRepository.GetUserPredictions(new Guid(user.Id)),
+                    Predictions = await unitOfWork.PredictionsRepository.GetUserPredictionsAsync(new Guid(user.Id)),
                 });
 
             foreach (var matchup in await unitOfWork.MatchupRepository.GetAllAsync())

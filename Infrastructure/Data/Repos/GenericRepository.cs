@@ -5,6 +5,7 @@ namespace HockeyPool.Infrastructure.Data.Repos;
 public class GenericRepository<T> where T : class
 {
     protected readonly ApplicationDbContext _dbContext;
+    
     public GenericRepository(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
@@ -15,11 +16,13 @@ public class GenericRepository<T> where T : class
         await _dbContext.Set<T>().AddAsync(entity);
         await _dbContext.SaveChangesAsync();
     }
+    
     public virtual async Task UpdateAsync(T entity)
     {
         _dbContext.Entry(entity).State = EntityState.Modified;
         await _dbContext.SaveChangesAsync();
     }
+    
     public virtual async Task AddRange(IEnumerable<T> entities)
     {
         await _dbContext.Set<T>().AddRangeAsync(entities);

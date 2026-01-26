@@ -11,7 +11,7 @@ public static class SetupDB
 
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlite("Data Source=databse.dat");
+            options.UseSqlite("Data Source=database.dat");
         });
 
         services.AddDatabaseDeveloperPageExceptionFilter();

@@ -97,6 +97,7 @@ public class MatchupRepository : GenericRepository<Matchup>
                     if (prediction.HomeTeamScore == prediction.GuestTeamScore)
                     {
                         prediction.PointsEarned = 0;
+                        continue;
                     }
                     prediction.PointsEarned = tournament.PointForDifference;
                 }

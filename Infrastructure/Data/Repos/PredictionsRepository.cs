@@ -51,12 +51,13 @@ public class PredictionsRepository : GenericRepository<Prediction>
         });
     }
 
-    public List<Prediction> GetAllPredictions()
+    public async Task<List<Prediction>> GetAllPredictionsAsync()
     {
-        return _dbContext.Predictions.ToList();
+        return await _dbContext.Predictions.ToListAsync();
     }
-    public List<Prediction> GetUserPredictions(Guid userId)
+    
+    public async Task<List<Prediction>> GetUserPredictionsAsync(Guid userId)
     {
-        return _dbContext.Predictions.Where(_ => _.AspNetUserId == userId).ToList();
+        return await _dbContext.Predictions.Where(_ => _.AspNetUserId == userId).ToListAsync();
     }
 }

@@ -18,8 +18,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public async Task SeedAsync(IServiceProvider serviceProvider)
     {
         SeedCountrys();
-        Seed2025Tournament();
-        Seed2025Matchups();
+        SeedOlympics2026();
+        SeedOlympics2026Matchups();
         await SeedRolesAsync(serviceProvider);
         await SeedAdminAsync(serviceProvider);
     }
@@ -54,6 +54,64 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
             // Create the role
             await roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+    }
+
+    private void SeedOlympics2026Matchups()
+    {
+        if (!Matchups.Any())
+        {
+            var tournament = Tournaments.FirstOrDefault(_ => _.Name == "Olympics Milano Cortina 2026");
+
+            var latvija = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.LV);
+
+            Matchups.Add(new Matchup
+            {
+                TournamentId = tournament.Id,
+                HomeTeamId = latvija.Id,
+                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.US).Id,
+                GameTime = new DateTime(2026, 02, 12, 22, 10, 00),
+            });
+
+            Matchups.Add(new Matchup
+            {
+                TournamentId = tournament.Id,
+                GuestTeamId = latvija.Id,
+                HomeTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.DE).Id,
+                GameTime = new DateTime(2026, 02, 14, 13, 10, 00),
+            });
+
+            Matchups.Add(new Matchup
+            {
+                TournamentId = tournament.Id,
+                GuestTeamId = latvija.Id,
+                HomeTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.DK).Id,
+                GameTime = new DateTime(2026, 02, 15, 20, 10, 00),
+            });
+
+
+            SaveChanges();
+        }
+    }
+
+    private void SeedOlympics2026()
+    {
+        if (!Tournaments.Any(_ => _.Name == "Olympics Milano Cortina 2026"))
+        {
+            Tournaments.Add(new Tournament
+            {
+                CountryId = 6,
+                StartDate = new DateTime(2026, 02, 06),
+                EndDate = new DateTime(2026, 02, 22),
+                MatchupClosingTime = 15,
+                Name = "Olympics Milano Cortina 2026",
+                IsActive = true,
+                PointsForPerfect = 4,
+                PointForDifference = 2,
+                PointsForWinnerOnly = 1
+            });
+
+            SaveChanges();
         }
     }
 
@@ -136,7 +194,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                 EndDate = new DateTime(2025, 05, 25),
                 MatchupClosingTime = 15,
                 Name = "IIHF 2025",
-                IsActive = true,
+                IsActive = false,
                 PointsForPerfect = 4,
                 PointForDifference = 2,
                 PointsForWinnerOnly = 1
