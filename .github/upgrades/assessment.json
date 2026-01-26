@@ -1,0 +1,772 @@
+{
+  "settings": {
+    "components": {
+      "code": false,
+      "binaries": false
+    },
+    "targetId": "net10.0",
+    "targetDisplayName": ".NETCoreApp,Version=v10.0"
+  },
+  "analysisStartTime": "2026-01-26T07:51:08.82545Z",
+  "analysisEndTime": "2026-01-26T07:51:14.1683565Z",
+  "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2270980",
+  "stats": {
+    "summary": {
+      "projects": 2,
+      "issues": 5,
+      "incidents": 25,
+      "effort": 25
+    },
+    "charts": {
+      "severity": {
+        "Mandatory": 2,
+        "Optional": 1,
+        "Potential": 22,
+        "Information": 0
+      },
+      "category": {
+        "NuGet": 10,
+        "Project": 2,
+        "Api": 13
+      }
+    }
+  },
+  "projects": [
+    {
+      "path": "HockeyPool\\HockeyPool.csproj",
+      "startingProject": true,
+      "issues": 5,
+      "storyPoints": 19,
+      "properties": {
+        "appName": "HockeyPool",
+        "projectKind": "AspNetCore",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 76,
+        "numberOfCodeFiles": 15,
+        "linesTotal": 36873,
+        "linesOfCode": 459,
+        "totalApiScanned": 12132,
+        "minLinesOfCodeToChange": 13,
+        "maxLinesOfCodeToChange": 13
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "b58e0049-3c2d-49d5-adab-3921a0c8160e",
+          "ruleId": "NuGet.0002",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, and replace with new package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore 10.0.2",
+              "protected": "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, and replace with new package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore 10.0.2"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\HockeyPool.csproj",
+            "snippet": "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, and replace with new package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore 10.0.2",
+            "protectedSnippet": "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, and replace with new package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore 10.0.2",
+            "label": "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore 9.0.4",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore",
+              "PackageVersion": "9.0.4",
+              "PackageNewVersion": "10.0.2",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "4c82411d-ba38-4cd7-a64d-4ed11b6ac1de",
+          "ruleId": "NuGet.0002",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNetCore.Identity.EntityFrameworkCore, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Identity.EntityFrameworkCore, and replace with new package Microsoft.AspNetCore.Identity.EntityFrameworkCore 10.0.2",
+              "protected": "Microsoft.AspNetCore.Identity.EntityFrameworkCore, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Identity.EntityFrameworkCore, and replace with new package Microsoft.AspNetCore.Identity.EntityFrameworkCore 10.0.2"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\HockeyPool.csproj",
+            "snippet": "Microsoft.AspNetCore.Identity.EntityFrameworkCore, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Identity.EntityFrameworkCore, and replace with new package Microsoft.AspNetCore.Identity.EntityFrameworkCore 10.0.2",
+            "protectedSnippet": "Microsoft.AspNetCore.Identity.EntityFrameworkCore, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Identity.EntityFrameworkCore, and replace with new package Microsoft.AspNetCore.Identity.EntityFrameworkCore 10.0.2",
+            "label": "Microsoft.AspNetCore.Identity.EntityFrameworkCore 9.0.4",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Identity.EntityFrameworkCore",
+              "PackageVersion": "9.0.4",
+              "PackageNewVersion": "10.0.2",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "46e1946b-ea30-4ddf-a1cd-cafaa587ed3e",
+          "ruleId": "NuGet.0002",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.EntityFrameworkCore.Design, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Design, and replace with new package Microsoft.EntityFrameworkCore.Design 10.0.2",
+              "protected": "Microsoft.EntityFrameworkCore.Design, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Design, and replace with new package Microsoft.EntityFrameworkCore.Design 10.0.2"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\HockeyPool.csproj",
+            "snippet": "Microsoft.EntityFrameworkCore.Design, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Design, and replace with new package Microsoft.EntityFrameworkCore.Design 10.0.2",
+            "protectedSnippet": "Microsoft.EntityFrameworkCore.Design, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Design, and replace with new package Microsoft.EntityFrameworkCore.Design 10.0.2",
+            "label": "Microsoft.EntityFrameworkCore.Design 9.0.4",
+            "properties": {
+              "PackageId": "Microsoft.EntityFrameworkCore.Design",
+              "PackageVersion": "9.0.4",
+              "PackageNewVersion": "10.0.2",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "53c5ae39-f788-4509-9d27-5cc59bb907eb",
+          "ruleId": "NuGet.0002",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.EntityFrameworkCore.Sqlite, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Sqlite, and replace with new package Microsoft.EntityFrameworkCore.Sqlite 10.0.2",
+              "protected": "Microsoft.EntityFrameworkCore.Sqlite, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Sqlite, and replace with new package Microsoft.EntityFrameworkCore.Sqlite 10.0.2"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\HockeyPool.csproj",
+            "snippet": "Microsoft.EntityFrameworkCore.Sqlite, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Sqlite, and replace with new package Microsoft.EntityFrameworkCore.Sqlite 10.0.2",
+            "protectedSnippet": "Microsoft.EntityFrameworkCore.Sqlite, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Sqlite, and replace with new package Microsoft.EntityFrameworkCore.Sqlite 10.0.2",
+            "label": "Microsoft.EntityFrameworkCore.Sqlite 9.0.4",
+            "properties": {
+              "PackageId": "Microsoft.EntityFrameworkCore.Sqlite",
+              "PackageVersion": "9.0.4",
+              "PackageNewVersion": "10.0.2",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "d794cfe4-316d-4931-9e5e-65e028e98a7d",
+          "ruleId": "NuGet.0005",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "SQLitePCLRaw.lib.e_sqlite3, 2.1.11\n\nRecommendation:\n\nThe ID of this package has changed to SourceGear.sqlite3.\nRemove SQLitePCLRaw.lib.e_sqlite3, and replace with new package SQLitePCLRaw.lib.e_sqlite3, 2.1.11",
+              "protected": "SQLitePCLRaw.lib.e_sqlite3, 2.1.11\n\nRecommendation:\n\nThe ID of this package has changed to SourceGear.sqlite3.\nRemove SQLitePCLRaw.lib.e_sqlite3, and replace with new package SQLitePCLRaw.lib.e_sqlite3, 2.1.11"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\HockeyPool.csproj",
+            "snippet": "SQLitePCLRaw.lib.e_sqlite3, 2.1.11\n\nRecommendation:\n\nThe ID of this package has changed to SourceGear.sqlite3.\nRemove SQLitePCLRaw.lib.e_sqlite3, and replace with new package SQLitePCLRaw.lib.e_sqlite3, 2.1.11",
+            "protectedSnippet": "SQLitePCLRaw.lib.e_sqlite3, 2.1.11\n\nRecommendation:\n\nThe ID of this package has changed to SourceGear.sqlite3.\nRemove SQLitePCLRaw.lib.e_sqlite3, and replace with new package SQLitePCLRaw.lib.e_sqlite3, 2.1.11",
+            "label": "SQLitePCLRaw.lib.e_sqlite3 2.1.11",
+            "properties": {
+              "PackageId": "SQLitePCLRaw.lib.e_sqlite3",
+              "PackageVersion": "2.1.11",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "a7a32c12-6da9-4199-9285-e44af8d8220d",
+          "ruleId": "Project.0002",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net9.0\nRecommended target framework: net10.0",
+              "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\HockeyPool.csproj",
+            "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net9.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        },
+        {
+          "incidentId": "b23cc2e0-d772-4609-b3fc-9a8b9eeb9e40",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: Exception diagnostics are suppressed when IExceptionHandler.TryHandleAsync returns true ",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "app.UseExceptionHandler(\u0022/Error\u0022, createScopeForErrors: true);",
+              "protected": "M:Microsoft.AspNetCore.Builder.ExceptionHandlerExtensions.UseExceptionHandler(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String,System.Boolean)"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\Configuration\\HttpPipelineConfiguration.cs",
+            "snippet": "app.UseExceptionHandler(\u0022/Error\u0022, createScopeForErrors: true);",
+            "protectedSnippet": "M:Microsoft.AspNetCore.Builder.ExceptionHandlerExtensions.UseExceptionHandler(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String,System.Boolean)",
+            "label": "M:Microsoft.AspNetCore.Builder.ExceptionHandlerExtensions.UseExceptionHandler(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String,System.Boolean)",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/aspnet-core/10/exception-handler-diagnostics-suppressed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 12,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "c22b9844-57b2-4eb4-9a7b-7ec7b8385f6c",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, 8.0.6. Add package reference to Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, 8.0.6",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "app.UseMigrationsEndPoint();",
+              "protected": "T:Microsoft.AspNetCore.Builder.MigrationsEndPointExtensions"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\Configuration\\HttpPipelineConfiguration.cs",
+            "snippet": "app.UseMigrationsEndPoint();",
+            "protectedSnippet": "T:Microsoft.AspNetCore.Builder.MigrationsEndPointExtensions",
+            "label": "T:Microsoft.AspNetCore.Builder.MigrationsEndPointExtensions",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore",
+              "PackageNewVersion": "8.0.6"
+            },
+            "line": 8,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "69964be0-73e8-4303-8ebe-cf8224846434",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, 8.0.6. Add package reference to Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, 8.0.6",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "app.UseMigrationsEndPoint();",
+              "protected": "M:Microsoft.AspNetCore.Builder.MigrationsEndPointExtensions.UseMigrationsEndPoint(Microsoft.AspNetCore.Builder.IApplicationBuilder)"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\Configuration\\HttpPipelineConfiguration.cs",
+            "snippet": "app.UseMigrationsEndPoint();",
+            "protectedSnippet": "M:Microsoft.AspNetCore.Builder.MigrationsEndPointExtensions.UseMigrationsEndPoint(Microsoft.AspNetCore.Builder.IApplicationBuilder)",
+            "label": "M:Microsoft.AspNetCore.Builder.MigrationsEndPointExtensions.UseMigrationsEndPoint(Microsoft.AspNetCore.Builder.IApplicationBuilder)",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore",
+              "PackageNewVersion": "8.0.6"
+            },
+            "line": 8,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "18c5ea37-b6d0-428f-aeec-26732aae2b36",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, 8.0.6. Add package reference to Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, 8.0.6",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.AddDatabaseDeveloperPageExceptionFilter();",
+              "protected": "T:Microsoft.Extensions.DependencyInjection.DatabaseDeveloperPageExceptionFilterServiceExtensions"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\Configuration\\DatabaseConfiguration.cs",
+            "snippet": "services.AddDatabaseDeveloperPageExceptionFilter();",
+            "protectedSnippet": "T:Microsoft.Extensions.DependencyInjection.DatabaseDeveloperPageExceptionFilterServiceExtensions",
+            "label": "T:Microsoft.Extensions.DependencyInjection.DatabaseDeveloperPageExceptionFilterServiceExtensions",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore",
+              "PackageNewVersion": "8.0.6"
+            },
+            "line": 15,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "287e782d-9efd-4956-8c52-ffdbe7139973",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, 8.0.6. Add package reference to Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore, 8.0.6",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.AddDatabaseDeveloperPageExceptionFilter();",
+              "protected": "M:Microsoft.Extensions.DependencyInjection.DatabaseDeveloperPageExceptionFilterServiceExtensions.AddDatabaseDeveloperPageExceptionFilter(Microsoft.Extensions.DependencyInjection.IServiceCollection)"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\Configuration\\DatabaseConfiguration.cs",
+            "snippet": "services.AddDatabaseDeveloperPageExceptionFilter();",
+            "protectedSnippet": "M:Microsoft.Extensions.DependencyInjection.DatabaseDeveloperPageExceptionFilterServiceExtensions.AddDatabaseDeveloperPageExceptionFilter(Microsoft.Extensions.DependencyInjection.IServiceCollection)",
+            "label": "M:Microsoft.Extensions.DependencyInjection.DatabaseDeveloperPageExceptionFilterServiceExtensions.AddDatabaseDeveloperPageExceptionFilter(Microsoft.Extensions.DependencyInjection.IServiceCollection)",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore",
+              "PackageNewVersion": "8.0.6"
+            },
+            "line": 15,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "45dc1c12-3654-49bf-8650-39085b5b875d",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Identity.EntityFrameworkCore, 8.0.6. Add package reference to Microsoft.AspNetCore.Identity.EntityFrameworkCore, 8.0.6",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.AddIdentityCore\u003CApplicationUser\u003E(options =\u003E\r\n        {\r\n            options.SignIn.RequireConfirmedAccount = false;\r\n            options.Password.RequireDigit = false;\r\n            options.Password.RequireLowercase = false;\r\n            options.Password.RequireNonAlphanumeric = false;\r\n            options.Password.RequireUppercase = false;\r\n            options.Password.RequiredLength = 3;\r\n\r\n            options.User.RequireUniqueEmail = false;\r\n            options.User.AllowedUserNameCharacters = null;\r\n            options.ClaimsIdentity.RoleClaimType = \u0022Role\u0022;\r\n\r\n            options.SignIn.RequireConfirmedEmail = false;\r\n            options.SignIn.RequireConfirmedPhoneNumber = false;\r\n        })\r\n            .AddRoles\u003CIdentityRole\u003E()\r\n            .AddEntityFrameworkStores\u003CApplicationDbContext\u003E()\r\n            .AddSignInManager()\r\n            .AddDefaultTokenProviders()\r\n            .AddErrorDescriber\u003CAppErrorDescriber\u003E();",
+              "protected": "T:Microsoft.Extensions.DependencyInjection.IdentityEntityFrameworkBuilderExtensions"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\Configuration\\AuthenticationConfiguration.cs",
+            "snippet": "services.AddIdentityCore\u003CApplicationUser\u003E(options =\u003E\r\n        {\r\n            options.SignIn.RequireConfirmedAccount = false;\r\n            options.Password.RequireDigit = false;\r\n            options.Password.RequireLowercase = false;\r\n            options.Password.RequireNonAlphanumeric = false;\r\n            options.Password.RequireUppercase = false;\r\n            options.Password.RequiredLength = 3;\r\n\r\n            options.User.RequireUniqueEmail = false;\r\n            options.User.AllowedUserNameCharacters = null;\r\n            options.ClaimsIdentity.RoleClaimType = \u0022Role\u0022;\r\n\r\n            options.SignIn.RequireConfirmedEmail = false;\r\n            options.SignIn.RequireConfirmedPhoneNumber = false;\r\n        })\r\n            .AddRoles\u003CIdentityRole\u003E()\r\n            .AddEntityFrameworkStores\u003CApplicationDbContext\u003E()\r\n            .AddSignInManager()\r\n            .AddDefaultTokenProviders()\r\n            .AddErrorDescriber\u003CAppErrorDescriber\u003E();",
+            "protectedSnippet": "T:Microsoft.Extensions.DependencyInjection.IdentityEntityFrameworkBuilderExtensions",
+            "label": "T:Microsoft.Extensions.DependencyInjection.IdentityEntityFrameworkBuilderExtensions",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Identity.EntityFrameworkCore",
+              "PackageNewVersion": "8.0.6"
+            },
+            "line": 35,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "5e7594f4-689e-4689-965a-f802b086dd71",
+          "ruleId": "Api.0002",
+          "description": "API is available in package Microsoft.AspNetCore.Identity.EntityFrameworkCore, 8.0.6. Add package reference to Microsoft.AspNetCore.Identity.EntityFrameworkCore, 8.0.6",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "services.AddIdentityCore\u003CApplicationUser\u003E(options =\u003E\r\n        {\r\n            options.SignIn.RequireConfirmedAccount = false;\r\n            options.Password.RequireDigit = false;\r\n            options.Password.RequireLowercase = false;\r\n            options.Password.RequireNonAlphanumeric = false;\r\n            options.Password.RequireUppercase = false;\r\n            options.Password.RequiredLength = 3;\r\n\r\n            options.User.RequireUniqueEmail = false;\r\n            options.User.AllowedUserNameCharacters = null;\r\n            options.ClaimsIdentity.RoleClaimType = \u0022Role\u0022;\r\n\r\n            options.SignIn.RequireConfirmedEmail = false;\r\n            options.SignIn.RequireConfirmedPhoneNumber = false;\r\n        })\r\n            .AddRoles\u003CIdentityRole\u003E()\r\n            .AddEntityFrameworkStores\u003CApplicationDbContext\u003E()\r\n            .AddSignInManager()\r\n            .AddDefaultTokenProviders()\r\n            .AddErrorDescriber\u003CAppErrorDescriber\u003E();",
+              "protected": "M:Microsoft.Extensions.DependencyInjection.IdentityEntityFrameworkBuilderExtensions.AddEntityFrameworkStores\u0060\u00601(Microsoft.AspNetCore.Identity.IdentityBuilder)"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\Configuration\\AuthenticationConfiguration.cs",
+            "snippet": "services.AddIdentityCore\u003CApplicationUser\u003E(options =\u003E\r\n        {\r\n            options.SignIn.RequireConfirmedAccount = false;\r\n            options.Password.RequireDigit = false;\r\n            options.Password.RequireLowercase = false;\r\n            options.Password.RequireNonAlphanumeric = false;\r\n            options.Password.RequireUppercase = false;\r\n            options.Password.RequiredLength = 3;\r\n\r\n            options.User.RequireUniqueEmail = false;\r\n            options.User.AllowedUserNameCharacters = null;\r\n            options.ClaimsIdentity.RoleClaimType = \u0022Role\u0022;\r\n\r\n            options.SignIn.RequireConfirmedEmail = false;\r\n            options.SignIn.RequireConfirmedPhoneNumber = false;\r\n        })\r\n            .AddRoles\u003CIdentityRole\u003E()\r\n            .AddEntityFrameworkStores\u003CApplicationDbContext\u003E()\r\n            .AddSignInManager()\r\n            .AddDefaultTokenProviders()\r\n            .AddErrorDescriber\u003CAppErrorDescriber\u003E();",
+            "protectedSnippet": "M:Microsoft.Extensions.DependencyInjection.IdentityEntityFrameworkBuilderExtensions.AddEntityFrameworkStores\u0060\u00601(Microsoft.AspNetCore.Identity.IdentityBuilder)",
+            "label": "M:Microsoft.Extensions.DependencyInjection.IdentityEntityFrameworkBuilderExtensions.AddEntityFrameworkStores\u0060\u00601(Microsoft.AspNetCore.Identity.IdentityBuilder)",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Identity.EntityFrameworkCore",
+              "PackageNewVersion": "8.0.6"
+            },
+            "line": 35,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "d5c982aa-c153-401e-8158-8bc246028dc5",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var callbackUrl = NavigationManager.GetUriWithQueryParameters(\r\n            NavigationManager.ToAbsoluteUri(\u0022Account/ConfirmEmail\u0022).AbsoluteUri,\r\n            new Dictionary\u003Cstring, object?\u003E { [\u0022userId\u0022] = userId, [\u0022code\u0022] = code, [\u0022returnUrl\u0022] = ReturnUrl });",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\Components\\Account\\Pages\\Register.razor.iQr9KUNlIjFc-PNQ.ide.g.cs",
+            "snippet": "var callbackUrl = NavigationManager.GetUriWithQueryParameters(\r\n            NavigationManager.ToAbsoluteUri(\u0022Account/ConfirmEmail\u0022).AbsoluteUri,\r\n            new Dictionary\u003Cstring, object?\u003E { [\u0022userId\u0022] = userId, [\u0022code\u0022] = code, [\u0022returnUrl\u0022] = ReturnUrl });",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 521,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "e643bb53-d8d7-4f83-9f7a-45566301609b",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var callbackUrl = NavigationManager.GetUriWithQueryParameters(\r\n            NavigationManager.ToAbsoluteUri(\u0022Account/ConfirmEmail\u0022).AbsoluteUri,\r\n            new Dictionary\u003Cstring, object?\u003E { [\u0022userId\u0022] = userId, [\u0022code\u0022] = code, [\u0022returnUrl\u0022] = ReturnUrl });",
+              "protected": "P:System.Uri.AbsoluteUri"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\Components\\Account\\Pages\\Register.razor.iQr9KUNlIjFc-PNQ.ide.g.cs",
+            "snippet": "var callbackUrl = NavigationManager.GetUriWithQueryParameters(\r\n            NavigationManager.ToAbsoluteUri(\u0022Account/ConfirmEmail\u0022).AbsoluteUri,\r\n            new Dictionary\u003Cstring, object?\u003E { [\u0022userId\u0022] = userId, [\u0022code\u0022] = code, [\u0022returnUrl\u0022] = ReturnUrl });",
+            "protectedSnippet": "P:System.Uri.AbsoluteUri",
+            "label": "P:System.Uri.AbsoluteUri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 521,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "e9df95b3-bdc1-4179-9f0a-78886d48ac27",
+          "ruleId": "Api.0002",
+          "description": "Breaking change: New TimeSpan.From*() overloads that take integers ",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "TimeSpan.FromMinutes(30)",
+              "protected": "M:System.TimeSpan.FromMinutes(System.Int64)"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\Components\\Account\\IdentityRevalidatingAuthenticationStateProvider.cs",
+            "snippet": "TimeSpan.FromMinutes(30)",
+            "protectedSnippet": "M:System.TimeSpan.FromMinutes(System.Int64)",
+            "label": "M:System.TimeSpan.FromMinutes(System.Int64)",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/core-libraries/9.0/timespan-from-overloads.md",
+                "isCustom": false
+              }
+            ],
+            "line": 16,
+            "column": 56
+          }
+        },
+        {
+          "incidentId": "70356880-d6c3-45bf-bcc7-4d322c12c05f",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "navigationManager.ToAbsoluteUri(navigationManager.Uri)",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\Components\\Account\\IdentityRedirectManager.cs",
+            "snippet": "navigationManager.ToAbsoluteUri(navigationManager.Uri)",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 49,
+            "column": 34
+          }
+        },
+        {
+          "incidentId": "fe69831e-c84a-4064-9a38-fe17631c8d70",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var uriWithoutQuery = navigationManager.ToAbsoluteUri(uri).GetLeftPart(UriPartial.Path);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\Components\\Account\\IdentityRedirectManager.cs",
+            "snippet": "var uriWithoutQuery = navigationManager.ToAbsoluteUri(uri).GetLeftPart(UriPartial.Path);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 37,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "caa6b524-8e2e-4016-a719-ff37ef2989f1",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "HockeyPool\\HockeyPool.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "if (!Uri.IsWellFormedUriString(uri, UriKind.Relative))\r\n        {\r\n            uri = navigationManager.ToBaseRelativePath(uri);\r\n        }",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "HockeyPool\\Components\\Account\\IdentityRedirectManager.cs",
+            "snippet": "if (!Uri.IsWellFormedUriString(uri, UriKind.Relative))\r\n        {\r\n            uri = navigationManager.ToBaseRelativePath(uri);\r\n        }",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 23,
+            "column": 8
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "Infrastructure\\HockeyPool.Infrastructure.csproj",
+      "startingProject": true,
+      "issues": 2,
+      "storyPoints": 6,
+      "properties": {
+        "appName": "HockeyPool.Infrastructure",
+        "projectKind": "ClassLibrary",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 23,
+        "numberOfCodeFiles": 23,
+        "linesTotal": 2829,
+        "linesOfCode": 2829,
+        "totalApiScanned": 3777,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "b08722f7-e536-42c3-a548-a573b7904017",
+          "ruleId": "NuGet.0002",
+          "projectPath": "Infrastructure\\HockeyPool.Infrastructure.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNetCore.Identity.EntityFrameworkCore, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Identity.EntityFrameworkCore, and replace with new package Microsoft.AspNetCore.Identity.EntityFrameworkCore 10.0.2",
+              "protected": "Microsoft.AspNetCore.Identity.EntityFrameworkCore, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Identity.EntityFrameworkCore, and replace with new package Microsoft.AspNetCore.Identity.EntityFrameworkCore 10.0.2"
+            },
+            "kind": "File",
+            "path": "Infrastructure\\HockeyPool.Infrastructure.csproj",
+            "snippet": "Microsoft.AspNetCore.Identity.EntityFrameworkCore, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Identity.EntityFrameworkCore, and replace with new package Microsoft.AspNetCore.Identity.EntityFrameworkCore 10.0.2",
+            "protectedSnippet": "Microsoft.AspNetCore.Identity.EntityFrameworkCore, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Identity.EntityFrameworkCore, and replace with new package Microsoft.AspNetCore.Identity.EntityFrameworkCore 10.0.2",
+            "label": "Microsoft.AspNetCore.Identity.EntityFrameworkCore 9.0.4",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Identity.EntityFrameworkCore",
+              "PackageVersion": "9.0.4",
+              "PackageNewVersion": "10.0.2",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "d1b0a83f-0869-4143-9b03-06a2eeee587b",
+          "ruleId": "NuGet.0002",
+          "projectPath": "Infrastructure\\HockeyPool.Infrastructure.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.EntityFrameworkCore.SqlServer, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.SqlServer, and replace with new package Microsoft.EntityFrameworkCore.SqlServer 10.0.2",
+              "protected": "Microsoft.EntityFrameworkCore.SqlServer, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.SqlServer, and replace with new package Microsoft.EntityFrameworkCore.SqlServer 10.0.2"
+            },
+            "kind": "File",
+            "path": "Infrastructure\\HockeyPool.Infrastructure.csproj",
+            "snippet": "Microsoft.EntityFrameworkCore.SqlServer, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.SqlServer, and replace with new package Microsoft.EntityFrameworkCore.SqlServer 10.0.2",
+            "protectedSnippet": "Microsoft.EntityFrameworkCore.SqlServer, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.SqlServer, and replace with new package Microsoft.EntityFrameworkCore.SqlServer 10.0.2",
+            "label": "Microsoft.EntityFrameworkCore.SqlServer 9.0.4",
+            "properties": {
+              "PackageId": "Microsoft.EntityFrameworkCore.SqlServer",
+              "PackageVersion": "9.0.4",
+              "PackageNewVersion": "10.0.2",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "bc6d3087-f127-476c-a7e4-7b5360513865",
+          "ruleId": "NuGet.0002",
+          "projectPath": "Infrastructure\\HockeyPool.Infrastructure.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.EntityFrameworkCore.Tools, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Tools, and replace with new package Microsoft.EntityFrameworkCore.Tools 10.0.2",
+              "protected": "Microsoft.EntityFrameworkCore.Tools, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Tools, and replace with new package Microsoft.EntityFrameworkCore.Tools 10.0.2"
+            },
+            "kind": "File",
+            "path": "Infrastructure\\HockeyPool.Infrastructure.csproj",
+            "snippet": "Microsoft.EntityFrameworkCore.Tools, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Tools, and replace with new package Microsoft.EntityFrameworkCore.Tools 10.0.2",
+            "protectedSnippet": "Microsoft.EntityFrameworkCore.Tools, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Tools, and replace with new package Microsoft.EntityFrameworkCore.Tools 10.0.2",
+            "label": "Microsoft.EntityFrameworkCore.Tools 9.0.4",
+            "properties": {
+              "PackageId": "Microsoft.EntityFrameworkCore.Tools",
+              "PackageVersion": "9.0.4",
+              "PackageNewVersion": "10.0.2",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "22678ed1-b55c-45f3-85d3-6f1fde48b529",
+          "ruleId": "NuGet.0002",
+          "projectPath": "Infrastructure\\HockeyPool.Infrastructure.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Hosting.Abstractions, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.Extensions.Hosting.Abstractions, and replace with new package Microsoft.Extensions.Hosting.Abstractions 10.0.2",
+              "protected": "Microsoft.Extensions.Hosting.Abstractions, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.Extensions.Hosting.Abstractions, and replace with new package Microsoft.Extensions.Hosting.Abstractions 10.0.2"
+            },
+            "kind": "File",
+            "path": "Infrastructure\\HockeyPool.Infrastructure.csproj",
+            "snippet": "Microsoft.Extensions.Hosting.Abstractions, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.Extensions.Hosting.Abstractions, and replace with new package Microsoft.Extensions.Hosting.Abstractions 10.0.2",
+            "protectedSnippet": "Microsoft.Extensions.Hosting.Abstractions, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.Extensions.Hosting.Abstractions, and replace with new package Microsoft.Extensions.Hosting.Abstractions 10.0.2",
+            "label": "Microsoft.Extensions.Hosting.Abstractions 9.0.4",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Hosting.Abstractions",
+              "PackageVersion": "9.0.4",
+              "PackageNewVersion": "10.0.2",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "c8982896-bf0d-4de3-93c9-74bdded5c3b0",
+          "ruleId": "NuGet.0002",
+          "projectPath": "Infrastructure\\HockeyPool.Infrastructure.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Identity.Stores, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.Extensions.Identity.Stores, and replace with new package Microsoft.Extensions.Identity.Stores 10.0.2",
+              "protected": "Microsoft.Extensions.Identity.Stores, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.Extensions.Identity.Stores, and replace with new package Microsoft.Extensions.Identity.Stores 10.0.2"
+            },
+            "kind": "File",
+            "path": "Infrastructure\\HockeyPool.Infrastructure.csproj",
+            "snippet": "Microsoft.Extensions.Identity.Stores, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.Extensions.Identity.Stores, and replace with new package Microsoft.Extensions.Identity.Stores 10.0.2",
+            "protectedSnippet": "Microsoft.Extensions.Identity.Stores, 9.0.4\n\nRecommendation:\n\nRemove Microsoft.Extensions.Identity.Stores, and replace with new package Microsoft.Extensions.Identity.Stores 10.0.2",
+            "label": "Microsoft.Extensions.Identity.Stores 9.0.4",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Identity.Stores",
+              "PackageVersion": "9.0.4",
+              "PackageNewVersion": "10.0.2",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "9c77d075-c935-4a5b-83a8-62db992e5f2e",
+          "ruleId": "Project.0002",
+          "projectPath": "Infrastructure\\HockeyPool.Infrastructure.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net9.0\nRecommended target framework: net10.0",
+              "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
+            },
+            "kind": "File",
+            "path": "Infrastructure\\HockeyPool.Infrastructure.csproj",
+            "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net9.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    }
+  ],
+  "rules": {
+    "NuGet.0002": {
+      "id": "NuGet.0002",
+      "isFeature": false,
+      "description": "NuGet package upgrade is recommended for selected target framework.\n\nStandard .NET packages are recommended to have versions matching version of .NET that project targets.\n\nSome other packages also are known to work better for selected target frameworks.",
+      "label": "NuGet package upgrade is recommended",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262530",
+          "isCustom": false
+        }
+      ]
+    },
+    "Project.0002": {
+      "id": "Project.0002",
+      "isFeature": false,
+      "description": "Project\u0027s target framework(s) needs to be changed to the new target framework that you selected for this upgrade.\n\nDuring upgrade target framework will be adjusted to corresponding platform when applicable. In some cases project would result in multiple target frameworks after the upgrade if it was using features that now have their own platforms in modern .NET frameworks (windows, iOS, Android etc).",
+      "label": "Project\u0027s target framework(s) needs to be changed",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Overview of porting from .NET Framework to .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        },
+        {
+          "title": ".NET project SDKs",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265226",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0005": {
+      "id": "NuGet.0005",
+      "isFeature": false,
+      "description": "NuGet package is deprecated.\n\nGo to its documentation and if there is a guidance for replacement of functionality provided by this package.",
+      "label": "NuGet package is deprecated",
+      "severity": "Optional",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262531",
+          "isCustom": false
+        }
+      ]
+    },
+    "Api.0003": {
+      "id": "Api.0003",
+      "isFeature": false,
+      "description": "API has a behavioral change in selected .NET version: code and binaries may behave differently at runtime without needing recompilation, but the new behavior might be undesirable and require updates.",
+      "label": "Behavioral change in selected .NET version",
+      "severity": "Potential",
+      "effort": 1
+    },
+    "Api.0002": {
+      "id": "Api.0002",
+      "isFeature": false,
+      "description": "API is source incompatible for selected .NET version: requires code changes to compile successfully when targeting a new version, such as removing obsolete APIs or changing method signatures.",
+      "label": "Source incompatible for selected .NET version",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Breaking changes in .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262679",
+          "isCustom": false
+        }
+      ]
+    }
+  }
+}
