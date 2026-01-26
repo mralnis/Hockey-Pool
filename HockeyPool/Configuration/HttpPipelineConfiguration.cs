@@ -1,4 +1,6 @@
-﻿namespace HockeyPool.Configuration;
+﻿using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
+
+namespace HockeyPool.Configuration;
 
 public static class HttpPipelineConfiguration
 {

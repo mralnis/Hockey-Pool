@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace HockeyPool.Configuration;
 
