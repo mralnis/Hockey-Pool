@@ -60,3 +60,80 @@ h1:focus {
 .text-background {
     background-color: rgba(255,255,255,0.6980392156862745);
 }
+
+/* Account form styling - matches MudBlazor dark theme */
+.mud-account-form .form-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.mud-account-form .form-control {
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.23);
+    border-radius: 4px;
+    color: white;
+    padding: 14px 14px;
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.mud-account-form .form-control:focus {
+    border-color: #792740;
+    box-shadow: 0 0 0 1px #792740;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.09);
+}
+
+.mud-account-form .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.mud-account-form .form-check-input {
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.23);
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.mud-account-form .form-check-input:checked {
+    background-color: #792740;
+    border-color: #792740;
+}
+
+.mud-account-form .validation-message {
+    color: #f44336;
+    font-size: 0.75rem;
+    font-family: 'Roboto', sans-serif;
+    margin-top: 4px;
+}
+
+.mud-account-form .valid.modified:not([type=checkbox]) {
+    outline: none;
+    border-color: #4caf50;
+}
+
+.mud-account-form .invalid {
+    outline: none;
+    border-color: #f44336;
+}
+
+.account-link {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+}
+
+.account-link:hover {
+    color: white;
+    text-decoration: underline;
+}

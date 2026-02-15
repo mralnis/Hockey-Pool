@@ -1,9 +1,9 @@
 ﻿@if (!string.IsNullOrEmpty(DisplayMessage))
 {
-    var statusMessageClass = DisplayMessage.StartsWith("Error") ? "danger" : "success";
-    <div class="alert alert-@statusMessageClass" role="alert">
+    var isError = DisplayMessage.StartsWith("Kļūda") || DisplayMessage.StartsWith("Error");
+    <MudAlert Severity="@(isError ? Severity.Error : Severity.Success)" Class="mb-4" Variant="Variant.Filled" Dense="true">
         @DisplayMessage
-    </div>
+    </MudAlert>
 }
 
 @code {
