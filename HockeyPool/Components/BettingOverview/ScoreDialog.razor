@@ -1,91 +1,167 @@
-﻿@using static HockeyPool.Components.BettingOverview.BettingOverview
+@using static HockeyPool.Components.BettingOverview.BettingOverview
 
 @attribute [Authorize]
 
 @inject UnitOfWork unitOfWork;
-@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
 
-<MudDialog Style="background-color: rgba(55, 55, 64, 0.9); max-width: 100vw; max-height: 100vh; overflow: auto;">
+<MudDialog Style="background-color: rgba(55, 55, 64, 0.9);">
     <DialogContent>
-        <MudGrid>
-                <MudItem class="content-align" xs="5">
-                    <span class="fi fi-@GetCountryCode(@Matchup.HomeTeamId).ToLower()" style="width:50px;height:50px;"></span
-                </MudItem>
-                <MudItem class="content-align" xs="1">
-                </MudItem>
-                <MudItem class="content-align" xs="5">
-                    <span class="fi fi-@GetCountryCode(@Matchup.GuestTeamId).ToLower()" style="width:50px;height:50px;"></span>
-                </MudItem>
-            </MudGrid>
-        <MudForm Class="d-flex flex-grow-1 gap-4" @ref="form" >
-            <MudGrid>
-                <MudItem class="content-align" xs="5">                    
-                    <MudNumericField RequiredError="Nepieciešams rezultāts" Required="true" T="int?" @bind-Value="HomeScore" Min="0" Max="20" Label="@GetCountryCode(@Matchup.HomeTeamId)" Variant="Variant.Outlined" />
-                </MudItem>
-                <MudItem class="content-align" xs="1">
-                    <MudText>VS</MudText>
-                </MudItem>
-                <MudItem class="content-align" xs="5">                  
-                    <MudNumericField RequiredError="Nepieciešams rezultāts" Required="true" MaxLength="10" T="int?" @bind-Value="GuestScore" Min="0" Max="20" Label="@GetCountryCode(@Matchup.GuestTeamId)" Variant="Variant.Outlined" />
-                </MudItem>
-            </MudGrid>          
-        </MudForm>
+        @if (_loading)
+        {
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+        }
+        else
+        {
+            <MudStack Spacing="4" AlignItems="AlignItems.Center">
+                <!-- Country flags -->
+                <MudStack Row="true" Justify="Justify.Center" AlignItems="AlignItems.Center" Spacing="6">
+                    <span class="fi fi-@_homeCountryCode.ToLower()" style="width:50px;height:50px;"></span>
+                    <MudText Typo="Typo.h6" Class="mx-4">VS</MudText>
+                    <span class="fi fi-@_guestCountryCode.ToLower()" style="width:50px;height:50px;"></span>
+                </MudStack>
+
+                <!-- Score input form -->
+                <MudForm @ref="_form" Style="width: 100%;">
+                    <MudStack Row="true" Justify="Justify.Center" AlignItems="AlignItems.Start" Spacing="4">
+                        <MudNumericField
+                            @bind-Value="HomeScore"
+                            Label="@_homeCountryName"
+                            Variant="Variant.Outlined"
+                            Required="true"
+                            RequiredError="Nepieciešams rezultāts"
+                            HelperText=" "
+                            Min="0"
+                            Max="20"
+                            T="int?"
+                            Style="max-width: 150px;" />
+
+                        <MudText Typo="Typo.h6" Class="mt-4">:</MudText>
+
+                        <MudNumericField
+                            @bind-Value="GuestScore"
+                            Label="@_guestCountryName"
+                            Variant="Variant.Outlined"
+                            Required="true"
+                            RequiredError="Nepieciešams rezultāts"
+                            HelperText=" "
+                            Min="0"
+                            Max="20"
+                            T="int?"
+                            Style="max-width: 150px;" />
+                    </MudStack>
+
+                    @if (!string.IsNullOrEmpty(_validationError))
+                    {
+                        <MudAlert Severity="Severity.Error" Class="mt-4">@_validationError</MudAlert>
+                    }
+                </MudForm>
+            </MudStack>
+        }
     </DialogContent>
-    <DialogActions >
+    <DialogActions>
         <MudButton OnClick="Cancel">Atcelt</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit" Disabled="_loading">Saglabāt</MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
-    int? HomeScore { get; set; }
-    int? GuestScore { get; set; }
+    private int? HomeScore { get; set; }
+    private int? GuestScore { get; set; }
+    private bool _loading = true;
+    private string _homeCountryCode = "EU";
+    private string _guestCountryCode = "EU";
+    private string _homeCountryName = "";
+    private string _guestCountryName = "";
+    private string _validationError = "";
+    private MudForm _form;
 
-    [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
-    [Parameter] public Prediction Prediction { get; set; }
-    [Parameter] public Matchup Matchup { get; set; }
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; }
 
-    MudForm form;
+    [Parameter]
+    public Prediction Prediction { get; set; }
 
-    protected override void OnInitialized()
+    [Parameter]
+    public Matchup Matchup { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        await base.OnInitializedAsync();
+
+        // Initialize score values from prediction
         HomeScore = Prediction.HomeTeamScore;
         GuestScore = Prediction.GuestTeamScore;
+
+        // Load country data asynchronously
+        await LoadCountryDataAsync();
+
+        _loading = false;
     }
 
-    public string GetCountryCode(int? id)
+    private async Task LoadCountryDataAsync()
     {
-        if (id == null)
+        try
         {
-            return "EU";
+            var homeCountry = await unitOfWork.CountryRepository.GetByIdAsync(Matchup.HomeTeamId);
+            var guestCountry = await unitOfWork.CountryRepository.GetByIdAsync(Matchup.GuestTeamId);
+
+            if (homeCountry != null)
+            {
+                _homeCountryCode = homeCountry.FlagCode;
+                _homeCountryName = homeCountry.Name;
+            }
+
+            if (guestCountry != null)
+            {
+                _guestCountryCode = guestCountry.FlagCode;
+                _guestCountryName = guestCountry.Name;
+            }
         }
-        return unitOfWork.CountryRepository.GetByIdAsync(id.Value).Result.FlagCode;
-    }
-
-    async Task Submit()
-    {
-        await form.Validate();
-
-        if (form.IsValid)
+        catch (Exception ex)
         {
-            if (HomeScore == GuestScore)
-            {
-                NavigationManager.NavigateTo("/Rules");
-            }
-
-            if (Prediction.HomeTeamScore == HomeScore && Prediction.GuestTeamScore == GuestScore)
-            {
-                MudDialog.Cancel();
-                return;
-            }
-
-            Prediction.HomeTeamScore = HomeScore;
-            Prediction.GuestTeamScore = GuestScore;
-
-            MudDialog.Close(DialogResult.Ok(true));
+            Snackbar.Add($"Kļūda ielādējot valstu datus: {ex.Message}", Severity.Error);
         }
     }
 
-    void Cancel() => MudDialog.Cancel();
+    private async Task Submit()
+    {
+        _validationError = "";
+
+        await _form.Validate();
+
+        if (!_form.IsValid)
+        {
+            return;
+        }
+
+        // Validate that scores are not null (form validation should catch this, but double-check)
+        if (!HomeScore.HasValue || !GuestScore.HasValue)
+        {
+            _validationError = "Lūdzu, ievadiet abus rezultātus";
+            return;
+        }
+
+        // Validate that draws are not allowed
+        if (HomeScore == GuestScore)
+        {
+            _validationError = "Neizšķirts nav atļauts! Lūdzu, iepazīstieties ar noteikumiem.";
+            return;
+        }
+
+        // If scores haven't changed, just close the dialog
+        if (Prediction.HomeTeamScore == HomeScore && Prediction.GuestTeamScore == GuestScore)
+        {
+            MudDialog.Cancel();
+            return;
+        }
+
+        // Update prediction with new scores
+        Prediction.HomeTeamScore = HomeScore;
+        Prediction.GuestTeamScore = GuestScore;
+
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    private void Cancel() => MudDialog.Cancel();
 }
