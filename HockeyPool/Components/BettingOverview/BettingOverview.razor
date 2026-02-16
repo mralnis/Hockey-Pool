@@ -12,7 +12,7 @@
 }
 else
 {
-    <MudTable Items="@UserPredictionsList.OrderByDescending(x => x.UserId== CurrentUserID)"
+    <MudTable Items="@UserPredictionsList.OrderByDescending(x => x.UserId == CurrentUserID).ThenByDescending(x => x.Predictions.Sum(p => p.PointsEarned ?? 0))"
               Breakpoint="Breakpoint.None"
               Hover="true"
               HorizontalScrollbar="true"
