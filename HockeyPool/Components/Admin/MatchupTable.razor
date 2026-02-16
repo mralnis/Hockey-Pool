@@ -20,24 +20,14 @@
               ApplyButtonPosition="TableApplyButtonPosition.End"
               EditButtonPosition="TableEditButtonPosition.End"
               EditTrigger="TableEditTrigger.EditButton"
-              Breakpoint="Breakpoint.None">
+              Breakpoint="Breakpoint.Sm"
+              Dense="true">
 
         <ToolBarContent>
             <MudText Typo="Typo.h4">Spēles</MudText>
             <MudSpacer />
             <MudSwitch T="bool" Value=@activeOnly ValueChanged=ActiveOnlyValueChanged Color="Color.Primary">Active only</MudSwitch>
         </ToolBarContent>
-
-        <ColGroup>
-            <col style="width:auto;" />
-            <col style="width:auto;" />
-            <col style="width:auto;" />
-            <col style="width:auto;" />
-            <col />
-            <col />
-            <col style="width:auto;" />
-            <col style="width:auto;" />
-        </ColGroup>
 
         <HeaderContent>
             <MudTh><MudTableSortLabel SortBy="new Func<MatchupViewModel, object>(x=>x.TournamentName)">Turnīrs</MudTableSortLabel></MudTh>

@@ -4,7 +4,7 @@
 @inject UnitOfWork unitOfWork;
 @inject NavigationManager _navigationManager
 
-<MudContainer Class="mt-16" MaxWidth="MaxWidth.ExtraLarge">
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Large">
     <MudText Typo="Typo.h4">Turnīri</MudText>
     <MudTable Items="@Tournaments"
               T="TournamentViewModel"
@@ -19,7 +19,8 @@
               ApplyButtonPosition="TableApplyButtonPosition.End"
               EditButtonPosition="TableEditButtonPosition.End"
               EditTrigger="TableEditTrigger.EditButton"
-              Breakpoint="Breakpoint.None">
+              Breakpoint="Breakpoint.Md"
+              Dense="true">
 
         <HeaderContent>
             <MudTh ><MudTableSortLabel SortBy="new Func<TournamentViewModel, object>(x=>x.CountryName)">Norises valsts</MudTableSortLabel></MudTh>
@@ -54,11 +55,11 @@
                     }
                 </MudSelect>
             </MudTd>
-            <MudTd Style="width:fit-content" DataLabel="StartDate">
-                <MudDatePicker Style="width:fit-content" Date="@context.Tournament.StartDate"></MudDatePicker>
+            <MudTd DataLabel="StartDate">
+                <MudDatePicker @bind-Date="@context.Tournament.StartDate" Editable="true"></MudDatePicker>
             </MudTd>
             <MudTd DataLabel="EndDate">
-                <MudDatePicker Style="width:fit-content" Date="@context.Tournament.EndDate"></MudDatePicker>
+                <MudDatePicker @bind-Date="@context.Tournament.EndDate" Editable="true"></MudDatePicker>
             </MudTd>
             <MudTd DataLabel="Name">
                 <MudTextField @bind-Value="@context.Tournament.Name" />
@@ -67,13 +68,13 @@
                 <MudCheckBox @bind-Value="@context.Tournament.IsActive"></MudCheckBox>
             </MudTd>
             <MudTd DataLabel="PointsForPerfect">
-                <MudNumericField Style="width:fit-content" RequiredError="Nepieciešami punkti" MaxLength="10"  @bind-Value="@context.Tournament.PointsForPerfect" Min="0" Max="10" Variant="Variant.Text" />
+                <MudNumericField RequiredError="Nepieciešami punkti" MaxLength="10" @bind-Value="@context.Tournament.PointsForPerfect" Min="0" Max="10" Variant="Variant.Text" />
             </MudTd>
             <MudTd DataLabel="PointForDifference">
-                <MudNumericField Style="width:fit-content" RequiredError="Nepieciešami punkti" MaxLength="10" @bind-Value="@context.Tournament.PointForDifference" Min="0" Max="10" Variant="Variant.Text" />
+                <MudNumericField RequiredError="Nepieciešami punkti" MaxLength="10" @bind-Value="@context.Tournament.PointForDifference" Min="0" Max="10" Variant="Variant.Text" />
             </MudTd>
             <MudTd DataLabel="PointsForWinnerOnly">
-                <MudNumericField Style="width:fit-content" RequiredError="Nepieciešami punkti" MaxLength="10" @bind-Value="@context.Tournament.PointsForWinnerOnly" Min="0" Max="10" Variant="Variant.Text" />
+                <MudNumericField RequiredError="Nepieciešami punkti" MaxLength="10" @bind-Value="@context.Tournament.PointsForWinnerOnly" Min="0" Max="10" Variant="Variant.Text" />
             </MudTd>
             <MudTd>
                 <MudIconButton Icon="@Icons.Material.Outlined.Delete" @onclick="(() =>  DeleteRowAsync(context))"></MudIconButton>

@@ -4,37 +4,40 @@
 @inject UnitOfWork unitOfWork;
 @inject ISnackbar Snackbar
 
-<MudContainer Class="mt-16 align-content-xxl-center" MaxWidth="MaxWidth.Small">
-    <MudText Typo="Typo.h3">Administrātora panelis</MudText>
-    <MudGrid Class="mud-table background-transparent justify-center">
-        <MudDivider></MudDivider>
-        <MudItem xs="5">
-            <div class="d-block">
-                <MudText>Turnīra Administrēšana</MudText>
-                <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.Girl" DisableElevation="true" Label="Pārvaldīt Spēles" Href="/admin/matchups" />
-                <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.Flag" DisableElevation="true" Label="Pārvaldīt valstis" Href="/admin/countries" />
-                <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.SportsHockey" DisableElevation="true" Label="Pārvaldīt turnīrus" Href="/admin/tournaments" />
-            </div>
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Small">
+    <MudText Typo="Typo.h4" Class="mb-4">Administrātora panelis</MudText>
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12" sm="6">
+            <MudText Typo="Typo.subtitle1" Class="mb-2">Turnīra Administrēšana</MudText>
+            <MudStack Spacing="2">
+                <MudButton FullWidth="true" Color="Color.Primary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Girl" Href="/admin/matchups">Pārvaldīt Spēles</MudButton>
+                <MudButton FullWidth="true" Color="Color.Primary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Flag" Href="/admin/countries">Pārvaldīt valstis</MudButton>
+                <MudButton FullWidth="true" Color="Color.Primary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.SportsHockey" Href="/admin/tournaments">Pārvaldīt turnīrus</MudButton>
+            </MudStack>
         </MudItem>
-        <MudItem xs="5">
-            <div class="d-block">
-                <MudText>Web lapas Administrēšana</MudText>
-                <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.LockReset" DisableElevation="true" Label="Atiestatīt paroli" Href="/ResetPasswordSetup" />
-                <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.AddModerator" DisableElevation="true" Label="Pārvaldīt adminus" Href="/Admin/AddAdmin" />
-                <MudFab class="d-flex mt-2" Color="Color.Primary" Style="width:fit-content" StartIcon="@Icons.Material.Filled.PersonRemove" DisableElevation="true" Label="Dzēst lietotāju" Href="/Admin/RemoveUsers" />
-            </div>
+        <MudItem xs="12" sm="6">
+            <MudText Typo="Typo.subtitle1" Class="mb-2">Web lapas Administrēšana</MudText>
+            <MudStack Spacing="2">
+                <MudButton FullWidth="true" Color="Color.Primary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.LockReset" Href="/ResetPasswordSetup">Atiestatīt paroli</MudButton>
+                <MudButton FullWidth="true" Color="Color.Primary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.AddModerator" Href="/Admin/AddAdmin">Pārvaldīt adminus</MudButton>
+                <MudButton FullWidth="true" Color="Color.Primary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.PersonRemove" Href="/Admin/RemoveUsers">Dzēst lietotāju</MudButton>
+            </MudStack>
         </MudItem>
         @if (ClosestMatchup != null)
         {
-            <MudItem xs="8">
-                <MudCard>
+            <MudItem xs="12" sm="8">
+                <MudCard Class="mt-2">
                     <MudCardContent>
-                        <span class="fi fi-@ClosestMatchup.HomeTeamFlagCode.ToLower()" style="width:25px;height:25px;padding-right:5px"></span> @ClosestMatchup.HomeTeamName VS @ClosestMatchup.GuestTeamName  <span class="fi fi-@ClosestMatchup.GuestTeamFlagCode.ToLower()" style="width:25px;height:25px;padding-left:5px"></span>
-                        <MudNumericField Style="width:fit-content" RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@ClosestMatchup.Matchup.HomeTeamScore" Min="0" Max="20" Label="@ClosestMatchup.HomeTeamName" Variant="Variant.Text" />
-                        <MudNumericField Style="width:fit-content" RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@ClosestMatchup.Matchup.GuestTeamScore" Min="0" Max="20" Label="@ClosestMatchup.GuestTeamName" Variant="Variant.Text" />
+                        <div class="d-flex justify-center align-center mb-2">
+                            <span class="fi fi-@ClosestMatchup.HomeTeamFlagCode.ToLower()" style="width:25px;height:25px;padding-right:5px"></span>
+                            <MudText Typo="Typo.subtitle1">@ClosestMatchup.HomeTeamName VS @ClosestMatchup.GuestTeamName</MudText>
+                            <span class="fi fi-@ClosestMatchup.GuestTeamFlagCode.ToLower()" style="width:25px;height:25px;padding-left:5px"></span>
+                        </div>
+                        <MudNumericField FullWidth="true" RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@ClosestMatchup.Matchup.HomeTeamScore" Min="0" Max="20" Label="@ClosestMatchup.HomeTeamName" Variant="Variant.Text" />
+                        <MudNumericField FullWidth="true" RequiredError="Nepieciešams rezultāts" MaxLength="10" T="int?" @bind-Value="@ClosestMatchup.Matchup.GuestTeamScore" Min="0" Max="20" Label="@ClosestMatchup.GuestTeamName" Variant="Variant.Text" />
                     </MudCardContent>
                     <MudCardActions>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await Submit())">Save</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="@(async () => await Submit())">Saglabāt</MudButton>
                     </MudCardActions>
                 </MudCard>
             </MudItem>
