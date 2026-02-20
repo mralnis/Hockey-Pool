@@ -1,21 +1,23 @@
-﻿@if (FirstPlaceUsers.Contains(Username))
+@foreach (var winner in Winners.Where(w => w.AspNetUserId == UserId))
 {
-    <img src="./images/crown1.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada uzvarētājs" alt="Iepriekšējā gada uzvarētājs" />
-}
-@if (SecondPlaceUsers.Contains(Username))
-{
-    <img src="./images/crown2.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada 2. vieta" alt="Iepriekšējā gada uzvarētājs" />
-}
-@if (ThirdPlaceUsers.Contains(Username))
-{
-    <img src="./images/crown3.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada 3. vieta" alt="Iepriekšējā gada uzvarētājs" />
+    @if (winner.Place == 1)
+    {
+        <img src="./images/crown1.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada uzvarētājs" alt="Iepriekšējā gada uzvarētājs" />
+    }
+    @if (winner.Place == 2)
+    {
+        <img src="./images/crown2.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada 2. vieta" alt="Iepriekšējā gada 2. vieta" />
+    }
+    @if (winner.Place == 3)
+    {
+        <img src="./images/crown3.svg" width="16" height="16" style="margin-bottom:13px" title="Iepriekšējā gada 3. vieta" alt="Iepriekšējā gada 3. vieta" />
+    }
 }
 
 @code {
     [Parameter]
-    public string Username { get; set; }
+    public string UserId { get; set; }
 
-    public List<string> FirstPlaceUsers = new List<string> { "Šmidzis" };
-    public List<string> SecondPlaceUsers = new List<string> { "Krii", };
-    public List<string> ThirdPlaceUsers = new List<string> { "🇱🇻Brenards🇱🇻", };
+    [Parameter]
+    public List<TournamentWinner> Winners { get; set; } = new();
 }
