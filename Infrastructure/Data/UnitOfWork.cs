@@ -15,6 +15,7 @@ public class UnitOfWork(ApplicationDbContext dbContext)
     private TournamentRepository? tournamentRepository;
     private PredictionsRepository? predictionsRepository;
     private MatchupRepository? matchupRepository;
+    private GenericRepository<TournamentWinner>? tournamentWinnerRepository;
 
     public GenericRepository<PredictionLog> PredictionLogRepository
     {
@@ -84,6 +85,18 @@ public class UnitOfWork(ApplicationDbContext dbContext)
                 this.predictionsRepository = new PredictionsRepository(context);
             }
             return predictionsRepository;
+        }
+    }
+
+    public GenericRepository<TournamentWinner> TournamentWinnerRepository
+    {
+        get
+        {
+            if (this.tournamentWinnerRepository == null)
+            {
+                this.tournamentWinnerRepository = new GenericRepository<TournamentWinner>(context);
+            }
+            return tournamentWinnerRepository;
         }
     }
 

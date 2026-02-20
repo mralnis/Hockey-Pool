@@ -1,0 +1,131 @@
+@page "/Admin/Winners"
+@attribute [Authorize(Roles = "Admin")]
+
+@inject UnitOfWork unitOfWork
+@inject ISnackbar Snackbar
+
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+    <MudText Typo="Typo.h4" Class="mb-4">Pārvaldīt uzvarētājus</MudText>
+
+    <MudTable Items="@Winners" Hover="true" Dense="true" Breakpoint="Breakpoint.Sm">
+        <HeaderContent>
+            <MudTh>Turnīrs</MudTh>
+            <MudTh>Lietotājs</MudTh>
+            <MudTh>Vieta</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Turnīrs">@GetTournamentName(context.TournamentId)</MudTd>
+            <MudTd DataLabel="Lietotājs">@GetUserName(context.AspNetUserId)</MudTd>
+            <MudTd DataLabel="Vieta">@context.Place. vieta</MudTd>
+            <MudTd>
+                <MudIconButton Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="@(async () => await DeleteWinner(context))" />
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+
+    <MudPaper Class="pa-4 mt-4" Elevation="1">
+        <MudText Typo="Typo.h6" Class="mb-2">Pievienot uzvarētāju</MudText>
+        <MudGrid>
+            <MudItem xs="12" sm="4">
+                <MudSelect T="int?" @bind-Value="NewTournamentId" Label="Turnīrs" Variant="Variant.Filled" AnchorOrigin="Origin.BottomLeft">
+                    @foreach (var t in Tournaments)
+                    {
+                        <MudSelectItem T="int?" Value="@t.Id">@t.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MudSelect T="string" @bind-Value="NewUserId" Label="Lietotājs" Variant="Variant.Filled" AnchorOrigin="Origin.BottomLeft">
+                    @foreach (var u in Users)
+                    {
+                        <MudSelectItem T="string" Value="@u.Id">@u.UserName</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" sm="2">
+                <MudSelect T="int?" @bind-Value="NewPlace" Label="Vieta" Variant="Variant.Filled" AnchorOrigin="Origin.BottomLeft">
+                    <MudSelectItem T="int?" Value="1">1. vieta</MudSelectItem>
+                    <MudSelectItem T="int?" Value="2">2. vieta</MudSelectItem>
+                    <MudSelectItem T="int?" Value="3">3. vieta</MudSelectItem>
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" sm="2" Class="d-flex align-end">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="AddWinner">Pievienot</MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private List<TournamentWinner> Winners = new();
+    private List<Tournament> Tournaments = new();
+    private List<ApplicationUser> Users = new();
+
+    private int? NewTournamentId;
+    private string? NewUserId;
+    private int? NewPlace;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Tournaments = await unitOfWork.TournamentRepository.GetAllAsync();
+        Users = await unitOfWork.UserRepository.GetAllAsync();
+        Winners = await unitOfWork.TournamentWinnerRepository.GetAllAsync();
+    }
+
+    private string GetTournamentName(int tournamentId)
+    {
+        return Tournaments.FirstOrDefault(t => t.Id == tournamentId)?.Name ?? "Nezināms";
+    }
+
+    private string GetUserName(string userId)
+    {
+        return Users.FirstOrDefault(u => u.Id == userId)?.UserName ?? "Nezināms";
+    }
+
+    private async Task AddWinner()
+    {
+        if (NewTournamentId == null || NewUserId == null || NewPlace == null)
+        {
+            ShowNotification("Aizpildiet visus laukus", Severity.Warning);
+            return;
+        }
+
+        var winner = new TournamentWinner
+        {
+            TournamentId = NewTournamentId.Value,
+            AspNetUserId = NewUserId,
+            Place = NewPlace.Value
+        };
+
+        await unitOfWork.TournamentWinnerRepository.AddAsync(winner);
+        Winners.Add(winner);
+
+        NewTournamentId = null;
+        NewUserId = null;
+        NewPlace = null;
+
+        ShowNotification("Uzvarētājs pievienots", Severity.Success);
+        StateHasChanged();
+    }
+
+    private async Task DeleteWinner(TournamentWinner winner)
+    {
+        await unitOfWork.TournamentWinnerRepository.RemoveAsync(winner);
+        Winners.Remove(winner);
+        ShowNotification("Uzvarētājs dzēsts", Severity.Success);
+        StateHasChanged();
+    }
+
+    private void ShowNotification(string message, Severity severity)
+    {
+        Snackbar.Add(message, severity, config =>
+        {
+            config.RequireInteraction = false;
+            config.ShowCloseIcon = false;
+            config.VisibleStateDuration = 1000;
+            config.HideTransitionDuration = 500;
+            config.ShowTransitionDuration = 500;
+        });
+    }
+}

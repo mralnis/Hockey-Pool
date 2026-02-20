@@ -14,6 +14,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Prediction> Predictions { get; set; }
     public DbSet<Tournament> Tournaments { get; set; }
     public DbSet<PredictionLog> PredictionLogs { get; set; }
+    public DbSet<TournamentWinner> TournamentWinners { get; set; }
 
     public async Task SeedAsync(IServiceProvider serviceProvider)
     {
