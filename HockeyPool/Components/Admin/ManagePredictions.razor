@@ -1,0 +1,131 @@
+@page "/Admin/Predictions"
+@attribute [Authorize(Roles = "Admin")]
+
+@inject UnitOfWork unitOfWork
+@inject ISnackbar Snackbar
+
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+    <MudText Typo="Typo.h4">Dzēst lietotāju prognozes</MudText>
+
+    <MudForm Class="mud-table background-transparent">
+        <MudSelect T="int?" Value="SelectedMatchupId" ValueChanged="OnMatchupSelected" Label="Izvēlieties spēli" Variant="Variant.Filled" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
+            @foreach (var m in MatchupItems)
+            {
+                <MudSelectItem T="int?" Value="@m.MatchupId">@m.DisplayName</MudSelectItem>
+            }
+        </MudSelect>
+    </MudForm>
+
+    @if (SelectedMatchupId != null && PredictionRows.Count > 0)
+    {
+        <MudTable Items="@PredictionRows" T="PredictionRow" Hover="true" Dense="true" Breakpoint="Breakpoint.Sm">
+            <HeaderContent>
+                <MudTh>Lietotājs</MudTh>
+                <MudTh>Prognoze</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Lietotājs">@context.UserName</MudTd>
+                <MudTd DataLabel="Prognoze">
+                    @if (GameHasStarted)
+                    {
+                        @($"{context.HomeScore} : {context.GuestScore}")
+                    }
+                    else
+                    {
+                        <MudChip T="string" Color="Color.Info" Size="Size.Small">Ievadīts</MudChip>
+                    }
+                </MudTd>
+                <MudTd DataLabel="Dzēst">
+                    <MudIconButton Icon="@Icons.Material.Outlined.DeleteSweep" Color="Color.Warning" OnClick="@(async () => await ClearPrediction(context))" />
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    }
+    else if (SelectedMatchupId != null)
+    {
+        <MudAlert Severity="Severity.Info">Nevienam lietotājam nav ievadītas prognozes šai spēlei.</MudAlert>
+    }
+</MudContainer>
+
+@code {
+    private int? SelectedMatchupId;
+    private bool GameHasStarted;
+    private List<MatchupItem> MatchupItems = new();
+    private List<PredictionRow> PredictionRows = new();
+    private List<ApplicationUser> Users = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var matchups = await unitOfWork.MatchupRepository.GetActiveMatchupsAsync();
+        var countries = await unitOfWork.CountryRepository.GetAllAsync();
+        Users = await unitOfWork.UserRepository.GetAllAsync();
+
+        MatchupItems = matchups.OrderBy(m => m.GameTime).Select(m =>
+        {
+            var home = countries.FirstOrDefault(c => c.Id == m.HomeTeamId);
+            var guest = countries.FirstOrDefault(c => c.Id == m.GuestTeamId);
+            return new MatchupItem
+            {
+                MatchupId = m.Id,
+                GameTime = m.GameTime,
+                DisplayName = $"{home?.Name ?? "?"} VS {guest?.Name ?? "?"} ({m.GameTime:dd.MM HH:mm})"
+            };
+        }).ToList();
+    }
+
+    private async Task OnMatchupSelected(int? matchupId)
+    {
+        SelectedMatchupId = matchupId;
+        PredictionRows.Clear();
+
+        if (matchupId == null) return;
+
+        var matchup = MatchupItems.FirstOrDefault(m => m.MatchupId == matchupId);
+        GameHasStarted = matchup?.GameTime <= DateTime.Now;
+
+        var predictions = await unitOfWork.PredictionsRepository.GetPredictionsByMatchupIdAsync(matchupId.Value);
+
+        PredictionRows = predictions.Select(p =>
+        {
+            var user = Users.FirstOrDefault(u => new Guid(u.Id) == p.AspNetUserId);
+            return new PredictionRow
+            {
+                PredictionId = p.Id,
+                UserName = user?.UserName ?? "Nezināms",
+                HomeScore = p.HomeTeamScore,
+                GuestScore = p.GuestTeamScore
+            };
+        }).OrderBy(r => r.UserName).ToList();
+    }
+
+    private async Task ClearPrediction(PredictionRow row)
+    {
+        await unitOfWork.PredictionsRepository.ClearPredictionAsync(row.PredictionId);
+        PredictionRows.Remove(row);
+        Snackbar.Add($"Prognoze dzēsta: {row.UserName}", Severity.Success, config =>
+        {
+            config.RequireInteraction = false;
+            config.ShowCloseIcon = false;
+            config.VisibleStateDuration = 1000;
+            config.HideTransitionDuration = 500;
+            config.ShowTransitionDuration = 500;
+        });
+        StateHasChanged();
+    }
+
+    private class MatchupItem
+    {
+        public int MatchupId { get; set; }
+        public DateTime? GameTime { get; set; }
+        public string DisplayName { get; set; }
+    }
+
+    private class PredictionRow
+    {
+        public int PredictionId { get; set; }
+        public string UserName { get; set; }
+        public int? HomeScore { get; set; }
+        public int? GuestScore { get; set; }
+    }
+}

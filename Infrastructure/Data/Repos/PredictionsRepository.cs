@@ -51,6 +51,26 @@ public class PredictionsRepository : GenericRepository<Prediction>
         });
     }
 
+    public async Task ClearPredictionAsync(int predictionId)
+    {
+        var prediction = await _dbContext.Predictions.FindAsync(predictionId);
+        if (prediction == null) return;
+
+        prediction.HomeTeamScore = null;
+        prediction.GuestTeamScore = null;
+        prediction.PointsEarned = null;
+
+        AddPredictionLog(prediction, string.Empty, string.Empty);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<List<Prediction>> GetPredictionsByMatchupIdAsync(int matchupId)
+    {
+        return await _dbContext.Predictions
+            .Where(x => x.MatchupId == matchupId && x.HomeTeamScore != null)
+            .ToListAsync();
+    }
+
     public async Task<List<Prediction>> GetAllPredictionsAsync()
     {
         return await _dbContext.Predictions.ToListAsync();

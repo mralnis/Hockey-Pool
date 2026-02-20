@@ -100,7 +100,7 @@
         }
 
 
-        if (isNewPrediction)
+        if (isNewPrediction && prediction.Id == 0)
         {
             await unitOfWork.PredictionsRepository.AddAsync(prediction, ipAddress, userAgent);
         }
