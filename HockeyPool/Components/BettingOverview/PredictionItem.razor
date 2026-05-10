@@ -121,7 +121,7 @@
         parameters.Add(_ => _.Matchup, matchup);
         parameters.Add(_ => _.Prediction, prediction);
 
-        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var options = new DialogOptions { CloseOnEscapeKey = true, BackdropClick = false };
         var dialog = DialogService.ShowAsync<ScoreDialog>("Ievadi savu prognozi", parameters, options);
 
         return await dialog;

@@ -1,0 +1,42 @@
+@implements IDisposable
+@inject NavigationManager Nav
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        @if (IsOnAdminPath)
+        {
+            <div class="server-time-badge">
+                Servera laiks: @_serverTime.ToString("yyyy-MM-dd HH:mm:ss")
+            </div>
+        }
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private DateTime _serverTime = DateTime.Now;
+    private System.Threading.Timer? _timer;
+
+    private bool IsOnAdminPath =>
+        Nav.ToBaseRelativePath(Nav.Uri).StartsWith("Admin", StringComparison.OrdinalIgnoreCase);
+
+    protected override void OnInitialized()
+    {
+        Nav.LocationChanged += OnLocationChanged;
+        _timer = new System.Threading.Timer(_ =>
+        {
+            _serverTime = DateTime.Now;
+            InvokeAsync(StateHasChanged);
+        }, null, 1000, 1000);
+    }
+
+    private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+        Nav.LocationChanged -= OnLocationChanged;
+    }
+}
