@@ -20,9 +20,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public async Task SeedAsync(IServiceProvider serviceProvider)
     {
         SeedCountrys();
-        EnsureCountry(Constants.Countries.HU, "HU");
-        SeedOlympics2026();
-        SeedOlympics2026Matchups();
         SeedWC2026();
         SeedWC2026Matchups();
         await SeedRolesAsync(serviceProvider);
@@ -68,13 +65,13 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
             var tournament = Tournaments.FirstOrDefault(_ => _.Name == "Olympics Milano Cortina 2026");
 
-            var latvija = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.LV);
+            var latvija = Countries.FirstOrDefault(_ => _.Name == C.LV);
 
             Matchups.Add(new Matchup
             {
                 TournamentId = tournament.Id,
                 HomeTeamId = latvija.Id,
-                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.US).Id,
+                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == C.US).Id,
                 GameTime = new DateTime(2026, 02, 12, 22, 10, 00),
             });
 
@@ -82,7 +79,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             {
                 TournamentId = tournament.Id,
                 GuestTeamId = latvija.Id,
-                HomeTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.DE).Id,
+                HomeTeamId = Countries.FirstOrDefault(_ => _.Name == C.DE).Id,
                 GameTime = new DateTime(2026, 02, 14, 13, 10, 00),
             });
 
@@ -90,7 +87,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             {
                 TournamentId = tournament.Id,
                 GuestTeamId = latvija.Id,
-                HomeTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.DK).Id,
+                HomeTeamId = Countries.FirstOrDefault(_ => _.Name == C.DK).Id,
                 GameTime = new DateTime(2026, 02, 15, 20, 10, 00),
             });
 
@@ -126,13 +123,13 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
             var tournament = Tournaments.FirstOrDefault(_ => _.Name == "IIHF 2025");
 
-            var latvija = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.LV);
+            var latvija = Countries.FirstOrDefault(_ => _.Name == C.LV);
 
             Matchups.Add(new Matchup
             {
                 TournamentId = tournament.Id,
                 HomeTeamId = latvija.Id,
-                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.FR).Id,
+                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == C.FR).Id,
                 GameTime = new DateTime(2025, 05, 10, 21, 20, 00),
             });
 
@@ -140,7 +137,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             {
                 TournamentId = tournament.Id,
                 HomeTeamId = latvija.Id,
-                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.CA).Id,
+                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == C.CA).Id,
                 GameTime = new DateTime(2025, 05, 11, 17, 20, 00),
             });
 
@@ -148,7 +145,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             {
                 TournamentId = tournament.Id,
                 HomeTeamId = latvija.Id,
-                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.SI).Id,
+                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == C.SI).Id,
                 GameTime = new DateTime(2025, 05, 13, 17, 20, 00),
             });
 
@@ -156,7 +153,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             {
                 TournamentId = tournament.Id,
                 HomeTeamId = latvija.Id,
-                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.SE).Id,
+                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == C.SE).Id,
                 GameTime = new DateTime(2025, 05, 14, 21, 20, 00),
             });
 
@@ -164,7 +161,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             {
                 TournamentId = tournament.Id,
                 HomeTeamId = latvija.Id,
-                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.FI).Id,
+                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == C.FI).Id,
                 GameTime = new DateTime(2025, 05, 17, 13, 20, 00),
             });
 
@@ -172,7 +169,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             {
                 TournamentId = tournament.Id,
                 HomeTeamId = latvija.Id,
-                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.SK).Id,
+                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == C.SK).Id,
                 GameTime = new DateTime(2025, 05, 18, 21, 20, 00),
             });
 
@@ -180,7 +177,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             {
                 TournamentId = tournament.Id,
                 HomeTeamId = latvija.Id,
-                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.AT).Id,
+                GuestTeamId = Countries.FirstOrDefault(_ => _.Name == C.AT).Id,
                 GameTime = new DateTime(2025, 05, 20, 13, 20, 00),
             });
 
@@ -213,44 +210,34 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         if (!Countries.Any())
         {
-            Countries.Add(new Country { Name = Constants.Countries.LV, FlagCode = "LV" });
-            Countries.Add(new Country { Name = Constants.Countries.US, FlagCode = "US" });
-            Countries.Add(new Country { Name = Constants.Countries.SE, FlagCode = "SE" });
-            Countries.Add(new Country { Name = Constants.Countries.CA, FlagCode = "CA" });
-            Countries.Add(new Country { Name = Constants.Countries.KZ, FlagCode = "KZ" });
-            Countries.Add(new Country { Name = Constants.Countries.IT, FlagCode = "IT" });
-            Countries.Add(new Country { Name = Constants.Countries.NO, FlagCode = "NO" });
-            Countries.Add(new Country { Name = Constants.Countries.FI, FlagCode = "FI" });
-            Countries.Add(new Country { Name = Constants.Countries.DE, FlagCode = "DE" });
-            Countries.Add(new Country { Name = Constants.Countries.CZ, FlagCode = "CZ" });
-            Countries.Add(new Country { Name = Constants.Countries.GB, FlagCode = "GB" });
-            Countries.Add(new Country { Name = Constants.Countries.AT, FlagCode = "AT" });
-            Countries.Add(new Country { Name = Constants.Countries.CH, FlagCode = "CH" });
-            Countries.Add(new Country { Name = Constants.Countries.DK, FlagCode = "DK" });
-            Countries.Add(new Country { Name = Constants.Countries.FR, FlagCode = "FR" });
-            Countries.Add(new Country { Name = Constants.Countries.SK, FlagCode = "SK" });
-            Countries.Add(new Country { Name = Constants.Countries.PL, FlagCode = "PL" });
-            Countries.Add(new Country { Name = Constants.Countries.SI, FlagCode = "SI" });
-            Countries.Add(new Country { Name = Constants.Countries.HU, FlagCode = "HU" });
+            Countries.Add(new Country { Name = C.LV, FlagCode = "LV" });
+            Countries.Add(new Country { Name = C.US, FlagCode = "US" });
+            Countries.Add(new Country { Name = C.SE, FlagCode = "SE" });
+            Countries.Add(new Country { Name = C.CA, FlagCode = "CA" });
+            Countries.Add(new Country { Name = C.KZ, FlagCode = "KZ" });
+            Countries.Add(new Country { Name = C.IT, FlagCode = "IT" });
+            Countries.Add(new Country { Name = C.NO, FlagCode = "NO" });
+            Countries.Add(new Country { Name = C.FI, FlagCode = "FI" });
+            Countries.Add(new Country { Name = C.DE, FlagCode = "DE" });
+            Countries.Add(new Country { Name = C.CZ, FlagCode = "CZ" });
+            Countries.Add(new Country { Name = C.GB, FlagCode = "GB" });
+            Countries.Add(new Country { Name = C.AT, FlagCode = "AT" });
+            Countries.Add(new Country { Name = C.CH, FlagCode = "CH" });
+            Countries.Add(new Country { Name = C.DK, FlagCode = "DK" });
+            Countries.Add(new Country { Name = C.FR, FlagCode = "FR" });
+            Countries.Add(new Country { Name = C.SK, FlagCode = "SK" });
+            Countries.Add(new Country { Name = C.PL, FlagCode = "PL" });
+            Countries.Add(new Country { Name = C.SI, FlagCode = "SI" });
+            Countries.Add(new Country { Name = C.HU, FlagCode = "HU" });
 
             SaveChanges();
         }
     }
-
-    private void EnsureCountry(string name, string flagCode)
-    {
-        if (!Countries.Any(c => c.Name == name))
-        {
-            Countries.Add(new Country { Name = name, FlagCode = flagCode });
-            SaveChanges();
-        }
-    }
-
     private void SeedWC2026()
     {
         if (!Tournaments.Any(_ => _.Name == "IIHF 2026"))
         {
-            var hostCountry = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.CH);
+            var hostCountry = Countries.FirstOrDefault(_ => _.Name == C.CH);
             Tournaments.Add(new Tournament
             {
                 CountryId = hostCountry?.Id ?? 13,
@@ -284,73 +271,15 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                 GameTime = time,
             });
 
-        Game(C.FI, C.DE, new DateTime(2026, 5, 15, 17, 20, 0));
-        Game(C.CA, C.SE, new DateTime(2026, 5, 15, 17, 20, 0));
-        Game(C.US, C.CH, new DateTime(2026, 5, 15, 21, 20, 0));
-        Game(C.CZ, C.DK, new DateTime(2026, 5, 15, 21, 20, 0));
 
-        Game(C.GB, C.AT, new DateTime(2026, 5, 16, 13, 20, 0));
-        Game(C.SK, C.NO, new DateTime(2026, 5, 16, 13, 20, 0));
-        Game(C.HU, C.FI, new DateTime(2026, 5, 16, 17, 20, 0));
-        Game(C.IT, C.CA, new DateTime(2026, 5, 16, 17, 20, 0));
-        Game(C.CH, C.LV, new DateTime(2026, 5, 16, 21, 20, 0));
-        Game(C.SI, C.CZ, new DateTime(2026, 5, 16, 21, 20, 0));
-
-        Game(C.GB, C.US, new DateTime(2026, 5, 17, 13, 20, 0));
-        Game(C.IT, C.SK, new DateTime(2026, 5, 17, 13, 20, 0));
-        Game(C.AT, C.HU, new DateTime(2026, 5, 17, 17, 20, 0));
-        Game(C.DK, C.SE, new DateTime(2026, 5, 17, 17, 20, 0));
-        Game(C.DE, C.LV, new DateTime(2026, 5, 17, 21, 20, 0));
-        Game(C.NO, C.SI, new DateTime(2026, 5, 17, 21, 20, 0));
-
-        Game(C.FI, C.US, new DateTime(2026, 5, 18, 17, 20, 0));
-        Game(C.CA, C.DK, new DateTime(2026, 5, 18, 17, 20, 0));
-        Game(C.DE, C.CH, new DateTime(2026, 5, 18, 21, 20, 0));
-        Game(C.SE, C.CZ, new DateTime(2026, 5, 18, 21, 20, 0));
-
+        Game(C.CH, C.LV, new DateTime(2026, 5, 16, 21, 20, 0));        
+        Game(C.DE, C.LV, new DateTime(2026, 5, 17, 21, 20, 0)); 
         Game(C.LV, C.AT, new DateTime(2026, 5, 19, 17, 20, 0));
-        Game(C.IT, C.NO, new DateTime(2026, 5, 19, 17, 20, 0));
-        Game(C.HU, C.GB, new DateTime(2026, 5, 19, 21, 20, 0));
-        Game(C.SI, C.SK, new DateTime(2026, 5, 19, 21, 20, 0));
-
-        Game(C.AT, C.CH, new DateTime(2026, 5, 20, 17, 20, 0));
-        Game(C.CZ, C.IT, new DateTime(2026, 5, 20, 17, 20, 0));
-        Game(C.US, C.DE, new DateTime(2026, 5, 20, 21, 20, 0));
-        Game(C.SE, C.SI, new DateTime(2026, 5, 20, 21, 20, 0));
-
         Game(C.LV, C.FI, new DateTime(2026, 5, 21, 17, 20, 0));
-        Game(C.CA, C.NO, new DateTime(2026, 5, 21, 17, 20, 0));
-        Game(C.CH, C.GB, new DateTime(2026, 5, 21, 21, 20, 0));
-        Game(C.DK, C.SK, new DateTime(2026, 5, 21, 21, 20, 0));
-
-        Game(C.DE, C.HU, new DateTime(2026, 5, 22, 17, 20, 0));
-        Game(C.CA, C.SI, new DateTime(2026, 5, 22, 17, 20, 0));
-        Game(C.FI, C.GB, new DateTime(2026, 5, 22, 21, 20, 0));
-        Game(C.SE, C.IT, new DateTime(2026, 5, 22, 21, 20, 0));
-
         Game(C.LV, C.US, new DateTime(2026, 5, 23, 13, 20, 0));
-        Game(C.DK, C.SI, new DateTime(2026, 5, 23, 13, 20, 0));
-        Game(C.CH, C.HU, new DateTime(2026, 5, 23, 17, 20, 0));
-        Game(C.SK, C.CZ, new DateTime(2026, 5, 23, 17, 20, 0));
-        Game(C.AT, C.DE, new DateTime(2026, 5, 23, 21, 20, 0));
-        Game(C.NO, C.SE, new DateTime(2026, 5, 23, 21, 20, 0));
-
         Game(C.GB, C.LV, new DateTime(2026, 5, 24, 17, 20, 0));
-        Game(C.DK, C.IT, new DateTime(2026, 5, 24, 17, 20, 0));
-        Game(C.FI, C.AT, new DateTime(2026, 5, 24, 21, 20, 0));
-        Game(C.SK, C.CA, new DateTime(2026, 5, 24, 21, 20, 0));
-
-        Game(C.US, C.HU, new DateTime(2026, 5, 25, 17, 20, 0));
-        Game(C.CZ, C.NO, new DateTime(2026, 5, 25, 17, 20, 0));
-        Game(C.DE, C.GB, new DateTime(2026, 5, 25, 21, 20, 0));
-        Game(C.SI, C.IT, new DateTime(2026, 5, 25, 21, 20, 0));
-
         Game(C.HU, C.LV, new DateTime(2026, 5, 26, 13, 20, 0));
-        Game(C.NO, C.DK, new DateTime(2026, 5, 26, 13, 20, 0));
-        Game(C.US, C.AT, new DateTime(2026, 5, 26, 17, 20, 0));
-        Game(C.SE, C.SK, new DateTime(2026, 5, 26, 17, 20, 0));
-        Game(C.CH, C.FI, new DateTime(2026, 5, 26, 21, 20, 0));
-        Game(C.CZ, C.CA, new DateTime(2026, 5, 26, 21, 20, 0));
+
 
         SaveChanges();
     }
