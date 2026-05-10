@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using C = HockeyPool.Infrastructure.Constants.Countries;
 
 namespace HockeyPool.Infrastructure.Data;
 
@@ -19,8 +20,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public async Task SeedAsync(IServiceProvider serviceProvider)
     {
         SeedCountrys();
+        EnsureCountry(Constants.Countries.HU, "HU");
         SeedOlympics2026();
         SeedOlympics2026Matchups();
+        SeedWC2026();
+        SeedWC2026Matchups();
         await SeedRolesAsync(serviceProvider);
         await SeedAdminAsync(serviceProvider);
     }
@@ -227,8 +231,127 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Countries.Add(new Country { Name = Constants.Countries.SK, FlagCode = "SK" });
             Countries.Add(new Country { Name = Constants.Countries.PL, FlagCode = "PL" });
             Countries.Add(new Country { Name = Constants.Countries.SI, FlagCode = "SI" });
+            Countries.Add(new Country { Name = Constants.Countries.HU, FlagCode = "HU" });
 
             SaveChanges();
         }
+    }
+
+    private void EnsureCountry(string name, string flagCode)
+    {
+        if (!Countries.Any(c => c.Name == name))
+        {
+            Countries.Add(new Country { Name = name, FlagCode = flagCode });
+            SaveChanges();
+        }
+    }
+
+    private void SeedWC2026()
+    {
+        if (!Tournaments.Any(_ => _.Name == "IIHF 2026"))
+        {
+            var hostCountry = Countries.FirstOrDefault(_ => _.Name == Constants.Countries.CH);
+            Tournaments.Add(new Tournament
+            {
+                CountryId = hostCountry?.Id ?? 13,
+                StartDate = new DateTime(2026, 05, 15),
+                EndDate = new DateTime(2026, 05, 31),
+                MatchupClosingTime = 15,
+                Name = "IIHF 2026",
+                IsActive = false,
+                PointsForPerfect = 4,
+                PointForDifference = 2,
+                PointsForWinnerOnly = 1
+            });
+
+            SaveChanges();
+        }
+    }
+
+    private void SeedWC2026Matchups()
+    {
+        var tournament = Tournaments.FirstOrDefault(_ => _.Name == "IIHF 2026");
+        if (tournament == null) return;
+        if (Matchups.Any(m => m.TournamentId == tournament.Id)) return;
+
+        int Id(string name) => Countries.First(c => c.Name == name).Id;
+        void Game(string home, string guest, DateTime time) =>
+            Matchups.Add(new Matchup
+            {
+                TournamentId = tournament.Id,
+                HomeTeamId = Id(home),
+                GuestTeamId = Id(guest),
+                GameTime = time,
+            });
+
+        Game(C.FI, C.DE, new DateTime(2026, 5, 15, 17, 20, 0));
+        Game(C.CA, C.SE, new DateTime(2026, 5, 15, 17, 20, 0));
+        Game(C.US, C.CH, new DateTime(2026, 5, 15, 21, 20, 0));
+        Game(C.CZ, C.DK, new DateTime(2026, 5, 15, 21, 20, 0));
+
+        Game(C.GB, C.AT, new DateTime(2026, 5, 16, 13, 20, 0));
+        Game(C.SK, C.NO, new DateTime(2026, 5, 16, 13, 20, 0));
+        Game(C.HU, C.FI, new DateTime(2026, 5, 16, 17, 20, 0));
+        Game(C.IT, C.CA, new DateTime(2026, 5, 16, 17, 20, 0));
+        Game(C.CH, C.LV, new DateTime(2026, 5, 16, 21, 20, 0));
+        Game(C.SI, C.CZ, new DateTime(2026, 5, 16, 21, 20, 0));
+
+        Game(C.GB, C.US, new DateTime(2026, 5, 17, 13, 20, 0));
+        Game(C.IT, C.SK, new DateTime(2026, 5, 17, 13, 20, 0));
+        Game(C.AT, C.HU, new DateTime(2026, 5, 17, 17, 20, 0));
+        Game(C.DK, C.SE, new DateTime(2026, 5, 17, 17, 20, 0));
+        Game(C.DE, C.LV, new DateTime(2026, 5, 17, 21, 20, 0));
+        Game(C.NO, C.SI, new DateTime(2026, 5, 17, 21, 20, 0));
+
+        Game(C.FI, C.US, new DateTime(2026, 5, 18, 17, 20, 0));
+        Game(C.CA, C.DK, new DateTime(2026, 5, 18, 17, 20, 0));
+        Game(C.DE, C.CH, new DateTime(2026, 5, 18, 21, 20, 0));
+        Game(C.SE, C.CZ, new DateTime(2026, 5, 18, 21, 20, 0));
+
+        Game(C.LV, C.AT, new DateTime(2026, 5, 19, 17, 20, 0));
+        Game(C.IT, C.NO, new DateTime(2026, 5, 19, 17, 20, 0));
+        Game(C.HU, C.GB, new DateTime(2026, 5, 19, 21, 20, 0));
+        Game(C.SI, C.SK, new DateTime(2026, 5, 19, 21, 20, 0));
+
+        Game(C.AT, C.CH, new DateTime(2026, 5, 20, 17, 20, 0));
+        Game(C.CZ, C.IT, new DateTime(2026, 5, 20, 17, 20, 0));
+        Game(C.US, C.DE, new DateTime(2026, 5, 20, 21, 20, 0));
+        Game(C.SE, C.SI, new DateTime(2026, 5, 20, 21, 20, 0));
+
+        Game(C.LV, C.FI, new DateTime(2026, 5, 21, 17, 20, 0));
+        Game(C.CA, C.NO, new DateTime(2026, 5, 21, 17, 20, 0));
+        Game(C.CH, C.GB, new DateTime(2026, 5, 21, 21, 20, 0));
+        Game(C.DK, C.SK, new DateTime(2026, 5, 21, 21, 20, 0));
+
+        Game(C.DE, C.HU, new DateTime(2026, 5, 22, 17, 20, 0));
+        Game(C.CA, C.SI, new DateTime(2026, 5, 22, 17, 20, 0));
+        Game(C.FI, C.GB, new DateTime(2026, 5, 22, 21, 20, 0));
+        Game(C.SE, C.IT, new DateTime(2026, 5, 22, 21, 20, 0));
+
+        Game(C.LV, C.US, new DateTime(2026, 5, 23, 13, 20, 0));
+        Game(C.DK, C.SI, new DateTime(2026, 5, 23, 13, 20, 0));
+        Game(C.CH, C.HU, new DateTime(2026, 5, 23, 17, 20, 0));
+        Game(C.SK, C.CZ, new DateTime(2026, 5, 23, 17, 20, 0));
+        Game(C.AT, C.DE, new DateTime(2026, 5, 23, 21, 20, 0));
+        Game(C.NO, C.SE, new DateTime(2026, 5, 23, 21, 20, 0));
+
+        Game(C.GB, C.LV, new DateTime(2026, 5, 24, 17, 20, 0));
+        Game(C.DK, C.IT, new DateTime(2026, 5, 24, 17, 20, 0));
+        Game(C.FI, C.AT, new DateTime(2026, 5, 24, 21, 20, 0));
+        Game(C.SK, C.CA, new DateTime(2026, 5, 24, 21, 20, 0));
+
+        Game(C.US, C.HU, new DateTime(2026, 5, 25, 17, 20, 0));
+        Game(C.CZ, C.NO, new DateTime(2026, 5, 25, 17, 20, 0));
+        Game(C.DE, C.GB, new DateTime(2026, 5, 25, 21, 20, 0));
+        Game(C.SI, C.IT, new DateTime(2026, 5, 25, 21, 20, 0));
+
+        Game(C.HU, C.LV, new DateTime(2026, 5, 26, 13, 20, 0));
+        Game(C.NO, C.DK, new DateTime(2026, 5, 26, 13, 20, 0));
+        Game(C.US, C.AT, new DateTime(2026, 5, 26, 17, 20, 0));
+        Game(C.SE, C.SK, new DateTime(2026, 5, 26, 17, 20, 0));
+        Game(C.CH, C.FI, new DateTime(2026, 5, 26, 21, 20, 0));
+        Game(C.CZ, C.CA, new DateTime(2026, 5, 26, 21, 20, 0));
+
+        SaveChanges();
     }
 }

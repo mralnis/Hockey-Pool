@@ -21,4 +21,5 @@ public static class Countries
     public static string PL = "Polija";
     public static string EE = "Igaunija";
     public static string SI = "Slovēnija";
+    public static string HU = "Ungārija";
 }
