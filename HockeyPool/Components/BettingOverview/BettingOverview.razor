@@ -15,6 +15,7 @@ else
     <MudTable Items="@UserPredictionsList.OrderByDescending(x => x.UserId == CurrentUserID).ThenByDescending(x => x.Predictions.Sum(p => p.PointsEarned ?? 0))"
               Breakpoint="Breakpoint.None"
               Hover="true"
+              Dense="true"
               HorizontalScrollbar="true"
               FixedHeader="true"
               LoadingProgressColor="Color.Info"
