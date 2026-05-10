@@ -40,6 +40,21 @@ a, .btn-link {
     justify-content: center;
 }
 
+.server-time-badge {
+    position: fixed;
+    bottom: 8px;
+    left: 8px;
+    z-index: 1000;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(0, 0, 0, 0.6);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-family: 'Roboto Mono', Consolas, Monaco, monospace;
+    pointer-events: none;
+    user-select: none;
+}
+
 .text-background {
     background-color: rgba(255,255,255,0.6980392156862745);
 }
